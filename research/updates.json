@@ -1,0 +1,250 @@
+{
+  "_about": "Verified news for each 2025 Hotlist project. Every item cites a source. Applied to src/page.html by scripts/apply_updates.py. Researched October 2026.",
+  "city-in-the-forest": {
+    "status": "Completed (99 min). On the festival circuit; sales by CAA, festival distribution by The Film Collaborative",
+    "laurels": [
+      {
+        "event": "Sheffield DocFest",
+        "year": 2026,
+        "note": "World Premiere"
+      },
+      {
+        "event": "Sheffield DocFest",
+        "year": 2026,
+        "note": "Special Mention, International First Feature"
+      },
+      {
+        "event": "Nashville Film Festival",
+        "year": 2026,
+        "note": "Best Documentary Feature"
+      },
+      {
+        "event": "DokuFest",
+        "year": 2026,
+        "note": "Special Mention, Human Rights Dox"
+      },
+      {
+        "event": "DMZ Docs",
+        "year": 2026,
+        "note": "Jury Special Mention"
+      },
+      {
+        "event": "DOC NYC",
+        "year": 2026,
+        "note": "New York Premiere"
+      }
+    ],
+    "updates": [
+      {
+        "date": "Nov 2026",
+        "text": "New York premiere at DOC NYC (November 11 to 19) in the Big Blue section.",
+        "url": "https://www.broadwayworld.com/article/DOC-NYC-Reveals-2026-Main-Slate-Lineup-20261008",
+        "source": "BroadwayWorld"
+      },
+      {
+        "date": "Aug 2026",
+        "text": "Screened at DokuFest in Prizren, Kosovo, in the Human Rights Dox competition.",
+        "url": "https://dokufest.com/en/festival/2026/film/a-city-in-the-forest1",
+        "source": "DokuFest"
+      },
+      {
+        "date": "2026",
+        "text": "Won Best Documentary Feature at the Nashville Film Festival, a Special Mention at DokuFest, and a Jury Special Mention at DMZ Docs.",
+        "url": "https://thefilmcollaborative.org/films/acityintheforest",
+        "source": "The Film Collaborative"
+      },
+      {
+        "date": "Jun 2026",
+        "text": "World premiere at Sheffield DocFest in the International First Feature Competition, where it received a Special Mention.",
+        "url": "https://filmotomy.com/sheffield-docfest-a-city-in-the-forest-review-a-powerful-environmental-documentary/",
+        "source": "Filmotomy"
+      }
+    ]
+  },
+  "manhood": {
+    "status": "Completed (91 min). In theaters from October 28, 2026, digital from November 17. US streaming on World of Wonder; UK on the BBC",
+    "laurels": [
+      {
+        "event": "SXSW",
+        "year": 2026,
+        "note": "World Premiere"
+      },
+      {
+        "event": "DOC NYC Selects",
+        "year": 2026,
+        "note": "New York Premiere"
+      }
+    ],
+    "updates": [
+      {
+        "date": "Oct 2026",
+        "text": "Theatrical release opens in Los Angeles on October 28 and New York on October 30, followed by digital release on November 17. World of Wonder holds US streaming rights and the BBC has UK broadcast and iPlayer rights.",
+        "url": "https://www.themovieblog.com/2026/10/lauded-documentary-manhood-gets-theatrical-release-new-trailer-debuts/",
+        "source": "The Movie Blog"
+      },
+      {
+        "date": "Jul 2026",
+        "text": "New York premiere at IFC Center as part of DOC NYC Selects: Summer 2026, with a conversation with director Daniel Lombroso.",
+        "url": "https://www.docnyc.net/manhood/",
+        "source": "DOC NYC"
+      },
+      {
+        "date": "Mar 2026",
+        "text": "World premiere at SXSW on March 14, with reviews in Variety, IndieWire and The Hollywood Reporter.",
+        "url": "https://en.wikipedia.org/wiki/Manhood_(2026_film)",
+        "source": "Wikipedia"
+      }
+    ]
+  },
+  "earth-to-michael": {
+    "status": "Completed (91 min). Premiered at Telluride 2025; on the festival circuit",
+    "laurels": [
+      {
+        "event": "Telluride Film Festival",
+        "year": 2025,
+        "note": "Official Selection"
+      },
+      {
+        "event": "DC/DOX",
+        "year": 2026,
+        "note": "East Coast Premiere"
+      }
+    ],
+    "updates": [
+      {
+        "date": "Jun 2026",
+        "text": "East Coast premiere at DC/DOX in Washington, DC.",
+        "url": "https://dcdoxfest.com/films/earth-to-michael/",
+        "source": "DC/DOX"
+      },
+      {
+        "date": "Aug 2025",
+        "text": "Premiered at the Telluride Film Festival in the Backlot program.",
+        "url": "https://www.awardsdaily.com/2025/08/28/telluride-announces-2025-lineup",
+        "source": "AwardsDaily"
+      }
+    ]
+  },
+  "thank-you-for-listening": {
+    "status": "Completed. Streaming on Yahoo; presented by Texas Monthly",
+    "laurels": [
+      {
+        "event": "Dallas International Film Festival",
+        "year": 2026,
+        "note": "Official Selection"
+      },
+      {
+        "event": "Raindance Film Festival",
+        "note": "Official Selection"
+      },
+      {
+        "event": "Waco Independent Film Festival",
+        "note": "Audience Award, Short Film"
+      },
+      {
+        "event": "Waco Independent Film Festival",
+        "note": "Best Texas Short Film"
+      },
+      {
+        "event": "Yahoo x Nonfiction Hotlist Film Festival",
+        "year": 2026,
+        "note": "Official Selection"
+      }
+    ],
+    "updates": [
+      {
+        "date": "Aug 2026",
+        "text": "Screened at the first Yahoo x Nonfiction Hotlist Film Festival at the American Dream center in East Rutherford, New Jersey, with Joshua Ray Walker performing.",
+        "url": "https://www.yahooinc.com/press/yahoo-and-the-nonfiction-hotlist-reveal-documentary-short-film-selections",
+        "source": "Yahoo"
+      },
+      {
+        "date": "Aug 2026",
+        "text": "Streaming exclusively on Yahoo from August 19, presented by Texas Monthly. Selected as one of 20 films from nearly 1,000 submissions for the Yahoo x Nonfiction Hotlist slate.",
+        "url": "https://www.texasmonthly.com/press-room/joshua-ray-walker-documentary-streaming-on-yahoo/",
+        "source": "Texas Monthly"
+      },
+      {
+        "date": "2026",
+        "text": "Debuted at the Dallas International Film Festival, screened at Raindance in London, won the Audience Award for short film and Best Texas Short Film at the Waco Independent Film Festival, and completed a limited theatrical run in Los Angeles.",
+        "url": "https://www.texasmonthly.com/press-room/joshua-ray-walker-documentary-streaming-on-yahoo/",
+        "source": "Texas Monthly"
+      }
+    ]
+  },
+  "making-the-line": {
+    "status": "World premiere at the Hawaiʻi International Film Festival, October 22, 2026. Raising $80,000 for final post-production",
+    "laurels": [
+      {
+        "event": "Hawaiʻi International Film Festival",
+        "year": 2026,
+        "note": "World Premiere"
+      }
+    ],
+    "updates": [
+      {
+        "date": "Oct 2026",
+        "text": "World premiere at the Hawaiʻi International Film Festival on October 22 at Consolidated Theatres Kāhala. The team is raising $80,000 for final post-production.",
+        "url": "https://www.hawaiinewsnow.com/2026/09/16/making-line-documentary-offers-unvarnished-look-merrie-monarch-champions/",
+        "source": "Hawaii News Now"
+      }
+    ]
+  },
+  "when-we-all-get-to-heaven": {
+    "status": "Released as a ten-part series on Outward, Slate's LGBTQ podcast",
+    "laurels": [],
+    "updates": [
+      {
+        "date": "2025",
+        "text": "Released as a ten-episode series through Outward, Slate's LGBTQ podcast. The Gay & Lesbian Review called it beautifully written, edited, and produced.",
+        "url": "https://glreview.org/?p=66976",
+        "source": "The Gay & Lesbian Review"
+      }
+    ]
+  },
+  "vestibule": {
+    "laurels": [],
+    "updates": [
+      {
+        "date": "Dec 2025",
+        "text": "Awarded a Rainin Filmmakers with Disabilities Grant from SFFILM, in post-production.",
+        "url": "https://sffilm.org/press-releases/sffilm-announces-543k-in-grants-for-filmmakers/",
+        "source": "SFFILM"
+      },
+      {
+        "date": "2025",
+        "text": "Selected for the Sundance Institute Documentary Edit Residency, following a 2024 Sundance Documentary Film Grant.",
+        "url": "https://history.sundance.org/project/22618",
+        "source": "Sundance Institute"
+      }
+    ]
+  },
+  "father-figures": {
+    "laurels": [],
+    "updates": [
+      {
+        "date": "Mar 2026",
+        "text": "Named a 2026 Sundance Institute Sandbox Fund grantee in the production category.",
+        "url": "https://history.sundance.org/films/14171/father_figures",
+        "source": "Sundance Institute"
+      },
+      {
+        "date": "2024",
+        "text": "Emma D. Miller was a Jewish Film Institute Filmmaker in Residence with Father Figures.",
+        "url": "https://jfi.org/programs/jfi-film-archive/emma-d-miller-father-figures",
+        "source": "Jewish Film Institute"
+      }
+    ]
+  },
+  "good-kids": {
+    "laurels": [],
+    "updates": [
+      {
+        "date": "Jul 2025",
+        "text": "Selected for Catapult Film Fund's tenth Rough Cut Retreat cohort.",
+        "url": "https://catapultfilmfund.org/news/",
+        "source": "Catapult Film Fund"
+      }
+    ]
+  }
+}

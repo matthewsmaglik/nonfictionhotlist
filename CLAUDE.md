@@ -7,3 +7,4 @@
 - Copy: understated and direct. No em dashes.
 - Official contact email: info@nonfictionhotlist.com. Project contacts belong to the filmmakers.
 - Deploys: pushing to `main` publishes `site/` to `gh-pages` (custom domain nfh2025.rdgnbl.com).
+- Project news (laurels, dated updates with sources, status) is kept in `research/updates.json` and applied with `python3 scripts/apply_updates.py`. Every item needs a source; never add a laurel or award that a source doesn't confirm.

@@ -10,6 +10,11 @@ const site = fs.readFileSync(path.join(REPO, "src", "page.html"), "utf8");
 const script = site.match(/<script>([\s\S]*?)<\/script>/)[1];
 const dataSrc = script.slice(0, script.indexOf("/* ============================================================\n   Rendering."));
 const { SITE, PROJECTS } = new Function(dataSrc + "; return { SITE, PROJECTS };")();
+// The laurel branch drawing is shared with the site.
+const branchSrc = script.slice(script.indexOf("const BRANCH = ("), script.indexOf("})();", script.indexOf("const BRANCH = (")) + 5);
+const BRANCH = new Function(branchSrc + "; return BRANCH;")();
+const branch = (cls = "") => `<svg class="${cls}" viewBox="0 0 22 60">${BRANCH}</svg>`;
+const laurels = list => (list || []).length ? `<ul class="laurels">${list.map(l => `<li>${branch()}<div>${l.note ? `<small>${esc(l.note)}</small>` : ""}<b>${esc(l.event)}</b>${l.year ? `<span>${l.year}</span>` : ""}</div>${branch("r")}</li>`).join("")}</ul>` : "";
 
 const F = path.join(REPO, "node_modules", "@fontsource");
 const font = (fam, file, w, style = "normal", range = "") =>
@@ -97,6 +102,7 @@ for (let n = 1; n <= PAGES; n++) {
       <span class="meta">${esc(p.format)}</span>
       <h3>${esc(p.title)}</h3>
       <p>${esc(p.logline)}</p>
+      ${(p.laurels || []).length ? `<span class="accolade">${branch()}<span><b>${esc(p.laurels[0].note || "Official Selection")}</b>, ${esc(p.laurels[0].event)}${p.laurels[0].year ? " " + p.laurels[0].year : ""}${p.laurels.length > 1 ? ` +${p.laurels.length - 1} more` : ""}</span></span>` : ""}
     </a>`).join("")}</div>
     ${folio("Projects", next())}
   </section>`);
@@ -113,11 +119,12 @@ PROJECTS.forEach((p, i) => {
   sheets.push(`<section class="sheet light project" id="${p.slug}">
     ${hero}
     <div class="pbody">
-      <div class="ptitle"><span class="pn">${pad(i + 1)} / ${PROJECTS.length}</span><h1>${esc(p.title)}</h1><p class="logline">${esc(p.logline)}</p></div>
+      <div class="ptitle"><span class="pn">${pad(i + 1)} / ${PROJECTS.length}</span><h1>${esc(p.title)}</h1><p class="logline">${esc(p.logline)}</p>${laurels(p.laurels)}</div>
       <div class="cols fit">
         <div class="main">
           <h4>Summary</h4>
           <div class="prose">${p.summary.split(/\n\n+/).map(t => `<p>${esc(t)}</p>`).join("")}</div>
+          ${(p.updates || []).length ? `<h4>News</h4><ul class="news">${p.updates.slice(0, 3).map(u => `<li><time>${esc(u.date)}</time><span>${esc(u.text)}${u.url ? ` <a href="${esc(u.url)}">${esc(u.source || "Source")}</a>` : ""}</span></li>`).join("")}</ul>` : ""}
           <h4>Creative team</h4>
           <ul class="team">${p.team.map(([n, r]) => `<li><b>${esc(n)}</b> ${esc(r)}</li>`).join("")}</ul>
           ${stills.length ? `<div class="stills">${stills.map(([s]) => `<div><img src="${img(s)}"></div>`).join("")}</div>` : ""}
@@ -255,6 +262,21 @@ h2 { font:700 44pt/0.95 "Spartan",sans-serif; letter-spacing:-.02em; margin-bott
 .links a { display:inline-block; font:600 7.5pt "Spartan",sans-serif; border:1px solid var(--forest); color:var(--forest); border-radius:99px; padding:0.025in 0.09in; }
 .req { margin-top:0.06in; color:var(--muted); font-size:.92em; }
 .project .folio { color:var(--ink); }
+.laurels { list-style:none; display:flex; flex-wrap:wrap; gap:0.06in 0.18in; margin:-0.06in 0 0.16in; color:var(--forest); }
+.laurels li { display:grid; grid-template-columns:0.13in auto 0.13in; align-items:center; gap:0.03in; }
+.laurels svg { width:0.13in; height:0.36in; display:block; color:var(--sage); }
+.laurels svg.r { transform:scaleX(-1); }
+.laurels div { display:grid; justify-items:center; text-align:center; line-height:1.1; max-width:1.7in; }
+.laurels small { font:600 5.4pt "Spartan",sans-serif; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+.laurels b { font:700 7.6pt "Spartan",sans-serif; color:var(--forest); margin-top:1px; }
+.laurels span { font:400 6.4pt "Spartan",sans-serif; color:var(--muted); }
+.news { list-style:none; margin-bottom:0.02in; }
+.news li { display:grid; grid-template-columns:0.62in 1fr; gap:0.08in; margin-bottom:0.05in; }
+.news time { font:700 6.8pt "Spartan",sans-serif; text-transform:uppercase; letter-spacing:.08em; color:var(--forest); padding-top:.2em; }
+.news a { font:600 0.86em "Spartan",sans-serif; color:var(--forest); text-decoration:underline; }
+.card .accolade { display:flex; gap:0.05in; align-items:center; margin-top:0.07in; font:400 7.6pt "Spartan",sans-serif; color:var(--sage-soft); }
+.card .accolade svg { width:0.07in; height:0.19in; flex:none; }
+.card .accolade b { color:var(--cream); font-weight:700; }
 </style></head><body>
 ${sheets.join("\n").replace(/<section class="sheet dark grid-page">/g, () => `<section class="sheet dark grid-page" id="p${++gi}">`)}
 </body></html>`;

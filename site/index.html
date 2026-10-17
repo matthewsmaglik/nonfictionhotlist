@@ -328,6 +328,26 @@ main { padding-block: 0 64px; }
 .updates li { padding: 14px 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 7em minmax(0, 1fr); gap: 16px; }
 .updates time { font-family: var(--display); font-size: var(--s-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sage-soft); padding-top: 3px; }
 .empty { border: 1px dashed var(--line); border-radius: 4px; padding: 18px; color: var(--muted); font-size: var(--s-sm); }
+/* Laurels and news */
+.laurels { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 0 0 26px; padding: 0; list-style: none; }
+.laurel { display: grid; grid-template-columns: 22px auto 22px; align-items: center; gap: 4px; color: var(--sage-soft); }
+.laurel svg { width: 22px; height: 52px; display: block; }
+.laurel svg.r { transform: scaleX(-1); }
+.laurel div { display: grid; justify-items: center; text-align: center; line-height: 1.1; max-width: 13.5em; }
+.laurel small { font-family: var(--display); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-soft); }
+.laurel b { font-family: var(--display); font-weight: 700; font-size: 0.86rem; color: var(--cream); margin-top: 3px; text-wrap: balance; }
+.laurel span { font-family: var(--display); font-size: 0.7rem; color: var(--muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
+.latest { background: var(--forest-deep); border-radius: 6px; padding: 16px 20px; margin: 0 0 26px; display: grid; gap: 6px; max-width: 46em; }
+.latest .w-label { display: flex; gap: 10px; align-items: baseline; padding: 0; }
+.latest .w-label time { color: var(--muted); letter-spacing: 0.08em; }
+.latest p { margin: 0; }
+.src { font-family: var(--display); font-size: var(--s-xs); color: var(--sage-soft); text-decoration: none; white-space: nowrap; }
+.src:hover { color: var(--cream); text-decoration: underline; }
+.updates li > div { display: grid; gap: 4px; }
+.card .accolade { display: flex; gap: 6px; align-items: center; font-family: var(--display); font-size: var(--s-xs); color: var(--sage-soft); line-height: 1.25; }
+.card .accolade svg { width: 10px; height: 22px; flex: none; }
+.card .accolade b { color: var(--cream); font-weight: 600; }
+.tabs .count { display: inline-grid; place-items: center; min-width: 1.5em; height: 1.5em; margin-left: 6px; border-radius: 999px; background: var(--sage); color: var(--ink); font-size: 0.72em; font-variant-numeric: tabular-nums; }
 .panel h4 {
   font-family: var(--display); font-size: var(--s-xs); text-transform: uppercase; letter-spacing: 0.12em;
   color: var(--sage-soft); margin: 32px 0 12px;
@@ -462,13 +482,13 @@ const PROJECTS = [
   onRequest: "", contact: "auntyuntitledfilm@gmail.com", updates: []
 },
 {
-  slug: "city-in-the-forest", key: "img/city-in-the-forest-key.jpg", hero: "img/city-in-the-forest-hero.jpg", focus: 58, focusY: 50, stills: [["img/city-in-the-forest-1.jpg", 1400, 788], ["img/city-in-the-forest-2.jpg", 800, 450], ["img/city-in-the-forest-3.jpg", 596, 335]], title: "A City in the Forest", format: "Feature documentary", status: "Rough cut",
+  slug: "city-in-the-forest", key: "img/city-in-the-forest-key.jpg", hero: "img/city-in-the-forest-hero.jpg", focus: 58, focusY: 50, stills: [["img/city-in-the-forest-1.jpg", 1400, 788], ["img/city-in-the-forest-2.jpg", 800, 450], ["img/city-in-the-forest-3.jpg", 596, 335]], title: "A City in the Forest", format: "Feature documentary", status: "Completed (99 min). On the festival circuit; sales by CAA, festival distribution by The Film Collaborative",
   logline: "A decentralized movement fights to stop Atlanta's police foundation from razing an urban forest to build \"Cop City.\"",
   summary: "When a private police foundation in Atlanta tries to raze an urban forest to build the country's largest police training facility, a diverse, decentralized, and intersectional movement defends the forest from what they call \"Cop City.\" A CITY IN THE FOREST paints a collective portrait of the country's most urgent social justice story, where a web of activists fight back against environmental racism, political corruption, police violence, and the criminalization of dissent.",
   team: [["Lev Omelchenko","Director"],["Nolan Huber-Rhoades","Director"],["Ike Rofé","Producer"],["Emily Yue","Editor"]],
   help: ["Finishing funds from like-minded grantors and investors","National and international outreach partners for the impact campaign","Sound designer with an ear for nature","In-kind finishing services","Follow on Instagram @acityintheforest"],
   links: [["Donate","https://southerndocumentaryfund.networkforgood.com/projects/238960-a-city-in-the-forest"],["Instagram","https://www.instagram.com/acityintheforest"],["Website","https://www.acityintheforest.com"]],
-  onRequest: "Deck and sizzle on request", contact: "acityintheforestfilm@gmail.com", updates: []
+  onRequest: "Deck and sizzle on request", contact: "acityintheforestfilm@gmail.com", laurels: [{"event": "Sheffield DocFest", "year": 2026, "note": "World Premiere"}, {"event": "Sheffield DocFest", "year": 2026, "note": "Special Mention, International First Feature"}, {"event": "Nashville Film Festival", "year": 2026, "note": "Best Documentary Feature"}, {"event": "DokuFest", "year": 2026, "note": "Special Mention, Human Rights Dox"}, {"event": "DMZ Docs", "year": 2026, "note": "Jury Special Mention"}, {"event": "DOC NYC", "year": 2026, "note": "New York Premiere"}], updates: [{"date": "Nov 2026", "text": "New York premiere at DOC NYC (November 11 to 19) in the Big Blue section.", "url": "https://www.broadwayworld.com/article/DOC-NYC-Reveals-2026-Main-Slate-Lineup-20261008", "source": "BroadwayWorld"}, {"date": "Aug 2026", "text": "Screened at DokuFest in Prizren, Kosovo, in the Human Rights Dox competition.", "url": "https://dokufest.com/en/festival/2026/film/a-city-in-the-forest1", "source": "DokuFest"}, {"date": "2026", "text": "Won Best Documentary Feature at the Nashville Film Festival, a Special Mention at DokuFest, and a Jury Special Mention at DMZ Docs.", "url": "https://thefilmcollaborative.org/films/acityintheforest", "source": "The Film Collaborative"}, {"date": "Jun 2026", "text": "World premiere at Sheffield DocFest in the International First Feature Competition, where it received a Special Mention.", "url": "https://filmotomy.com/sheffield-docfest-a-city-in-the-forest-review-a-powerful-environmental-documentary/", "source": "Filmotomy"}]
 },
 {
   slug: "daddy", key: "img/daddy-key.jpg", hero: "img/daddy-hero.jpg", focus: 22, focusY: 50, stills: [["img/daddy-1.jpg", 1400, 788], ["img/daddy-2.jpg", 1004, 525]], title: "Daddy", format: "Feature documentary", status: "Rough cut",
@@ -481,13 +501,13 @@ const PROJECTS = [
 },
 {
   slug: "earth-to-michael", key: "img/earth-to-michael-key.jpg", hero: "img/earth-to-michael-hero.jpg", focus: 50, focusY: 50, stills: [["img/earth-to-michael-1.jpg", 1072, 711], ["img/earth-to-michael-2.jpg", 684, 678], ["img/earth-to-michael-3.jpg", 422, 639]], title: "Earth to Michael", format: "Feature documentary",
-  status: "With finishing editor Marley McDonald toward picture lock; festival premiere targeted late 2025 or early 2026",
+  status: "Completed (91 min). Premiered at Telluride 2025; on the festival circuit",
   logline: "Before his astronaut father heads back to space, a son asks him to explore the distance between them.",
   summary: "Before a Commander leaves Earth to usher in a new era of spaceflight, his son asks him to explore the unresolved space between them.\n\nMichael last went to space when Nico was six. During his time in orbit, the family broke apart. Although Michael returned to Earth, he never came home. Now he's headed back to space, 15 years later. Can Nico bridge the distance before he leaves?\n\nEqual parts interstellar and intimate, this coming-of-age story confronts two men of different generations and sexualities, asking us what sacrifices we'll make for our loved ones to achieve their dreams.",
   team: [["Nico Lopez-Alegria","Director"],["Zach Zuckerman","Director"],["Steffie van Rhee","Producer"],["Dustin Nakao-Haider","Producer"]],
   help: ["In-kind color and sound (New York based ideal)","Connections to financiers or brands","Film festival strategist","Social media strategist or publicist","Archival digitizing services","Other ideas welcome"],
   links: [["Donate","https://www.documentary.org/project/alegria"],["Instagram","https://www.instagram.com/earthtomichael.film/"]],
-  onRequest: "Deck and sizzle on request", contact: "south4thstudios@gmail.com", updates: []
+  onRequest: "Deck and sizzle on request", contact: "south4thstudios@gmail.com", laurels: [{"event": "Telluride Film Festival", "year": 2025, "note": "Official Selection"}, {"event": "DC/DOX", "year": 2026, "note": "East Coast Premiere"}], updates: [{"date": "Jun 2026", "text": "East Coast premiere at DC/DOX in Washington, DC.", "url": "https://dcdoxfest.com/films/earth-to-michael/", "source": "DC/DOX"}, {"date": "Aug 2025", "text": "Premiered at the Telluride Film Festival in the Backlot program.", "url": "https://www.awardsdaily.com/2025/08/28/telluride-announces-2025-lineup", "source": "AwardsDaily"}]
 },
 {
   slug: "erins-law", key: "img/erins-law-key.jpg", hero: "img/erins-law-hero.jpg", focus: 40, focusY: 0, stills: [["img/erins-law-1.jpg", 1400, 922], ["img/erins-law-2.jpg", 1400, 933]], title: "Erin's Law", format: "Feature documentary", status: "Development and early production",
@@ -505,7 +525,7 @@ const PROJECTS = [
   team: [["Emma D. Miller","Director/Producer"],["Florrie Priest","Producer"],["Colby Day","Producer"],["Katrina Taylor","Editor"],["Ora DeKornfeld","DP"]],
   help: ["Connections to funders, both philanthropic and equity","In-kind support for LA-based color and sound mix","In-kind support for social media strategy and impact producing"],
   links: [["Donate","https://www.documentaries.org/films/father-figures/"],["Instagram","https://www.instagram.com/fatherfiguresdoc/"]],
-  onRequest: "Deck and sizzle on request", contact: "emma@marconamedia.com", updates: []
+  onRequest: "Deck and sizzle on request", contact: "emma@marconamedia.com", laurels: [], updates: [{"date": "Mar 2026", "text": "Named a 2026 Sundance Institute Sandbox Fund grantee in the production category.", "url": "https://history.sundance.org/films/14171/father_figures", "source": "Sundance Institute"}, {"date": "2024", "text": "Emma D. Miller was a Jewish Film Institute Filmmaker in Residence with Father Figures.", "url": "https://jfi.org/programs/jfi-film-archive/emma-d-miller-father-figures", "source": "Jewish Film Institute"}]
 },
 {
   slug: "god-of-sight", key: "img/god-of-sight-key.jpg", hero: "img/god-of-sight-hero.jpg", focus: 50, focusY: 50, stills: [["img/god-of-sight-1.jpg", 1400, 561], ["img/god-of-sight-2.jpg", 1400, 563]], title: "God of Sight", format: "Feature documentary",
@@ -524,7 +544,7 @@ const PROJECTS = [
   team: [["Daniel Yonathan","Director"],["Ike Rofé","Producer"],["McCray Sutherlin","Producer"]],
   help: ["Skateboarders and brands who can help fund the impact campaign and release","A sound designer inspired by Pink Floyd's The Wall","An experienced editor who loves Paul Thomas Anderson, for fresh-eyed feedback","A musician ready to try their hand at composing"],
   links: [["Sizzle","https://app.frame.io/presentations/9d6ea3b7-31ab-4952-9dde-a17cc6327f8b"]],
-  onRequest: "", contact: "ike@muddywater.co", updates: []
+  onRequest: "", contact: "ike@muddywater.co", laurels: [], updates: [{"date": "Jul 2025", "text": "Selected for Catapult Film Fund's tenth Rough Cut Retreat cohort.", "url": "https://catapultfilmfund.org/news/", "source": "Catapult Film Fund"}]
 },
 {
   slug: "the-grind", key: "img/the-grind-key.jpg", hero: "img/the-grind-hero.jpg", focus: 50, focusY: 50, stills: [["img/the-grind-1.jpg", 1400, 840], ["img/the-grind-2.jpg", 1400, 840]], title: "The Grind", format: "Feature documentary",
@@ -545,22 +565,22 @@ const PROJECTS = [
   links: [], onRequest: "", contact: "info@collectivemoxie.com", updates: []
 },
 {
-  slug: "making-the-line", key: "img/making-the-line-key.jpg", hero: "img/making-the-line-hero.jpg", focus: 38, focusY: 50, stills: [["img/making-the-line-1.jpg", 1400, 605], ["img/making-the-line-2.jpg", 1400, 588], ["img/making-the-line-3.jpg", 1400, 584]], title: "Making the Line", format: "Feature documentary", status: "Post-production, final cut early 2026",
+  slug: "making-the-line", key: "img/making-the-line-key.jpg", hero: "img/making-the-line-hero.jpg", focus: 38, focusY: 50, stills: [["img/making-the-line-1.jpg", 1400, 605], ["img/making-the-line-2.jpg", 1400, 588], ["img/making-the-line-3.jpg", 1400, 584]], title: "Making the Line", format: "Feature documentary", status: "World premiere at the Hawaiʻi International Film Festival, October 22, 2026. Raising $80,000 for final post-production",
   logline: "Two queer Native Hawaiian master teachers lead their students into the world of competitive hula.",
   summary: "MAKING THE LINE is a character-driven feature documentary that delves into the captivating world of competitive Hula. At its core, the film poignantly explores tradition, resilience, and identity.\n\nThe film follows two queer Kanaka Maoli (Native Hawaiian) Kumu Hula (master teachers of Hula), partners in both life and leadership, and their hāumāna (students), a diverse group of Native Hawaiian athletes. Together, their stories reveal the camaraderie, sisterhood, and brotherhood forged through competition. Audiences will find themselves rooting not just for a win, but for the preservation of a culture and the future of those who carry it forward.",
   team: [["Zilla Barbosa","Director/Producer"],["Sam Widdoes","Producer/Legal"],["Ryan Simon","Producer"]],
   help: ["Immediate funding and production support (Hawaii-based, Native Hawaiian, AAPI, and Indigenous preferred)","Post-production: lead editor, color, sound","Innovative distribution experts","Brand partnerships","Social media strategist","Audience engagement expert"],
   links: [["Instagram","https://www.instagram.com/makingthelinefilm/"],["Website","https://www.makingthelinedocumentary.com"],["Donate","https://www.paypal.com/donate?campaign_id=76G7W6QZML9ZQ"]],
-  onRequest: "Deck and sizzle on request", contact: "stephanie.barbosa@thevaultprod.com", updates: []
+  onRequest: "Deck and sizzle on request", contact: "stephanie.barbosa@thevaultprod.com", laurels: [{"event": "Hawaiʻi International Film Festival", "year": 2026, "note": "World Premiere"}], updates: [{"date": "Oct 2026", "text": "World premiere at the Hawaiʻi International Film Festival on October 22 at Consolidated Theatres Kāhala. The team is raising $80,000 for final post-production.", "url": "https://www.hawaiinewsnow.com/2026/09/16/making-line-documentary-offers-unvarnished-look-merrie-monarch-champions/", "source": "Hawaii News Now"}]
 },
 {
-  slug: "manhood", key: "img/manhood-key.jpg", hero: "img/manhood-hero.jpg", focus: 50, focusY: 50, stills: [["img/manhood-1.jpg", 1024, 576], ["img/manhood-2.jpg", 1400, 738], ["img/manhood-3.jpg", 1400, 933]], title: "Manhood", format: "Feature documentary", status: "80% complete, working toward rough cut",
+  slug: "manhood", key: "img/manhood-key.jpg", hero: "img/manhood-hero.jpg", focus: 50, focusY: 50, stills: [["img/manhood-1.jpg", 1024, 576], ["img/manhood-2.jpg", 1400, 738], ["img/manhood-3.jpg", 1400, 933]], title: "Manhood", format: "Feature documentary", status: "Completed (91 min). In theaters from October 28, 2026, digital from November 17. US streaming on World of Wonder; UK on the BBC",
   logline: "A Dallas businessman sets out to make penis enlargement as commonplace as Botox.",
   summary: "MANHOOD follows Dallas businessman Bill Moore as he sets out to make penis enlargement as commonplace as Botox. Along the way, a porn star and a father of five put their bodies, and their insecurities, on the line. Filmed over two years, MANHOOD explores shame, sex, and the fragile myths of American masculinity, with dark humor and unexpected empathy.\n\nProduction companies: World of Wonder, Madhouse Films, Outerboro Films.",
   team: [["Daniel Lombroso","Director"],["Penny Lane","EP"],["Gabriel Sedgwick","EP"],["Marcus Gershenberg","EP"],["Sheila Nevins","EP"],["Randy Barbato","EP"],["Fenton Bailey","EP"],["Kerry Mack","Producer"],["Rebecca Shaid","Producer"],["David Zucker","Editor"]],
   help: ["AI deepfake artist","PR","Social media strategy","Graphic designer","Impact producer","Distribution consultant"],
   links: [["Instagram","https://www.instagram.com/manhood.film/"],["Donate","https://donate.uniondocs.org/campaigns/youll-be-happier/"]],
-  onRequest: "Deck and sizzle on request", contact: "rebecca@outerboro.tv", updates: []
+  onRequest: "Deck and sizzle on request", contact: "rebecca@outerboro.tv", laurels: [{"event": "SXSW", "year": 2026, "note": "World Premiere"}, {"event": "DOC NYC Selects", "year": 2026, "note": "New York Premiere"}], updates: [{"date": "Oct 2026", "text": "Theatrical release opens in Los Angeles on October 28 and New York on October 30, followed by digital release on November 17. World of Wonder holds US streaming rights and the BBC has UK broadcast and iPlayer rights.", "url": "https://www.themovieblog.com/2026/10/lauded-documentary-manhood-gets-theatrical-release-new-trailer-debuts/", "source": "The Movie Blog"}, {"date": "Jul 2026", "text": "New York premiere at IFC Center as part of DOC NYC Selects: Summer 2026, with a conversation with director Daniel Lombroso.", "url": "https://www.docnyc.net/manhood/", "source": "DOC NYC"}, {"date": "Mar 2026", "text": "World premiere at SXSW on March 14, with reviews in Variety, IndieWire and The Hollywood Reporter.", "url": "https://en.wikipedia.org/wiki/Manhood_(2026_film)", "source": "Wikipedia"}]
 },
 {
   slug: "movement", key: "img/movement-key.jpg", hero: "img/movement-hero.jpg", focus: 30, focusY: 50, stills: [["img/movement-1.jpg", 1400, 906], ["img/movement-2.jpg", 1290, 929], ["img/movement-3.jpg", 980, 653]], title: "Movement", format: "Feature documentary", status: "In development",
@@ -598,13 +618,13 @@ const PROJECTS = [
   onRequest: "Sizzle on request", contact: "josh.zeman@gmail.com", updates: []
 },
 {
-  slug: "thank-you-for-listening", key: "img/thank-you-for-listening-key.jpg", hero: "img/thank-you-for-listening-hero.jpg", focus: 50, focusY: 50, stills: [["img/thank-you-for-listening-1.jpg", 1400, 788], ["img/thank-you-for-listening-2.jpg", 1400, 788]], title: "Thank You for Listening", format: "Short documentary", status: "Late production",
+  slug: "thank-you-for-listening", key: "img/thank-you-for-listening-key.jpg", hero: "img/thank-you-for-listening-hero.jpg", focus: 50, focusY: 50, stills: [["img/thank-you-for-listening-1.jpg", 1400, 788], ["img/thank-you-for-listening-2.jpg", 1400, 788]], title: "Thank You for Listening", format: "Short documentary", status: "Completed. Streaming on Yahoo; presented by Texas Monthly",
   logline: "Country singer Joshua Ray Walker battles third-generation cancer while planning his return to the Grand Ole Opry.",
   summary: "THANK YOU FOR LISTENING chronicles Joshua Ray Walker's journey in creating East Dallas country music while battling third-generation cancer and planning his return to the Grand Ole Opry, the mecca of country music. Drawing inspiration from the spirit of the Lone Star State, the enchanting surrealism of films like Beasts of the Southern Wild, and a touch of Dolly Parton flair, this film weaves together personal, creative, and cellular elements in a visually captivating exploration of hope and healing.",
   team: [["Gene Gallerano","Director"],["Bob Ray","Director"],["Christina Bennett Lind","Editor"],["Cyrus Stowe","Editor"]],
   help: ["Music-obsessed EP or production company","Post-production editor, ideally pro bono or at a minimal rate (the score will be composed by the subject)","Social media for community building","Help creating a live screening tour","Brand partnerships","Distribution consultation"],
   links: [["Trailer","https://www.youtube.com/watch?v=koehtBOygDM"],["Sizzle","https://vimeo.com/1070020164"],["Instagram","https://www.instagram.com/thankyouforlisteningfilm/"]],
-  onRequest: "Deck on request", contact: "reachgenegallerano@gmail.com", updates: []
+  onRequest: "Deck on request", contact: "reachgenegallerano@gmail.com", laurels: [{"event": "Dallas International Film Festival", "year": 2026, "note": "Official Selection"}, {"event": "Raindance Film Festival", "note": "Official Selection"}, {"event": "Waco Independent Film Festival", "note": "Audience Award, Short Film"}, {"event": "Waco Independent Film Festival", "note": "Best Texas Short Film"}, {"event": "Yahoo x Nonfiction Hotlist Film Festival", "year": 2026, "note": "Official Selection"}], updates: [{"date": "Aug 2026", "text": "Screened at the first Yahoo x Nonfiction Hotlist Film Festival at the American Dream center in East Rutherford, New Jersey, with Joshua Ray Walker performing.", "url": "https://www.yahooinc.com/press/yahoo-and-the-nonfiction-hotlist-reveal-documentary-short-film-selections", "source": "Yahoo"}, {"date": "Aug 2026", "text": "Streaming exclusively on Yahoo from August 19, presented by Texas Monthly. Selected as one of 20 films from nearly 1,000 submissions for the Yahoo x Nonfiction Hotlist slate.", "url": "https://www.texasmonthly.com/press-room/joshua-ray-walker-documentary-streaming-on-yahoo/", "source": "Texas Monthly"}, {"date": "2026", "text": "Debuted at the Dallas International Film Festival, screened at Raindance in London, won the Audience Award for short film and Best Texas Short Film at the Waco Independent Film Festival, and completed a limited theatrical run in Los Angeles.", "url": "https://www.texasmonthly.com/press-room/joshua-ray-walker-documentary-streaming-on-yahoo/", "source": "Texas Monthly"}]
 },
 {
   slug: "vestibule", key: "img/vestibule-key.jpg", hero: "img/vestibule-hero.jpg", focus: 45, focusY: 0, stills: [["img/vestibule-1.jpg", 1400, 788], ["img/vestibule-2.jpg", 1400, 788]], title: "Vestibule", format: "Feature documentary", status: "Late production and post-production",
@@ -613,7 +633,7 @@ const PROJECTS = [
   team: [["Riley Hooper","Director/Editor"],["Caitlin Mae Burke","Producer"],["Bryn Silverman","Producer"],["Claire Ave'Lallemant","Consulting Editor"]],
   help: ["EPs and production company partners","Celebrity EPs with interest in the sexual health and pleasure space","Brand partnerships with sexual wellness brands","Studio or soundstage for a dance shoot (raw space at least 25' x 50' x 14'; NYC, Hudson Valley, or Portland, OR ideal)","Camera and G&E gear for the dance shoot","Dance studio residency, any location","Edit residency, any location","Accounting services"],
   links: [["Pitch deck","https://vestibulefilm.com/deck"],["Sizzle","https://vimeo.com/1011070725/c8f831341a"],["Donate","https://www.documentaries.org/films/vestibule/"],["Website","https://vestibulefilm.com"],["Instagram","https://www.instagram.com/vestibulefilm/"]],
-  onRequest: "", contact: "rileyRhooper@gmail.com", updates: []
+  onRequest: "", contact: "rileyRhooper@gmail.com", laurels: [], updates: [{"date": "Dec 2025", "text": "Awarded a Rainin Filmmakers with Disabilities Grant from SFFILM, in post-production.", "url": "https://sffilm.org/press-releases/sffilm-announces-543k-in-grants-for-filmmakers/", "source": "SFFILM"}, {"date": "2025", "text": "Selected for the Sundance Institute Documentary Edit Residency, following a 2024 Sundance Documentary Film Grant.", "url": "https://history.sundance.org/project/22618", "source": "Sundance Institute"}]
 },
 {
   slug: "walk-with-me", key: "img/walk-with-me-key.jpg", hero: "img/walk-with-me-hero.jpg", focus: 50, focusY: 50, stills: [["img/walk-with-me-1.jpg", 933, 1400], ["img/walk-with-me-2.jpg", 1086, 1400]], title: "Walk With Me", format: "Feature documentary",
@@ -635,13 +655,13 @@ const PROJECTS = [
   onRequest: "Deck and sizzle on request", contact: "whalelikeme@quietheartfilm.com", updates: []
 },
 {
-  slug: "when-we-all-get-to-heaven", key: "img/when-we-all-get-to-heaven-key.jpg", hero: "img/when-we-all-get-to-heaven-hero.jpg", focus: 50, focusY: 50, stills: [["img/when-we-all-get-to-heaven-1.jpg", 1400, 788], ["img/when-we-all-get-to-heaven-2.jpg", 1400, 788], ["img/when-we-all-get-to-heaven-3.jpg", 1400, 788]], title: "When We All Get to Heaven", format: "Podcast, 11 parts", status: "Distribution via Slate's Outward podcast",
+  slug: "when-we-all-get-to-heaven", key: "img/when-we-all-get-to-heaven-key.jpg", hero: "img/when-we-all-get-to-heaven-hero.jpg", focus: 50, focusY: 50, stills: [["img/when-we-all-get-to-heaven-1.jpg", 1400, 788], ["img/when-we-all-get-to-heaven-2.jpg", 1400, 788], ["img/when-we-all-get-to-heaven-3.jpg", 1400, 788]], title: "When We All Get to Heaven", format: "Podcast, 11 parts", status: "Released as a ten-part series on Outward, Slate's LGBTQ podcast",
   logline: "How one of the first gay-positive churches faced the AIDS epidemic, told through 1,200 rescued recordings.",
   summary: "WHEN WE ALL GET TO HEAVEN is an 11-part audio documentary that tells the story of how one of the first gay-positive churches, the Metropolitan Community Church of San Francisco, faced the personal, social, and political trials of the AIDS epidemic, including the deaths of hundreds of members. The project is based on an archive of 1200 rescued recordings of worship services from the height of the AIDS crisis, 1987-2003. It follows this community as it struggles to make meaning of illness, death, and isolation while caught between two worlds: a religious world saying gays had no place and a gay rights movement saying God had no place.",
   team: [["Lynne Gerber","Host/EP"],["Siri Colom","Co-Creator"],["Ariana Nedelman","Co-Creator"],["Sayre Quevedo","Story Editor"],["Krissy Clark","Managing Producer"]],
   help: ["Promotion and marketing strategy and support","Logo design and social media","Subscribe to the newsletter at heavenpodcast.org/newsletter","Follow on Instagram @eureka.street","Contribute at heavenpodcast.org or the crowdfunder"],
   links: [["Trailer","https://soundcloud.com/heaven-podcast-825641135/when-we-all-get-to-heaven-trailer"],["Website","http://heavenpodcast.org"],["Donate","https://www.paypal.com/donate/?hosted_button_id=GJVYD4TYVV77L"],["Crowdfunder","https://givebutter.com/heavenpodcast"],["Instagram","https://www.instagram.com/eureka.street"]],
-  onRequest: "", contact: "heavenpodcast@gmail.com", updates: []
+  onRequest: "", contact: "heavenpodcast@gmail.com", laurels: [], updates: [{"date": "2025", "text": "Released as a ten-episode series through Outward, Slate's LGBTQ podcast. The Gay & Lesbian Review called it beautifully written, edited, and produced.", "url": "https://glreview.org/?p=66976", "source": "The Gay & Lesbian Review"}]
 }
 ];
 
@@ -735,6 +755,30 @@ function dots(current) {
     `<a href="#page-${i + 1}"${i + 1 === current ? ' aria-current="page"' : ""}>${i + 1}</a>`).join("")}</nav>`;
 }
 
+/* A laurel branch: paired leaves along a curved stem. Mirrored for the right side. */
+const BRANCH = (() => {
+  const out = [];
+  const leaf = (x, y, rot, rx = 2.4, ry = 5.6) => out.push(`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${rx}" ry="${ry}" transform="rotate(${rot.toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`);
+  const N = 6;
+  for (let i = 0; i < N; i++) {
+    const t = i / (N - 1);
+    const x = 14 - Math.sin(t * Math.PI * 0.85) * 7, y = 55 - t * 46;
+    const tilt = (t - 0.5) * 30;
+    leaf(x - 3.6, y - 2.5, -38 + tilt);
+    leaf(x + 2.6, y - 3.2, 28 + tilt, 2.1, 5);
+  }
+  leaf(12.6, 5.5, 8, 2.2, 5);
+  const stem = `<path d="M15 58 C 8 46, 6 26, 12.5 6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>`;
+  return stem + `<g fill="currentColor">${out.join("")}</g>`;
+})();
+const branch = (cls = "") => `<svg class="${cls}" viewBox="0 0 22 60" aria-hidden="true">${BRANCH}</svg>`;
+const laurelText = l => `${l.note ? l.note + ", " : ""}${l.event}${l.year ? " " + l.year : ""}`;
+function laurelsHTML(list) {
+  if (!list || !list.length) return "";
+  return `<ul class="laurels" aria-label="Festivals and awards">${list.map(l => `<li class="laurel" title="${esc(laurelText(l))}">${branch()}<div>${l.note ? `<small>${esc(l.note)}</small>` : ""}<b>${esc(l.event)}</b>${l.year ? `<span>${l.year}</span>` : ""}</div>${branch("r")}</li>`).join("")}</ul>`;
+}
+const srcLink = u => u.url ? ` <a class="src" href="${esc(u.url)}" target="_blank" rel="noopener">${esc(u.source || "Source")} &nearr;</a>` : "";
+
 function renderGrid(n) {
   const start = (n - 1) * SITE.PER_PAGE;
   const items = PROJECTS.slice(start, start + SITE.PER_PAGE);
@@ -743,6 +787,7 @@ function renderGrid(n) {
       <span class="meta">${esc(p.format)}</span>
       <h3>${esc(p.title)}</h3>
       <p>${esc(p.logline)}</p>
+      ${(p.laurels || []).length ? `<span class="accolade">${branch()}<span><b>${esc(p.laurels[0].note || "Official Selection")}</b>, ${esc(p.laurels[0].event)}${p.laurels[0].year ? " " + p.laurels[0].year : ""}${p.laurels.length > 1 ? ` <span>+${p.laurels.length - 1} more</span>` : ""}</span></span>` : ""}
     </a>`).join("");
   const prev = n > 1 ? `#page-${n - 1}` : "#why";
   const next = n < PAGES ? `#page-${n + 1}` : null;
@@ -763,9 +808,10 @@ function paras(text) { return text.split(/\n\n+/).map(t => `<p>${esc(t)}</p>`).j
 
 function renderProject(idx, tab) {
   const p = PROJECTS[idx];
+  const ups = p.updates || [];
   const tabs = [["", "Overview"], ["help", "How to help"], ["links", "Links & updates"]];
   const tabNav = tabs.map(([k, label]) =>
-    `<a href="#${p.slug}${k ? "." + k : ""}" aria-current="${tab === k}">${label}</a>`).join("");
+    `<a href="#${p.slug}${k ? "." + k : ""}" aria-current="${tab === k}">${label}${k === "links" && ups.length ? `<span class="count" aria-label="${ups.length} updates">${ups.length}</span>` : ""}</a>`).join("");
   let panel = "";
   if (tab === "help") {
     panel = `<h4>What this project needs</h4><ul class="needs">${p.help.map(h => `<li>${esc(h)}</li>`).join("")}</ul>
@@ -775,7 +821,7 @@ function renderProject(idx, tab) {
       ? `<div class="links">${p.links.map(([l, u]) => `<a class="btn" href="${esc(u)}" target="_blank" rel="noopener">${esc(l)} &nearr;</a>`).join("")}</div>`
       : `<p class="note">No public links yet.</p>`;
     const updates = p.updates.length
-      ? `<ul class="updates">${p.updates.map(u => `<li><time>${esc(u.date)}</time><span>${esc(u.text)}</span></li>`).join("")}</ul>`
+      ? `<ul class="updates">${p.updates.map(u => `<li><time>${esc(u.date)}</time><div><span>${esc(u.text)}</span>${srcLink(u)}</div></li>`).join("")}</ul>`
       : `<div class="empty">No updates yet. Screenings, press, funding news, and festival selections will appear here as they happen.</div>`;
     panel = `<h4>Links</h4>${links}${p.onRequest ? `<p class="note">${esc(p.onRequest)}.</p>` : ""}<h4>Updates</h4>${updates}`;
   } else {
@@ -797,6 +843,8 @@ function renderProject(idx, tab) {
       <div style="min-width:0">
         <h1>${esc(p.title)}</h1>
         <p class="logline">${esc(p.logline)}</p>
+        ${laurelsHTML(p.laurels)}
+        ${ups.length && tab !== "links" ? `<div class="latest"><div class="w-label">Latest <time>${esc(ups[0].date)}</time></div><p>${esc(ups[0].text)}${srcLink(ups[0])}</p></div>` : ""}
         <nav class="tabs" aria-label="Project sections">${tabNav}</nav>
         <div class="panel">${panel}</div>
       </div>

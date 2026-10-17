@@ -41,6 +41,19 @@ git commit -am "..." && git push
 
 Pushing to `main` deploys automatically (see below). `npm run serve` previews the site at http://localhost:8080.
 
+## News, laurels and status
+
+Festival selections, awards, distribution and other news live in `research/updates.json`, one entry per project. Each update has a date, a sentence, and a source link, and each laurel names the event, year and honor. `research/notes.md` keeps the raw research trail.
+
+After editing that file:
+
+```sh
+python3 scripts/apply_updates.py   # writes status, laurels and updates into src/page.html
+npm run release
+```
+
+Laurels show under the logline on a project page, the first one appears on the project's card, and the newest update shows as "Latest" above the tabs. Only add what a source confirms.
+
 ## Images
 
 Originals are not in the repo. They live in the shared folder `NFH 2025 SELECTED PROJECT ASSETS`, one subfolder per filmmaker. To redo the processed images:
