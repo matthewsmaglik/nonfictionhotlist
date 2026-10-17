@@ -16,10 +16,10 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
       - name: site/index.html must be built from src/page.html
@@ -32,7 +32,7 @@ jobs:
     needs: check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Publish site/ to the gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -51,11 +51,11 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: DNS and HTTPS
         run: |
           D=nfh2025.rdgnbl.com
-          note() { echo "::notice title=$1::$2"; echo "$1: $2"; }
+          note() { v="${2:-(none)}"; echo "::notice title=$1::$v"; echo "$1: $v"; }
           note "DNS CNAME" "$(dig +short $D CNAME | tr '\n' ' ')"
           note "DNS A" "$(dig +short $D A | tr '\n' ' ')"
           note "rdgnbl.com nameservers" "$(dig +short rdgnbl.com NS | tr '\n' ' ')"
@@ -64,9 +64,9 @@ jobs:
           note "HTTPS certificate" "$(echo | openssl s_client -servername $D -connect $D:443 2>/dev/null | openssl x509 -noout -subject -issuer 2>/dev/null | tr '\n' ' ')"
           note "Served page" "$(curl -sL https://$D/ | grep -o '<title>[^<]*' | head -1)"
           note "github.io copy" "$(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}' https://matthewsmaglik.github.io/nonfictionhotlist/)"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci && npx playwright install --with-deps chromium
       - name: Smoke test the live site
