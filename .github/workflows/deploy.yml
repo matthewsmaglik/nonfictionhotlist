@@ -57,25 +57,26 @@ jobs:
     steps:
       - name: Custom domain, certificate and HTTPS
         run: |
+          set +e
           note() { echo "::notice title=$1::${2:-(none)}"; echo "$1: ${2:-(none)}"; }
-          info() { gh api "repos/$REPO/pages" --jq "$1"; }
+          info() { gh api "repos/$REPO/pages" --jq "$1" 2>&1; }
+          put() { out=$(gh api -X PUT "repos/$REPO/pages" "$@" 2>&1); note "PUT $*" "exit $? ${out:-ok}"; }
           note "Pages before" "$(info '{source: .source.branch, cname, https_enforced, cert: .https_certificate.state}')"
-          if [ "$(info .cname)" != "nfh2025.rdgnbl.com" ]; then
-            gh api -X PUT "repos/$REPO/pages" -f cname=nfh2025.rdgnbl.com >/dev/null && note "Set domain" "nfh2025.rdgnbl.com"
-          fi
           state=$(info '.https_certificate.state // "none"')
-          if [ "$state" = "approved" ] && [ "$(info .https_enforced)" != "true" ]; then
-            gh api -X PUT "repos/$REPO/pages" -F https_enforced=true >/dev/null && note "HTTPS" "enforced"
-          elif [ "$state" = "none" ] || [ "$state" = "null" ]; then
+          if [ "$state" = "approved" ]; then
+            [ "$(info .https_enforced)" = "true" ] || put -F https_enforced=true
+          elif [ "$state" = "none" ]; then
             # No certificate request on file. Re-saving the domain makes GitHub start one.
-            gh api -X PUT "repos/$REPO/pages" -F cname=null >/dev/null || true
-            sleep 5
-            gh api -X PUT "repos/$REPO/pages" -f cname=nfh2025.rdgnbl.com >/dev/null
-            note "HTTPS" "re-saved the domain to request a certificate; rerun this workflow in 15 to 60 minutes to enforce HTTPS"
-          elif [ "$state" != "approved" ]; then
-            note "HTTPS" "certificate is '$state'; GitHub usually issues it within an hour of DNS resolving. Rerun this workflow later to enforce HTTPS."
+            put -f cname=
+            sleep 10
+            put -f cname=nfh2025.rdgnbl.com
+            note "HTTPS" "requested a certificate; rerun this workflow in 15 to 60 minutes to enforce HTTPS"
+          else
+            note "HTTPS" "certificate is '$state'; rerun this workflow later to enforce HTTPS"
           fi
+          sleep 5
           note "Pages after" "$(info '{cname, https_enforced, cert: .https_certificate.state, domains: .https_certificate.domains}')"
+          exit 0
 
   live:
     # Reports on the live site after each deploy. Never blocks a deploy; read the results as
