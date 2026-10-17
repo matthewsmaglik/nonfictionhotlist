@@ -1,0 +1,19 @@
+{
+  "name": "nonfictionhotlist",
+  "private": true,
+  "description": "The 2025 Nonfiction Hotlist microsite and downloadable PDF",
+  "scripts": {
+    "build": "node scripts/build-site.js",
+    "pdf": "node scripts/build-pdf.js",
+    "og": "node scripts/build-og.js",
+    "images": "python3 scripts/images/process.py && python3 scripts/images/process_late.py && python3 scripts/images/apply_media.py",
+    "release": "npm run build && npm run pdf && npm run check",
+    "check": "node scripts/check-site.js",
+    "serve": "python3 -m http.server 8080 --directory site"
+  },
+  "devDependencies": {
+    "@fontsource/league-spartan": "5.0.19",
+    "@fontsource/literata": "5.0.20",
+    "playwright": "1.56.0"
+  }
+}

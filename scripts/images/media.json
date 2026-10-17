@@ -1,0 +1,471 @@
+{
+ "animated-mind": {
+  "key": "img/animated-mind-key.jpg",
+  "stills": [
+   [
+    "img/animated-mind-1.jpg",
+    1400,
+    786
+   ],
+   [
+    "img/animated-mind-2.jpg",
+    1400,
+    946
+   ]
+  ],
+  "hero": "img/animated-mind-hero.jpg",
+  "focus": 65,
+  "focusY": 50
+ },
+ "arrival-center": {
+  "key": "img/arrival-center-key.jpg",
+  "stills": [
+   [
+    "img/arrival-center-1.jpg",
+    1400,
+    933
+   ],
+   [
+    "img/arrival-center-2.jpg",
+    1000,
+    667
+   ],
+   [
+    "img/arrival-center-3.jpg",
+    1000,
+    667
+   ]
+  ],
+  "hero": "img/arrival-center-hero.jpg",
+  "focus": 50,
+  "focusY": 50
+ },
+ "aunties": {
+  "key": "img/aunties-key.jpg",
+  "hero": "img/aunties-hero.jpg",
+  "stills": [
+   [
+    "img/aunties-1.jpg",
+    1400,
+    786
+   ],
+   [
+    "img/aunties-2.jpg",
+    1400,
+    805
+   ],
+   [
+    "img/aunties-3.jpg",
+    1400,
+    659
+   ]
+  ],
+  "focus": 50,
+  "focusY": 50
+ },
+ "daddy": {
+  "key": "img/daddy-key.jpg",
+  "stills": [
+   [
+    "img/daddy-1.jpg",
+    1400,
+    788
+   ],
+   [
+    "img/daddy-2.jpg",
+    1004,
+    525
+   ]
+  ],
+  "hero": "img/daddy-hero.jpg",
+  "focus": 22,
+  "focusY": 50
+ },
+ "earth-to-michael": {
+  "key": "img/earth-to-michael-key.jpg",
+  "stills": [
+   [
+    "img/earth-to-michael-1.jpg",
+    1072,
+    711
+   ],
+   [
+    "img/earth-to-michael-2.jpg",
+    684,
+    678
+   ],
+   [
+    "img/earth-to-michael-3.jpg",
+    422,
+    639
+   ]
+  ],
+  "hero": "img/earth-to-michael-hero.jpg",
+  "focus": 50,
+  "focusY": 50
+ },
+ "father-figures": {
+  "key": "img/father-figures-key.jpg",
+  "stills": [
+   [
+    "img/father-figures-1.jpg",
+    1400,
+    788
+   ],
+   [
+    "img/father-figures-2.jpg",
+    1400,
+    788
+   ]
+  ],
+  "hero": "img/father-figures-hero.jpg",
+  "focus": 50,
+  "focusY": 50
+ },
+ "god-of-sight": {
+  "key": "img/god-of-sight-key.jpg",
+  "stills": [
+   [
+    "img/god-of-sight-1.jpg",
+    1400,
+    561
+   ],
+   [
+    "img/god-of-sight-2.jpg",
+    1400,
+    563
+   ]
+  ],
+  "hero": "img/god-of-sight-hero.jpg",
+  "focus": 50,
+  "focusY": 50
+ },
+ "good-kids": {
+  "key": "img/good-kids-key.jpg",
+  "stills": [
+   [
+    "img/good-kids-1.jpg",
+    1400,
+    788
+   ],
+   [
+    "img/good-kids-2.jpg",
+    1400,
+    737
+   ]
+  ],
+  "hero": "img/good-kids-hero.jpg",
+  "focus": 50,
+  "focusY": 50
+ },
+ "the-grind": {
+  "key": "img/the-grind-key.jpg",
+  "stills": [
+   [
+    "img/the-grind-1.jpg",
+    1400,
+    840
+   ],
+   [
+    "img/the-grind-2.jpg",
+    1400,
+    840
+   ]
+  ],
+  "hero": "img/the-grind-hero.jpg",
+  "focus": 50,
+  "focusY": 50
+ },
+ "making-the-line": {
+  "key": "img/making-the-line-key.jpg",
+  "stills": [
+   [
+    "img/making-the-line-1.jpg",
+    1400,
+    605
+   ],
+   [
+    "img/making-the-line-2.jpg",
+    1400,
+    588
+   ],
+   [
+    "img/making-the-line-3.jpg",
+    1400,
+    584
+   ]
+  ],
+  "hero": "img/making-the-line-hero.jpg",
+  "focus": 38,
+  "focusY": 50
+ },
+ "manhood": {
+  "key": "img/manhood-key.jpg",
+  "hero": "img/manhood-hero.jpg",
+  "stills": [
+   [
+    "img/manhood-1.jpg",
+    1024,
+    576
+   ],
+   [
+    "img/manhood-2.jpg",
+    1400,
+    738
+   ],
+   [
+    "img/manhood-3.jpg",
+    1400,
+    933
+   ]
+  ],
+  "focus": 50,
+  "focusY": 50
+ },
+ "movement": {
+  "key": "img/movement-key.jpg",
+  "stills": [
+   [
+    "img/movement-1.jpg",
+    1400,
+    906
+   ],
+   [
+    "img/movement-2.jpg",
+    1290,
+    929
+   ],
+   [
+    "img/movement-3.jpg",
+    980,
+    653
+   ]
+  ],
+  "hero": "img/movement-hero.jpg",
+  "focus": 30,
+  "focusY": 50
+ },
+ "screw-lucy": {
+  "key": "img/screw-lucy-key.jpg",
+  "hero": "img/screw-lucy-hero.jpg",
+  "stills": [
+   [
+    "img/screw-lucy-1.jpg",
+    600,
+    411
+   ],
+   [
+    "img/screw-lucy-2.jpg",
+    1177,
+    547
+   ],
+   [
+    "img/screw-lucy-3.jpg",
+    1280,
+    711
+   ]
+  ],
+  "focus": 68,
+  "focusY": 50
+ },
+ "talked-to-death": {
+  "key": "img/talked-to-death-key.jpg",
+  "stills": [
+   [
+    "img/talked-to-death-1.jpg",
+    1400,
+    788
+   ],
+   [
+    "img/talked-to-death-2.jpg",
+    1400,
+    936
+   ]
+  ],
+  "hero": "img/talked-to-death-hero.jpg",
+  "focus": 50,
+  "focusY": 50
+ },
+ "thank-you-for-listening": {
+  "key": "img/thank-you-for-listening-key.jpg",
+  "stills": [
+   [
+    "img/thank-you-for-listening-1.jpg",
+    1400,
+    788
+   ],
+   [
+    "img/thank-you-for-listening-2.jpg",
+    1400,
+    788
+   ]
+  ],
+  "hero": "img/thank-you-for-listening-hero.jpg",
+  "focus": 50,
+  "focusY": 50
+ },
+ "vestibule": {
+  "key": "img/vestibule-key.jpg",
+  "stills": [
+   [
+    "img/vestibule-1.jpg",
+    1400,
+    788
+   ],
+   [
+    "img/vestibule-2.jpg",
+    1400,
+    788
+   ]
+  ],
+  "hero": "img/vestibule-hero.jpg",
+  "focus": 45,
+  "focusY": 0
+ },
+ "walk-with-me": {
+  "key": "img/walk-with-me-key.jpg",
+  "stills": [
+   [
+    "img/walk-with-me-1.jpg",
+    933,
+    1400
+   ],
+   [
+    "img/walk-with-me-2.jpg",
+    1086,
+    1400
+   ]
+  ],
+  "hero": "img/walk-with-me-hero.jpg",
+  "focus": 50,
+  "focusY": 50
+ },
+ "whale-like-me": {
+  "key": "img/whale-like-me-key.jpg",
+  "stills": [
+   [
+    "img/whale-like-me-1.jpg",
+    1400,
+    788
+   ],
+   [
+    "img/whale-like-me-2.jpg",
+    1400,
+    788
+   ]
+  ],
+  "hero": "img/whale-like-me-hero.jpg",
+  "focus": 50,
+  "focusY": 50
+ },
+ "when-we-all-get-to-heaven": {
+  "key": "img/when-we-all-get-to-heaven-key.jpg",
+  "stills": [
+   [
+    "img/when-we-all-get-to-heaven-1.jpg",
+    1400,
+    788
+   ],
+   [
+    "img/when-we-all-get-to-heaven-2.jpg",
+    1400,
+    788
+   ],
+   [
+    "img/when-we-all-get-to-heaven-3.jpg",
+    1400,
+    788
+   ]
+  ],
+  "hero": "img/when-we-all-get-to-heaven-hero.jpg",
+  "focus": 50,
+  "focusY": 50
+ },
+ "state-of-gambling": {
+  "key": "img/state-of-gambling-key.jpg",
+  "hero": "img/state-of-gambling-hero.jpg",
+  "stills": [
+   [
+    "img/state-of-gambling-1.jpg",
+    1400,
+    676
+   ],
+   [
+    "img/state-of-gambling-2.jpg",
+    1400,
+    918
+   ],
+   [
+    "img/state-of-gambling-3.jpg",
+    1400,
+    796
+   ]
+  ],
+  "focus": 50,
+  "focusY": 50
+ },
+ "city-in-the-forest": {
+  "key": "img/city-in-the-forest-key.jpg",
+  "hero": "img/city-in-the-forest-hero.jpg",
+  "stills": [
+   [
+    "img/city-in-the-forest-1.jpg",
+    1400,
+    788
+   ],
+   [
+    "img/city-in-the-forest-2.jpg",
+    800,
+    450
+   ],
+   [
+    "img/city-in-the-forest-3.jpg",
+    596,
+    335
+   ]
+  ],
+  "focus": 58,
+  "focusY": 50
+ },
+ "erins-law": {
+  "key": "img/erins-law-key.jpg",
+  "hero": "img/erins-law-hero.jpg",
+  "stills": [
+   [
+    "img/erins-law-1.jpg",
+    1400,
+    922
+   ],
+   [
+    "img/erins-law-2.jpg",
+    1400,
+    933
+   ]
+  ],
+  "focus": 40,
+  "focusY": 0
+ },
+ "lift-off": {
+  "key": "img/lift-off-key.jpg",
+  "hero": "img/lift-off-hero.jpg",
+  "stills": [
+   [
+    "img/lift-off-1.jpg",
+    616,
+    324
+   ],
+   [
+    "img/lift-off-2.jpg",
+    1400,
+    738
+   ],
+   [
+    "img/lift-off-3.jpg",
+    1400,
+    738
+   ]
+  ],
+  "focus": 50,
+  "focusY": 50
+ }
+}
