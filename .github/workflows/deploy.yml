@@ -66,6 +66,12 @@ jobs:
           state=$(info '.https_certificate.state // "none"')
           if [ "$state" = "approved" ] && [ "$(info .https_enforced)" != "true" ]; then
             gh api -X PUT "repos/$REPO/pages" -F https_enforced=true >/dev/null && note "HTTPS" "enforced"
+          elif [ "$state" = "none" ] || [ "$state" = "null" ]; then
+            # No certificate request on file. Re-saving the domain makes GitHub start one.
+            gh api -X PUT "repos/$REPO/pages" -F cname=null >/dev/null || true
+            sleep 5
+            gh api -X PUT "repos/$REPO/pages" -f cname=nfh2025.rdgnbl.com >/dev/null
+            note "HTTPS" "re-saved the domain to request a certificate; rerun this workflow in 15 to 60 minutes to enforce HTTPS"
           elif [ "$state" != "approved" ]; then
             note "HTTPS" "certificate is '$state'; GitHub usually issues it within an hour of DNS resolving. Rerun this workflow later to enforce HTTPS."
           fi
