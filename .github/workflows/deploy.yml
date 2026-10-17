@@ -44,10 +44,38 @@ jobs:
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: Deploy ${{ github.sha }}
 
+  https:
+    # Makes sure GitHub Pages has the custom domain, a certificate, and HTTPS enforced.
+    needs: deploy
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      pages: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
+    steps:
+      - name: Custom domain, certificate and HTTPS
+        run: |
+          note() { echo "::notice title=$1::${2:-(none)}"; echo "$1: ${2:-(none)}"; }
+          info() { gh api "repos/$REPO/pages" --jq "$1"; }
+          note "Pages before" "$(info '{source: .source.branch, cname, https_enforced, cert: .https_certificate.state}')"
+          if [ "$(info .cname)" != "nfh2025.rdgnbl.com" ]; then
+            gh api -X PUT "repos/$REPO/pages" -f cname=nfh2025.rdgnbl.com >/dev/null && note "Set domain" "nfh2025.rdgnbl.com"
+          fi
+          state=$(info '.https_certificate.state // "none"')
+          if [ "$state" = "approved" ] && [ "$(info .https_enforced)" != "true" ]; then
+            gh api -X PUT "repos/$REPO/pages" -F https_enforced=true >/dev/null && note "HTTPS" "enforced"
+          elif [ "$state" != "approved" ]; then
+            note "HTTPS" "certificate is '$state'; GitHub usually issues it within an hour of DNS resolving. Rerun this workflow later to enforce HTTPS."
+          fi
+          note "Pages after" "$(info '{cname, https_enforced, cert: .https_certificate.state, domains: .https_certificate.domains}')"
+
   live:
     # Reports on the live site after each deploy. Never blocks a deploy; read the results as
     # annotations on the run summary.
-    needs: deploy
+    needs: [deploy, https]
+    if: always()
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -72,5 +100,7 @@ jobs:
       - name: Smoke test the live site
         run: |
           sleep 60
-          npm run check -- https://nfh2025.rdgnbl.com 2>&1 | tee live.txt || true
+          URL=https://nfh2025.rdgnbl.com
+          curl -sf -o /dev/null $URL/ || { URL=http://nfh2025.rdgnbl.com; echo "::warning title=Live check::HTTPS not ready yet, testing $URL"; }
+          npm run check -- $URL 2>&1 | tee live.txt || true
           while IFS= read -r line; do echo "::warning title=Live check::$line"; done < <(grep -E '^ - |all clear' live.txt)
