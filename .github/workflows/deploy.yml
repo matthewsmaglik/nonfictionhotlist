@@ -43,3 +43,34 @@ jobs:
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: Deploy ${{ github.sha }}
+
+  live:
+    # Reports on the live site after each deploy. Never blocks a deploy; read the results as
+    # annotations on the run summary.
+    needs: deploy
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: DNS and HTTPS
+        run: |
+          D=nfh2025.rdgnbl.com
+          note() { echo "::notice title=$1::$2"; echo "$1: $2"; }
+          note "DNS CNAME" "$(dig +short $D CNAME | tr '\n' ' ')"
+          note "DNS A" "$(dig +short $D A | tr '\n' ' ')"
+          note "rdgnbl.com nameservers" "$(dig +short rdgnbl.com NS | tr '\n' ' ')"
+          note "HTTP" "$(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}' http://$D/)"
+          note "HTTPS" "$(curl -s -o /dev/null -w '%{http_code} %{ssl_verify_result}' https://$D/ 2>&1 || echo failed)"
+          note "HTTPS certificate" "$(echo | openssl s_client -servername $D -connect $D:443 2>/dev/null | openssl x509 -noout -subject -issuer 2>/dev/null | tr '\n' ' ')"
+          note "Served page" "$(curl -sL https://$D/ | grep -o '<title>[^<]*' | head -1)"
+          note "github.io copy" "$(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}' https://matthewsmaglik.github.io/nonfictionhotlist/)"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci && npx playwright install --with-deps chromium
+      - name: Smoke test the live site
+        run: |
+          sleep 60
+          npm run check -- https://nfh2025.rdgnbl.com 2>&1 | tee live.txt || true
+          while IFS= read -r line; do echo "::warning title=Live check::$line"; done < <(grep -E '^ - |all clear' live.txt)
