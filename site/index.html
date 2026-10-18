@@ -38,6 +38,7 @@ img { max-width: 100%; }
   --line: rgba(235, 230, 215, 0.18);
   --muted: rgba(235, 230, 215, 0.68);
   --marker: rgba(154, 171, 140, 0.62);
+  --tile: #18271e;
 
   --display: "League Spartan", "Futura", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   --body: "Literata", "Iowan Old Style", Georgia, "Times New Roman", serif;
@@ -178,9 +179,18 @@ main { padding-block: 0 64px; }
 /* Welcome */
 /* Welcome, part 1: mosaic + lede + invitation */
 .mosaic { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin-top: 28px; }
-.mosaic a { aspect-ratio: 3 / 2; overflow: hidden; border-radius: 2px; display: block; background: var(--forest-deep); }
-.mosaic img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.85); transition: filter 0.3s ease, transform 0.4s ease; }
-.mosaic a:hover img { filter: none; transform: scale(1.04); }
+.mosaic a { aspect-ratio: 3 / 2; overflow: hidden; border-radius: 2px; display: block; background: var(--tile); }
+/* Tiles sit as dark rectangles, then each image eases in on its own beat once loaded. */
+.mosaic img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  opacity: 0; transform: scale(1.06); filter: saturate(0.85) blur(8px);
+  transition: opacity 0.9s ease, transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1), filter 1s ease;
+}
+.mosaic img.in { opacity: 1; transform: none; filter: saturate(0.85); }
+.mosaic a:hover img.in { filter: none; transform: scale(1.04); transition: filter 0.3s ease, transform 0.4s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .mosaic img, .mosaic img.in { opacity: 1; transform: none; filter: saturate(0.85); transition: none; }
+}
 .hi { color: var(--cream); background: linear-gradient(transparent 52%, var(--marker) 52%, var(--marker) 94%, transparent 94%); padding: 0 0.08em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .w-intro { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; padding-block: 48px 8px; align-items: start; }
 .w-intro h2 { font-family: var(--display); font-size: var(--s-xl); line-height: 0.92; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
@@ -711,7 +721,7 @@ function hiPhrase(text, phrases) {
 function renderWelcome() {
   const W = SITE.welcome;
   const mosaic = PROJECTS.filter(p => p.key).slice(0, 18).map(p =>
-    `<a href="#${p.slug}" title="${esc(p.title)}"><img src="${esc(p.key)}" alt="${esc(p.title)}" loading="lazy"></a>`).join("");
+    `<a href="#${p.slug}" title="${esc(p.title)}"><img src="${esc(p.key)}" alt="${esc(p.title)}" decoding="async"></a>`).join("");
   const n = String(PROJECTS.length);
   const lede = W.lede.map(t => `<p>${esc(t).replace(n + " ambitious projects", `<span class="hi"><span class="num">${n}</span> ambitious projects</span>`)}</p>`).join("");
   return `<section class="wrap">
@@ -726,6 +736,18 @@ function renderWelcome() {
     </div>
     <div class="w-next"><a class="btn solid" href="#why">Why this matters &rarr;</a></div>
   </section>`;
+}
+
+/* Staggered reveal for the welcome mosaic. Fixed, scattered order so some tiles land early. */
+const MOSAIC_BEATS = [0, 420, 140, 700, 260, 980, 560, 60, 840, 330, 1120, 200, 900, 480, 640, 1040, 280, 760];
+function revealMosaic() {
+  const start = performance.now();
+  document.querySelectorAll(".mosaic img").forEach((img, i) => {
+    const beat = MOSAIC_BEATS[i % MOSAIC_BEATS.length];
+    const show = () => setTimeout(() => img.classList.add("in"), Math.max(0, beat - (performance.now() - start)));
+    if (img.complete && img.naturalWidth) show();
+    else { img.addEventListener("load", show, { once: true }); img.addEventListener("error", () => img.classList.add("in"), { once: true }); }
+  });
 }
 
 function renderWhy() {
@@ -889,6 +911,7 @@ function route() {
     if (pos < 0) pos = 0;
     const k = SEQ[pos];
     app.innerHTML = k === "cover" ? renderCover() : k === "welcome" ? renderWelcome() : k === "why" ? renderWhy() : renderGrid(+k.split("-")[1]);
+    if (k === "welcome") revealMosaic();
     setNav(pos > 0 ? "#" + SEQ[pos - 1] : null, pos < SEQ.length - 1 ? "#" + SEQ[pos + 1] : null,
            k.startsWith("page-") ? `Page ${k.split("-")[1]} / ${PAGES}` : ({ cover: "Cover", welcome: "Welcome", why: "About" })[k]);
     document.title = `The ${SITE.year} Nonfiction Hotlist`;
