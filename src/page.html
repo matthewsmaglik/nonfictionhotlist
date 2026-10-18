@@ -157,16 +157,40 @@ main { padding-block: 0 64px; }
 /* Welcome, part 1: mosaic + lede + invitation */
 .mosaic { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin-top: 28px; }
 .mosaic a { aspect-ratio: 3 / 2; overflow: hidden; border-radius: 2px; display: block; background: var(--tile); }
-/* Tiles sit as dark rectangles, then each image eases in on its own beat once loaded. */
-.mosaic img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  opacity: 0; transform: scale(1.06); filter: saturate(0.85) blur(8px);
-  transition: opacity 0.9s ease, transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1), filter 1s ease;
+/* Tiles sit as dark rectangles. On its beat, a sage bar sweeps across each one,
+   and the image is revealed behind it, settling from a slow push-in. */
+.mosaic a { position: relative; }
+.mosaic a::after {
+  content: ""; position: absolute; inset: 0; background: var(--sage);
+  transform: scaleX(0); transform-origin: left center; pointer-events: none;
 }
-.mosaic img.in { opacity: 1; transform: none; filter: saturate(0.85); }
-.mosaic a:hover img.in { filter: none; transform: scale(1.04); transition: filter 0.3s ease, transform 0.4s ease; }
+.mosaic a.v::after { transform: scaleY(0); transform-origin: center bottom; }
+.mosaic img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; filter: saturate(0.85); }
+.mosaic a.in img { opacity: 1; animation: tile-settle 1.7s cubic-bezier(0.16, 1, 0.3, 1); }
+.mosaic a.in::after { animation: tile-sweep 0.95s cubic-bezier(0.76, 0, 0.24, 1); }
+.mosaic a.in.v::after { animation-name: tile-sweep-v; }
+@keyframes tile-sweep {
+  0%   { transform: scaleX(0); transform-origin: left center; }
+  46%  { transform: scaleX(1); transform-origin: left center; }
+  54%  { transform: scaleX(1); transform-origin: right center; }
+  100% { transform: scaleX(0); transform-origin: right center; }
+}
+@keyframes tile-sweep-v {
+  0%   { transform: scaleY(0); transform-origin: center bottom; }
+  46%  { transform: scaleY(1); transform-origin: center bottom; }
+  54%  { transform: scaleY(1); transform-origin: center top; }
+  100% { transform: scaleY(0); transform-origin: center top; }
+}
+@keyframes tile-settle {
+  0%, 27% { opacity: 0; transform: scale(1.28); }
+  28%     { opacity: 1; transform: scale(1.28); }
+  100%    { opacity: 1; transform: scale(1); }
+}
+.mosaic a:hover img { filter: none; transform: scale(1.04); transition: filter 0.3s ease, transform 0.4s ease; }
 @media (prefers-reduced-motion: reduce) {
-  .mosaic img, .mosaic img.in { opacity: 1; transform: none; filter: saturate(0.85); transition: none; }
+  .mosaic img { opacity: 1; animation: none !important; }
+  .mosaic a::after { display: none; }
+}
 }
 .hi { color: var(--cream); background: linear-gradient(transparent 52%, var(--marker) 52%, var(--marker) 94%, transparent 94%); padding: 0 0.08em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .w-intro { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; padding-block: 48px 8px; align-items: start; }
@@ -720,9 +744,11 @@ function revealMosaic() {
   const start = performance.now();
   document.querySelectorAll(".mosaic img").forEach((img, i) => {
     const beat = MOSAIC_BEATS[i % MOSAIC_BEATS.length];
-    const show = () => setTimeout(() => img.classList.add("in"), Math.max(0, beat - (performance.now() - start)));
+    const tile = img.parentElement;
+    if (i % 3 === 1) tile.classList.add("v");
+    const show = () => setTimeout(() => tile.classList.add("in"), Math.max(0, beat - (performance.now() - start)));
     if (img.complete && img.naturalWidth) show();
-    else { img.addEventListener("load", show, { once: true }); img.addEventListener("error", () => img.classList.add("in"), { once: true }); }
+    else { img.addEventListener("load", show, { once: true }); img.addEventListener("error", () => tile.classList.add("in"), { once: true }); }
   });
 }
 
