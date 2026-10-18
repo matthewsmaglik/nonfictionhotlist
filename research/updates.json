@@ -238,9 +238,66 @@
     ]
   },
   "when-we-all-get-to-heaven": {
-    "status": "Released as a ten-part series on Outward, Slate's LGBTQ podcast",
-    "laurels": [],
+    "status": "Released in 2025 as a ten-part series on Outward, Slate's LGBTQ podcast. Peabody Award winner",
+    "laurels": [
+      {
+        "event": "Peabody Awards",
+        "year": 2025,
+        "note": "Winner, Podcast & Radio"
+      },
+      {
+        "event": "Wilbur Awards",
+        "year": 2026,
+        "note": "Winner, Audio Long Form"
+      },
+      {
+        "event": "NLGJA Excellence in Journalism",
+        "year": 2026,
+        "note": "Excellence in Podcasts"
+      },
+      {
+        "event": "AAR Journalism Awards",
+        "year": 2026,
+        "note": "First Place, In-Depth Multimedia"
+      },
+      {
+        "event": "Allan Bérubé Prize",
+        "note": "LGBTQ+ History Association",
+        "source": "https://www.heavenpodcast.org/",
+        "confirmed_by": "Nonfiction Hotlist"
+      }
+    ],
     "updates": [
+      {
+        "date": "Jun 2026",
+        "text": "Won the Excellence in Podcasts Award at the NLGJA Excellence in Journalism Awards.",
+        "url": "https://www.nlgja.org/blog/2026/06/eij2026/",
+        "source": "NLGJA"
+      },
+      {
+        "date": "Apr 2026",
+        "text": "Won a Peabody Award in the Podcast and Radio category, announced April 23. The series was selected from more than 1,000 entries.",
+        "url": "https://peabodyawards.com/stories/86th-peabody-winners-announced/",
+        "source": "Peabody Awards"
+      },
+      {
+        "date": "Apr 2026",
+        "text": "The creators and Rev. Jim Mitulski gave Harvard's William Belden Noble Lecture at the Memorial Church.",
+        "url": "https://news.harvard.edu/gazette/story/newsplus/noble-lecture-features-storytelling-team-behind-when-we-all-get-to-heaven-podcast/",
+        "source": "Harvard Gazette"
+      },
+      {
+        "date": "Mar 2026",
+        "text": "Won a Wilbur Award from the Religion Communicators Council for long-form audio.",
+        "url": "https://religioncommunicators.org/religion-communicators-council-names-wilbur-honorees/",
+        "source": "Religion Communicators Council"
+      },
+      {
+        "date": "2026",
+        "text": "Episode 4 won first place for Best In-Depth Multimedia Journalism at the American Academy of Religion Journalism Awards.",
+        "url": "https://aarweb.org/award/journalism-awards/",
+        "source": "American Academy of Religion"
+      },
       {
         "date": "2025",
         "text": "Released as a ten-episode series through Outward, Slate's LGBTQ podcast. The Gay & Lesbian Review called it beautifully written, edited, and produced.",

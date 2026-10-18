@@ -58,3 +58,11 @@
 - manhood: Sheffield DocFest 2026 laurel on TFC page
 - animated-mind, talked-to-death, father-figures: Jewish Story Partners grantees
 - daddy: BAVC MediaMaker Fellowship (2023)
+
+## when-we-all-get-to-heaven (added Oct 18 2026)
+- Peabody winner 2025, Podcast and Radio; 86th Peabody winners announced Apr 23 2026 [peabodyawards.com profile + announcement]; nominated Apr 7 from 1,000+ entries [worcester.edu]
+- Wilbur Award 2026, Audio Productions Long Form [religioncommunicators.org, Mar 10 2026]
+- NLGJA 2026 Excellence in Podcasts Award [nlgja.org, Jun 19 2026]
+- AAR Journalism Awards: first place Best In-Depth Multimedia, episode 4 [aarweb.org]
+- Allan Bérubé Prize listed on heavenpodcast.org (no year); confirmed by NFH
+- Harvard Noble Lecture Apr 16 2026 [Harvard Gazette Apr 13 2026]
