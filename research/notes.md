@@ -52,3 +52,9 @@
 - IMDbPro status "Edit Post-Prod" (Jul 2025) -- not useful
 ## talked-to-death
 - Jewish Story Partners project page
+
+## Confirmed by the Nonfiction Hotlist (Oct 17 2026)
+- city-in-the-forest: New/Next, Hot Springs, Chicago International, NOFF (New Orleans) 2026 laurels on TFC page
+- manhood: Sheffield DocFest 2026 laurel on TFC page
+- animated-mind, talked-to-death, father-figures: Jewish Story Partners grantees
+- daddy: BAVC MediaMaker Fellowship (2023)

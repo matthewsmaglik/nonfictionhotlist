@@ -32,6 +32,34 @@
         "event": "DOC NYC",
         "year": 2026,
         "note": "New York Premiere"
+      },
+      {
+        "event": "New/Next Film Festival",
+        "year": 2026,
+        "note": "Official Selection",
+        "source": "https://thefilmcollaborative.org/films/acityintheforest",
+        "confirmed_by": "Nonfiction Hotlist"
+      },
+      {
+        "event": "Hot Springs Documentary Film Festival",
+        "year": 2026,
+        "note": "Official Selection",
+        "source": "https://thefilmcollaborative.org/films/acityintheforest",
+        "confirmed_by": "Nonfiction Hotlist"
+      },
+      {
+        "event": "Chicago International Film Festival",
+        "year": 2026,
+        "note": "Official Selection",
+        "source": "https://thefilmcollaborative.org/films/acityintheforest",
+        "confirmed_by": "Nonfiction Hotlist"
+      },
+      {
+        "event": "New Orleans Film Festival",
+        "year": 2026,
+        "note": "Official Selection",
+        "source": "https://thefilmcollaborative.org/films/acityintheforest",
+        "confirmed_by": "Nonfiction Hotlist"
       }
     ],
     "updates": [
@@ -46,6 +74,12 @@
         "text": "Screened at DokuFest in Prizren, Kosovo, in the Human Rights Dox competition.",
         "url": "https://dokufest.com/en/festival/2026/film/a-city-in-the-forest1",
         "source": "DokuFest"
+      },
+      {
+        "date": "2026",
+        "text": "Official selection at New/Next, the Hot Springs Documentary Film Festival, the Chicago International Film Festival and the New Orleans Film Festival.",
+        "url": "https://thefilmcollaborative.org/films/acityintheforest",
+        "source": "The Film Collaborative"
       },
       {
         "date": "2026",
@@ -70,6 +104,13 @@
         "note": "World Premiere"
       },
       {
+        "event": "Sheffield DocFest",
+        "year": 2026,
+        "note": "Official Selection",
+        "source": "https://www.thefilmcollaborative.org/films/manhood",
+        "confirmed_by": "Nonfiction Hotlist"
+      },
+      {
         "event": "DOC NYC Selects",
         "year": 2026,
         "note": "New York Premiere"
@@ -87,6 +128,12 @@
         "text": "New York premiere at IFC Center as part of DOC NYC Selects: Summer 2026, with a conversation with director Daniel Lombroso.",
         "url": "https://www.docnyc.net/manhood/",
         "source": "DOC NYC"
+      },
+      {
+        "date": "Jun 2026",
+        "text": "Official selection at Sheffield DocFest.",
+        "url": "https://www.thefilmcollaborative.org/films/manhood",
+        "source": "The Film Collaborative"
       },
       {
         "date": "Mar 2026",
@@ -233,6 +280,12 @@
         "text": "Emma D. Miller was a Jewish Film Institute Filmmaker in Residence with Father Figures.",
         "url": "https://jfi.org/programs/jfi-film-archive/emma-d-miller-father-figures",
         "source": "Jewish Film Institute"
+      },
+      {
+        "date": "Grant",
+        "text": "Supported by Jewish Story Partners.",
+        "url": "https://jewishstorypartners.org/project/father-figures/",
+        "source": "Jewish Story Partners"
       }
     ]
   },
@@ -244,6 +297,39 @@
         "text": "Selected for Catapult Film Fund's tenth Rough Cut Retreat cohort.",
         "url": "https://catapultfilmfund.org/news/",
         "source": "Catapult Film Fund"
+      }
+    ]
+  },
+  "animated-mind": {
+    "laurels": [],
+    "updates": [
+      {
+        "date": "Grant",
+        "text": "Supported by Jewish Story Partners.",
+        "url": "https://jewishstorypartners.org/project/the-animated-mind-of-oliver-sacks/",
+        "source": "Jewish Story Partners"
+      }
+    ]
+  },
+  "talked-to-death": {
+    "laurels": [],
+    "updates": [
+      {
+        "date": "Grant",
+        "text": "Supported by Jewish Story Partners.",
+        "url": "https://jewishstorypartners.org/project/talked-to-death/",
+        "source": "Jewish Story Partners"
+      }
+    ]
+  },
+  "daddy": {
+    "laurels": [],
+    "updates": [
+      {
+        "date": "2023",
+        "text": "Hannah Myers was named a BAVC MediaMaker Fellow with DADDY.",
+        "url": "https://bavc.org/bio_connector/daddy/",
+        "source": "BAVC Media"
       }
     ]
   }
