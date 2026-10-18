@@ -200,7 +200,6 @@ main { padding-block: 0 64px; }
   .mosaic img { opacity: 1; animation: none !important; }
   .mosaic a::after { display: none; }
 }
-}
 .hi { color: var(--cream); background: linear-gradient(transparent 52%, var(--marker) 52%, var(--marker) 94%, transparent 94%); padding: 0 0.08em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .w-intro { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; padding-block: 48px 8px; align-items: start; }
 .w-intro h2 { font-family: var(--display); font-size: var(--s-xl); line-height: 0.92; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
@@ -212,7 +211,8 @@ main { padding-block: 0 64px; }
 .w-label { font-family: var(--display); font-size: var(--s-xs); text-transform: uppercase; letter-spacing: 0.14em; color: var(--sage-soft); padding-top: 4px; }
 .w-row p { margin: 0 0 0.8em; max-width: 36em; }
 .w-row p:last-child { margin: 0; }
-.w-next { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+.w-next { display: flex; justify-content: flex-end; gap: 10px; margin-top: 32px; flex-wrap: wrap; }
+.w-next .btn { font-size: 1.15rem; padding: 17px 32px; }
 
 /* Welcome, part 2: why + criteria + how to use */
 .why-top { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; padding-block: 48px 32px; }
@@ -234,7 +234,6 @@ main { padding-block: 0 64px; }
 .close-line {
   font-family: var(--display); font-weight: 700; font-size: clamp(1.5rem, 1.1rem + 1.5vw, 2.3rem); line-height: 1.15; letter-spacing: -0.01em;
   max-width: 24em; margin: 48px 0 0; padding-top: 26px; border-top: 1px solid var(--line); text-wrap: balance;
-}
 }
 
 .prose p { margin: 0 0 1em; }
@@ -396,6 +395,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wr
   .counter { display: none; }
   .updates li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
   .cover-actions .btn { flex: 1 1 auto; justify-content: center; padding: 14px 20px; }
+  .w-next .btn { flex: 1 1 auto; justify-content: center; padding: 16px 22px; }
   .mosaic { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
   .select, .panel-dark { padding: 22px; }
   .criteria { grid-template-columns: minmax(0, 1fr); }
