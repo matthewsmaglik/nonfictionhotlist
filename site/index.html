@@ -180,35 +180,21 @@ main { padding-block: 0 64px; }
 /* Welcome, part 1: mosaic + lede + invitation */
 .mosaic { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin-top: 28px; }
 .mosaic a { aspect-ratio: 3 / 2; overflow: hidden; border-radius: 2px; display: block; background: var(--tile); }
-/* Tiles sit as dark rectangles. On its beat, a sage bar sweeps across each one,
-   and the image is revealed behind it, settling from a slow push-in. */
+/* Tiles sit as dark green rectangles. On its beat, each one slides away
+   and the image behind it settles from a slow push-in. */
 .mosaic a { position: relative; }
 .mosaic a::after {
-  content: ""; position: absolute; inset: 0; background: var(--sage);
-  transform: scaleX(0); transform-origin: left center; pointer-events: none;
+  content: ""; position: absolute; inset: 0; background: var(--tile);
+  transform-origin: right center; pointer-events: none;
 }
-.mosaic a.v::after { transform: scaleY(0); transform-origin: center bottom; }
+.mosaic a.v::after { transform-origin: center top; }
 .mosaic img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; filter: saturate(0.85); }
-.mosaic a.in img { opacity: 1; animation: tile-settle 1.7s cubic-bezier(0.16, 1, 0.3, 1); }
-.mosaic a.in::after { animation: tile-sweep 0.95s cubic-bezier(0.76, 0, 0.24, 1); }
-.mosaic a.in.v::after { animation-name: tile-sweep-v; }
-@keyframes tile-sweep {
-  0%   { transform: scaleX(0); transform-origin: left center; }
-  46%  { transform: scaleX(1); transform-origin: left center; }
-  54%  { transform: scaleX(1); transform-origin: right center; }
-  100% { transform: scaleX(0); transform-origin: right center; }
-}
-@keyframes tile-sweep-v {
-  0%   { transform: scaleY(0); transform-origin: center bottom; }
-  46%  { transform: scaleY(1); transform-origin: center bottom; }
-  54%  { transform: scaleY(1); transform-origin: center top; }
-  100% { transform: scaleY(0); transform-origin: center top; }
-}
-@keyframes tile-settle {
-  0%, 27% { opacity: 0; transform: scale(1.28); }
-  28%     { opacity: 1; transform: scale(1.28); }
-  100%    { opacity: 1; transform: scale(1); }
-}
+.mosaic a.in img { opacity: 1; animation: tile-settle 1.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.mosaic a.in::after { transform: scaleX(0); animation: tile-wipe 0.9s cubic-bezier(0.76, 0, 0.24, 1); }
+.mosaic a.in.v::after { transform: scaleY(0); animation-name: tile-wipe-v; }
+@keyframes tile-wipe { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+@keyframes tile-wipe-v { from { transform: scaleY(1); } to { transform: scaleY(0); } }
+@keyframes tile-settle { from { transform: scale(1.28); } to { transform: scale(1); } }
 .mosaic a:hover img { filter: none; transform: scale(1.04); transition: filter 0.3s ease, transform 0.4s ease; }
 @media (prefers-reduced-motion: reduce) {
   .mosaic img { opacity: 1; animation: none !important; }
