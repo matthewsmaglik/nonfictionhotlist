@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       publish: ${{ steps.decide.outputs.publish }}
     steps:
@@ -62,12 +62,15 @@ jobs:
           git pull --rebase origin main
           git push origin HEAD:main
 
-      - name: Build the PDF and smoke test
+      - name: Install Chromium
         if: steps.decide.outputs.publish == 'true'
-        run: |
-          npx playwright install --with-deps chromium
-          npm run pdf
-          npm run check
+        run: npx playwright install --with-deps chromium
+      - name: Build the PDF
+        if: steps.decide.outputs.publish == 'true'
+        run: npm run pdf
+      - name: Smoke test
+        if: steps.decide.outputs.publish == 'true'
+        run: npm run check
 
       - name: Publish site/ to the gh-pages branch
         if: steps.decide.outputs.publish == 'true'
@@ -95,7 +98,7 @@ jobs:
     # but not change them; changes are made in repo Settings > Pages (see README).
     needs: publish
     if: needs.publish.outputs.publish == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     continue-on-error: true
     permissions:
       pages: read
@@ -121,7 +124,7 @@ jobs:
     # annotations on the run summary.
     needs: [publish, https]
     if: always() && needs.publish.outputs.publish == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     continue-on-error: true
     steps:
       - uses: actions/checkout@v5
