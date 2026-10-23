@@ -268,7 +268,9 @@ function makeDoc_(folder, key, d) {
   moveTo_(doc.getId(), folder);
   const body = doc.getBody();
   body.clear();
-  body.getParagraphs()[0].setText(spec.title).setHeading(DocumentApp.ParagraphHeading.HEADING1);
+  const first = body.getParagraphs()[0];
+  first.setText(spec.title);                       // Paragraph.setText returns nothing, so no chaining
+  first.setHeading(DocumentApp.ParagraphHeading.HEADING1);
   note_(body, "Edit the text under each heading, and keep the headings exactly as they are. " +
     (key === "cover" ? "" : "Bold text shows on the site with the sage marker highlight. ") +
     "Changes appear on the website within about 15 minutes.");
@@ -317,7 +319,9 @@ function makeGuide_(root, data) {
   moveTo_(doc.getId(), root);
   const b = doc.getBody();
   b.clear();
-  b.getParagraphs()[0].setText(`The ${data.content.year} Nonfiction Hotlist · How this works`).setHeading(DocumentApp.ParagraphHeading.HEADING1);
+  const first = b.getParagraphs()[0];
+  first.setText(`The ${data.content.year} Nonfiction Hotlist · How this works`);
+  first.setHeading(DocumentApp.ParagraphHeading.HEADING1);
   const H = t => b.appendParagraph(t).setHeading(DocumentApp.ParagraphHeading.HEADING2);
   const P = t => b.appendParagraph(t);
   const L = t => b.appendListItem(t).setGlyphType(DocumentApp.GlyphType.BULLET);
