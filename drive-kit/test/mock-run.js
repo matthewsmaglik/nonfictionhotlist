@@ -64,7 +64,7 @@ function Doc(name) {
   const para = p => {
     const api = chain({
       setText: t => { p.text = t; }   /* returns nothing in Apps Script */, setHeading: h => { p.heading = h; return api; }, getText: () => p.text,
-      setGlyphType: () => api,
+      setGlyphType: () => api, getHeading: () => p.heading, setSpacingAfter: () => api,
       editAsText: () => { const t = chain({ setBold: (a, b) => { (p.bold = p.bold || []).push([a, b]); return t; }, setItalic: v => { p.italic = v; return t; } }); return t; }
     });
     return api;

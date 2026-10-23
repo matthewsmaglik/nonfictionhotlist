@@ -142,12 +142,21 @@ function mdSections(md) {
     if ((m = line.match(/^##\s+(.*)$/)) && !line.startsWith("###")) { cur = sections[plain(m[1])] = { lines: [], steps: [] }; sub = null; continue; }
     if ((m = line.match(/^###\s+(.*)$/)) && cur) { sub = { title: plain(m[1]), lines: [] }; cur.steps.push(sub); continue; }
     if (/^#\s/.test(line) || !cur) continue;
-    if (/^\s*(\*[^*].*[^*\\]\*|_[^_].*[^_\\]_|\*[^*]\*|_[^_]_)\s*$/.test(line)) continue; // whole-line italics are guidance notes
+    if (isNote(line)) continue;                       // the kit's grey guidance lines
     (sub || cur).lines.push(line);
   }
   return sections;
 }
+// Guidance lines the kit writes under each heading ("Up to 40 characters." and the intro),
+// in italics or not. Anything else in italics is content and keeps its words.
+const isNote = line => /^\s*[*_]?\s*(Up to \d|Edit the text under each heading)/.test(line);
+// A line wrapped in single asterisks or underscores (whole-line italics) loses the wrapper.
+const unwrapItalic = s => {
+  const m = s.match(/^\s*\*(?!\*)(.*?[^*\\])\*(?!\*)\s*$/) || s.match(/^\s*_(?!_)(.*?[^_\\])_\s*$/);
+  return m ? m[1] : s;
+};
 function inline(s) {
+  s = unwrapItalic(s);
   return s
     .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")          // links keep their text
     .replace(/\\([\\`*_{}\[\]()#+\-.!>|~&])/g, (_, ch) => String.fromCharCode(0xE000 + ch.charCodeAt(0))) // protect escaped characters
@@ -160,8 +169,10 @@ function inline(s) {
     .trim();
 }
 const plain = s => inline(s).replace(/\*\*/g, "");
-const paras = lines => lines.join("\n").split(/\n\s*\n/).map(p => inline(p.replace(/\n/g, " "))).filter(Boolean);
-const bullets = lines => lines.map(l => l.match(/^\s*(?:[-*+]|\d+[.)])\s+(.*)$/)).filter(Boolean).map(m => plain(m[1])).filter(Boolean);
+// Google's export never wraps a paragraph across lines, so every non-empty line is a paragraph
+// (consecutive paragraphs and soft line breaks both come out as single newlines).
+const paras = lines => lines.map(l => inline(l.trim())).filter(Boolean);
+const bullets = lines => lines.map(l => l.match(/^\s*(?:[-*+]|\d+[.)])\s+(.*)$/)).filter(Boolean).map(m => plain(m[1].trim())).filter(Boolean);
 
 function readDoc(key, md, prev) {
   const spec = DOCS[key];

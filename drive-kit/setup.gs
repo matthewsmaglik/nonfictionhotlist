@@ -538,12 +538,13 @@ function makeDoc_(folder, key, d) {
       : s.maxItems ? `Up to ${s.maxItems} ${s.kind === "bullets" ? "items" : "paragraphs"}, ${s.max} characters each.`
       : `Up to ${s.max} characters.`;
     note_(body, limit);
-    if (s.kind === "text") rich_(body.appendParagraph(""), v);
-    if (s.kind === "paragraphs") v.forEach(t => rich_(body.appendParagraph(""), t));
-    if (s.kind === "bullets") v.forEach(t => body.appendListItem(t).setGlyphType(DocumentApp.GlyphType.BULLET));
+    // New paragraphs inherit the note's grey italics, so each one is reset to plain text.
+    if (s.kind === "text") rich_(plain_(body.appendParagraph("x")), v);
+    if (s.kind === "paragraphs") v.forEach(t => rich_(plain_(body.appendParagraph("x")), t));
+    if (s.kind === "bullets") v.forEach(t => plain_(body.appendListItem(t).setGlyphType(DocumentApp.GlyphType.BULLET)));
     if (s.kind === "steps") v.forEach(([h, t]) => {
-      body.appendParagraph(h).setHeading(DocumentApp.ParagraphHeading.HEADING3);
-      body.appendParagraph(t);
+      plain_(body.appendParagraph(h).setHeading(DocumentApp.ParagraphHeading.HEADING3));
+      plain_(body.appendParagraph(t));
     });
   }
   doc.saveAndClose();
@@ -556,6 +557,14 @@ function note_(body, text) {
   const p = body.appendParagraph(text).setHeading(DocumentApp.ParagraphHeading.NORMAL);
   p.editAsText().setItalic(true).setForegroundColor("#7a8573").setFontSize(9);
   return p;
+}
+
+function plain_(para) {
+  const t = para.editAsText().setItalic(false).setForegroundColor("#000000");
+  if (para.getHeading() === DocumentApp.ParagraphHeading.NORMAL) t.setBold(false).setFontSize(11);
+  else t.setFontSize(13);
+  para.setSpacingAfter(8);
+  return para;
 }
 
 // Writes text with **bold** marks as real bold.
