@@ -1,12 +1,16 @@
 {
   "name": "nonfictionhotlist",
   "private": true,
-  "description": "The 2025 Nonfiction Hotlist microsite and downloadable PDF",
+  "description": "The 2025 Nonfiction Hotlist microsite and PDF, built from a Google Drive editing kit",
   "scripts": {
-    "build": "node scripts/build-site.js",
+    "content": "node scripts/content/write-page.js",
+    "pull": "node scripts/content/pull-drive.js && node scripts/content/write-page.js",
+    "build": "node scripts/content/write-page.js && node scripts/build-site.js",
     "pdf": "node scripts/build-pdf.js",
     "og": "node scripts/build-og.js",
     "images": "python3 scripts/images/process.py && python3 scripts/images/process_late.py && python3 scripts/images/apply_media.py",
+    "kit": "node scripts/content/build-kit.js",
+    "test:kit": "node scripts/content/build-kit.js && rm -rf .kit-test && node scripts/content/fake-drive.js .kit-test/fake && node scripts/content/pull-drive.js --from-dir .kit-test/fake --dry-run && node drive-kit/test/mock-run.js .kit-test/mock --slow-clock > /dev/null && node scripts/content/pull-drive.js --from-dir .kit-test/mock --dry-run",
     "release": "npm run build && npm run pdf && npm run check",
     "check": "node scripts/check-site.js",
     "serve": "python3 -m http.server 8080 --directory site"

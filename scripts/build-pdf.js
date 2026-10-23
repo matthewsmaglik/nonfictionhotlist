@@ -8,7 +8,7 @@ const REPO = path.resolve(__dirname, "..");
 const ROOT = path.join(REPO, "site");
 const site = fs.readFileSync(path.join(REPO, "src", "page.html"), "utf8");
 const script = site.match(/<script>([\s\S]*?)<\/script>/)[1];
-const dataSrc = script.slice(0, script.indexOf("/* ============================================================\n   Rendering."));
+const dataSrc = script.slice(script.indexOf("const SITE ="), script.indexOf("/* ============================================================\n   Rendering."));
 const { SITE, PROJECTS } = new Function(dataSrc + "; return { SITE, PROJECTS };")();
 // The laurel branch drawing is shared with the site.
 const branchSrc = script.slice(script.indexOf("const BRANCH = ("), script.indexOf("})();", script.indexOf("const BRANCH = (")) + 5);
@@ -54,21 +54,22 @@ sheets.push(`<section class="sheet cover front">
 // Welcome, two sheets
 const W = SITE.welcome;
 const N = String(PROJECTS.length);
-const hi = (t, list) => list.reduce((o, ph) => o.replace(esc(ph), `<span class="hi">${esc(ph)}</span>`), esc(t));
+// **double asterisks** mark the highlight, as on the site; a leading number inside one is set bold.
+const hi = t => esc(t).replace(/\*\*(.+?)\*\*/g, (_, inner) => `<span class="hi">${inner.replace(/^(\d[\d,]*)(\s)/, "<b>$1</b>$2")}</span>`);
 const mosaicImgs = PROJECTS.filter(p => p.key).slice(0, 15);
 sheets.push(`<section class="sheet dark wel1" id="welcome">
   <div class="mosaic">${mosaicImgs.map(p => `<a href="#${p.slug}"><img src="${img(p.key)}"></a>`).join("")}</div>
   <div class="wel-body">
-    <h2>welcome to the nonfiction hotlist</h2>
-    <div class="lede">${W.lede.map(t => `<p>${esc(t).replace(N + " ambitious projects", `<span class="hi"><b>${N}</b> ambitious projects</span>`)}</p>`).join("")}</div>
-    <div class="wrow"><div class="lbl">our invitation</div><div>${W.invitation.map(t => `<p>${esc(t)}</p>`).join("")}</div></div>
+    <h2>${esc(W.heading)}</h2>
+    <div class="lede">${W.lede.map(t => `<p>${hi(t)}</p>`).join("")}</div>
+    <div class="wrow"><div class="lbl">our invitation</div><div>${W.invitation.map(t => `<p>${hi(t)}</p>`).join("")}</div></div>
   </div>
   ${folio("", next())}
 </section>`);
 sheets.push(`<section class="sheet light wel2" id="why">
   <div class="why">
-    <h2>why this matters</h2>
-    <div>${W.why.map(t => `<p>${esc(t)}</p>`).join("")}</div>
+    <h2>${esc(W.whyHeading)}</h2>
+    <div>${W.why.map(t => `<p>${hi(t)}</p>`).join("")}</div>
   </div>
   <div class="select">
     <div class="big">${N}<small>projects selected from<br>hundreds of submissions</small></div>
@@ -80,7 +81,7 @@ sheets.push(`<section class="sheet light wel2" id="why">
   </div>
   <div class="lbl dk">how to use this list</div>
   <ol class="steps">${W.how.map(([h, t], i) => `<li><span class="k">${i + 1}</span><b>${esc(h)}</b><span>${esc(t)}</span></li>`).join("")}</ol>
-  <p class="close">${hi(W.close, ["meant to be used", "meant to be made"])}</p>
+  <p class="close">${hi(W.close)}</p>
   <div class="folio"><span>nonfiction hotlist. ${Y}</span><span>${next()}</span></div>
 </section>`);
 

@@ -1,8 +1,14 @@
-name: Deploy site
+name: Publish
+
+# Publishes the site. Runs on every push to main, every 15 minutes (to pick up edits made in
+# the Google Drive kit), and on demand from the Actions tab (Run workflow).
+# A scheduled run with no Drive changes stops after the pull step and publishes nothing.
 
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -10,30 +16,61 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  check:
+  publish:
     runs-on: ubuntu-latest
+    outputs:
+      publish: ${{ steps.decide.outputs.publish }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: main
       - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: site/index.html must be built from src/page.html
-        run: npm run build && git diff --exit-code site/index.html
-      - run: npx playwright install --with-deps chromium
-      - name: Smoke test every page and project
-        run: npm run check
 
-  deploy:
-    needs: check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
+      - name: Pull text from the Google Drive kit
+        id: pull
+        run: node scripts/content/pull-drive.js
+
+      - name: Decide whether to publish
+        id: decide
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ steps.pull.outputs.changed }}" != "true" ] && [ "${{ steps.pull.outputs.problems_changed }}" != "true" ]; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"; echo "No changes in Drive."
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build the site from content
+        if: steps.decide.outputs.publish == 'true'
+        run: npm run content && npm run build
+
+      - name: Commit text changes from Drive
+        if: steps.pull.outputs.changed == 'true' || steps.pull.outputs.problems_changed == 'true'
+        env:
+          SUMMARY: ${{ steps.pull.outputs.summary }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/content.json content/sync-problems.txt src/page.html site/index.html
+          git commit -m "Update from Google Drive: ${SUMMARY}"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Build the PDF and smoke test
+        if: steps.decide.outputs.publish == 'true'
+        run: |
+          npx playwright install --with-deps chromium
+          npm run pdf
+          npm run check
+
       - name: Publish site/ to the gh-pages branch
+        if: steps.decide.outputs.publish == 'true'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -42,12 +79,22 @@ jobs:
           force_orphan: true
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_message: Deploy ${{ github.sha }}
+          commit_message: Publish ${{ github.sha }}
+
+      # Fails the run (which emails the repo owner) only when a new problem shows up, so a
+      # problem that sits in Drive doesn't send an alert every 15 minutes.
+      - name: Flag Drive edits that were skipped
+        if: always() && steps.pull.outputs.problems != '0' && steps.pull.outputs.problems != ''
+        run: |
+          { echo "### Drive edits that were skipped"; echo; echo "The site kept the previous text for these. Fix them in Drive and they publish on the next run."; echo; sed 's/^/- /' content/sync-problems.txt; } >> "$GITHUB_STEP_SUMMARY"
+          while IFS= read -r line; do echo "::warning title=Skipped Drive edit::$line"; done < content/sync-problems.txt
+          if [ "${{ steps.pull.outputs.problems_changed }}" = "true" ]; then exit 1; fi
 
   https:
     # Reports the Pages domain and certificate. The workflow token can read these settings
     # but not change them; changes are made in repo Settings > Pages (see README).
-    needs: deploy
+    needs: publish
+    if: needs.publish.outputs.publish == 'true'
     runs-on: ubuntu-latest
     continue-on-error: true
     permissions:
@@ -72,8 +119,8 @@ jobs:
   live:
     # Reports on the live site after each deploy. Never blocks a deploy; read the results as
     # annotations on the run summary.
-    needs: [deploy, https]
-    if: always()
+    needs: [publish, https]
+    if: always() && needs.publish.outputs.publish == 'true'
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:

@@ -2,3 +2,5 @@ node_modules/
 .print.html
 .DS_Store
 __pycache__/
+site/hotlist-*.pdf
+.kit-test/
