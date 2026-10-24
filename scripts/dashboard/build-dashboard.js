@@ -78,7 +78,11 @@ async function stats() {
   const get = async (p) => {
     const res = await fetch(`${GC}/api/v0${p}${p.includes("?") ? "&" : "?"}start=${encodeURIComponent(COUNTING_SINCE)}`, {
       headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } });
-    if (!res.ok) throw new Error(`GoatCounter ${p}: HTTP ${res.status}`);
+    if (!res.ok) {
+      const body = (await res.text()).replace(/\s+/g, " ").slice(0, 200);
+      if (process.env.GITHUB_ACTIONS) console.log(`::warning title=GoatCounter ${p.split("?")[0]}::HTTP ${res.status} ${body}`);
+      throw new Error(`GoatCounter ${p.split("?")[0]}: HTTP ${res.status}`);
+    }
     return res.json();
   };
   try {
