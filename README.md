@@ -75,7 +75,7 @@ An unlisted page at https://nfh2025.rdgnbl.com/dashboard/ for the NFH team: one-
 - Built by `scripts/dashboard/build-dashboard.js` from `scripts/dashboard/dashboard.html` (`npm run dashboard`). The Publish workflow rebuilds it on every run, so numbers are at most about 15 minutes old.
 - Visits are counted with GoatCounter (nonfictionhotlist.goatcounter.com) on the website only. The site counts each page and project once per visit, and PDF downloads as an event. The smoke test stubs GoatCounter, so test runs never count.
 - To show the numbers, the workflow needs a GoatCounter API key with read access in the repo secret `GOATCOUNTER_TOKEN`. Without it, the dashboard says how to connect it.
-- The link check (`npm run links`) runs daily and writes `content/link-check.json`. Social media sites block automated visits, so their links are listed as unchecked, not broken.
+- The link check (`npm run links`) runs daily and writes `content/link-check.json`. Sites that refuse automated visits (social media, and any 401/403/429 answer) are listed as unchecked, not broken. Broken means missing or down.
 - Drive IDs the dashboard links to live in `content/drive.json`. If the kit is rebuilt, update them.
 - `DASHBOARD_SAMPLE=1 npm run dashboard` fills in sample numbers for design previews. Never publish that.
 

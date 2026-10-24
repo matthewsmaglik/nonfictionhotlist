@@ -1,6 +1,6 @@
 // Checks every outside link on the site (project links, laurel sources, news sources) and writes
-// content/link-check.json for the dashboard. Social sites block automated visits, so their refusals
-// are listed as "can't check" rather than broken. Run: npm run links (the Publish workflow runs it daily).
+// content/link-check.json for the dashboard. Sites that refuse automated visits (social media, and any
+// 401/403/429 answer) are listed as "couldn't check" rather than broken. Run: npm run links (the Publish workflow runs it daily).
 const fs = require("fs");
 const path = require("path");
 
@@ -54,7 +54,10 @@ async function check(url) {
   }));
   const host = u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return ""; } };
   const failed = r => r.error || r.status >= 400;
-  const unchecked = results.filter(r => failed(r) && SOCIAL.test(host(r.url)));
+  // A refusal (401/403/429) means the site turned away an automated visitor, not that the page is gone.
+  // Broken means missing or down: 404/410, server errors, dead domains, no answer.
+  const BLOCKED = [401, 403, 429, 451, 999];
+  const unchecked = results.filter(r => failed(r) && (SOCIAL.test(host(r.url)) || BLOCKED.includes(r.status)));
   const broken = results.filter(r => failed(r) && !unchecked.includes(r))
     .sort((a, b) => a.where[0].title.localeCompare(b.where[0].title));
   const report = {

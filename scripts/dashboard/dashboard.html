@@ -291,8 +291,8 @@ out.push(section("links", "Broken links",
   L ? (brokenCount ? ` <span class="badge bad">${brokenCount}</span>` : ` <span class="badge ok">None</span>`) : "",
   !L ? `<p>The first daily check hasn't run yet.</p>` :
   (brokenCount ? capped(L.broken, 8, b => `<li><span class="when">${b.status ? "HTTP " + b.status : esc(b.error || "No response")}</span><span class="what"><b>${esc(b.where.map(w => w.title).join(", "))}</b> <span>${esc(b.where.map(w => w.field).join(", "))}</span><br><a class="mono" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.url)}</a></span></li>`)
-    : `<p>Every link on the site answered.</p>`) +
-  (L.unchecked && L.unchecked.length ? `<p style="margin-top:10px">${L.unchecked.length} social media link${L.unchecked.length > 1 ? "s" : ""} can't be checked automatically (those sites block automated visits).</p>` : "")));
+    : `<p>No missing pages found.</p>`) +
+  (L.unchecked && L.unchecked.length ? `<p style="margin-top:10px">${L.unchecked.length} link${L.unchecked.length > 1 ? "s" : ""} couldn't be checked automatically because the site turns away automated visits (social media, some news sites). Those usually work fine in a browser.</p>` : "")));
 
 // 4. Where visitors come from
 let trafficBody;
