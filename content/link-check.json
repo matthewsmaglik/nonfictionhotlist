@@ -1,111 +1,15 @@
 {
-  "checkedAt": "2026-10-24T13:37:11.278Z",
+  "checkedAt": "2026-10-24T13:46:51.473Z",
   "total": 80,
-  "broken": [
-    {
-      "url": "https://www.broadwayworld.com/article/DOC-NYC-Reveals-2026-Main-Slate-Lineup-20261008",
-      "status": 403,
-      "error": null,
-      "where": [
-        {
-          "slug": "city-in-the-forest",
-          "title": "A City in the Forest",
-          "field": "News source: BroadwayWorld"
-        }
-      ]
-    },
-    {
-      "url": "https://filmotomy.com/sheffield-docfest-a-city-in-the-forest-review-a-powerful-environmental-documentary/",
-      "status": 403,
-      "error": null,
-      "where": [
-        {
-          "slug": "city-in-the-forest",
-          "title": "A City in the Forest",
-          "field": "News source: Filmotomy"
-        }
-      ]
-    },
-    {
-      "url": "https://history.sundance.org/films/14171/father_figures",
-      "status": 403,
-      "error": null,
-      "where": [
-        {
-          "slug": "father-figures",
-          "title": "Father Figures",
-          "field": "News source: Sundance Institute"
-        }
-      ]
-    },
-    {
-      "url": "https://www.themovieblog.com/2026/10/lauded-documentary-manhood-gets-theatrical-release-new-trailer-debuts/",
-      "status": 403,
-      "error": null,
-      "where": [
-        {
-          "slug": "manhood",
-          "title": "Manhood",
-          "field": "News source: The Movie Blog"
-        }
-      ]
-    },
-    {
-      "url": "https://www.texasmonthly.com/press-room/joshua-ray-walker-documentary-streaming-on-yahoo/",
-      "status": 403,
-      "error": null,
-      "where": [
-        {
-          "slug": "thank-you-for-listening",
-          "title": "Thank You for Listening",
-          "field": "News source: Texas Monthly"
-        },
-        {
-          "slug": "thank-you-for-listening",
-          "title": "Thank You for Listening",
-          "field": "News source: Texas Monthly"
-        }
-      ]
-    },
-    {
-      "url": "https://sffilm.org/press-releases/sffilm-announces-543k-in-grants-for-filmmakers/",
-      "status": 403,
-      "error": null,
-      "where": [
-        {
-          "slug": "vestibule",
-          "title": "Vestibule",
-          "field": "News source: SFFILM"
-        }
-      ]
-    },
-    {
-      "url": "https://history.sundance.org/project/22618",
-      "status": 403,
-      "error": null,
-      "where": [
-        {
-          "slug": "vestibule",
-          "title": "Vestibule",
-          "field": "News source: Sundance Institute"
-        }
-      ]
-    },
-    {
-      "url": "https://glreview.org/?p=66976",
-      "status": 403,
-      "error": null,
-      "where": [
-        {
-          "slug": "when-we-all-get-to-heaven",
-          "title": "When We All Get to Heaven",
-          "field": "News source: The Gay & Lesbian Review"
-        }
-      ]
-    }
-  ],
+  "broken": [],
   "unchecked": [
     "http://instagram.com/marypilon/",
+    "https://filmotomy.com/sheffield-docfest-a-city-in-the-forest-review-a-powerful-environmental-documentary/",
+    "https://glreview.org/?p=66976",
+    "https://history.sundance.org/films/14171/father_figures",
+    "https://history.sundance.org/project/22618",
+    "https://sffilm.org/press-releases/sffilm-announces-543k-in-grants-for-filmmakers/",
+    "https://www.broadwayworld.com/article/DOC-NYC-Reveals-2026-Main-Slate-Lineup-20261008",
     "https://www.facebook.com/TheAnimatedMindofOliverSacks/",
     "https://www.instagram.com/acityintheforest",
     "https://www.instagram.com/earthtomichael.film/",
@@ -118,6 +22,8 @@
     "https://www.instagram.com/oliversacksfilm/",
     "https://www.instagram.com/thankyouforlisteningfilm/",
     "https://www.instagram.com/vestibulefilm/",
-    "https://www.instagram.com/whalelikememovie/"
+    "https://www.instagram.com/whalelikememovie/",
+    "https://www.texasmonthly.com/press-room/joshua-ray-walker-documentary-streaming-on-yahoo/",
+    "https://www.themovieblog.com/2026/10/lauded-documentary-manhood-gets-theatrical-release-new-trailer-debuts/"
   ]
 }
