@@ -25,8 +25,6 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       publish: ${{ steps.decide.outputs.publish }}
-    env:
-      LINK_CHECK: ${{ github.event.schedule == '23 10 * * *' || github.event_name == 'workflow_dispatch' || hashFiles('content/link-check.json') == '' }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -42,9 +40,10 @@ jobs:
         id: pull
         run: node scripts/content/pull-drive.js
 
+      # Daily at 10:23 UTC, on manual runs, and whenever there is no result yet.
       - name: Check every outside link (daily)
         id: links
-        if: env.LINK_CHECK == 'true'
+        if: github.event.schedule == '23 10 * * *' || github.event_name == 'workflow_dispatch' || hashFiles('content/link-check.json') == ''
         continue-on-error: true
         run: npm run links
 
@@ -74,7 +73,7 @@ jobs:
           git push origin HEAD:main
 
       - name: Commit the link check
-        if: env.LINK_CHECK == 'true' && steps.links.outcome == 'success'
+        if: steps.links.outcome == 'success'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
