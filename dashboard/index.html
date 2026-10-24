@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Team dashboard · Nonfiction Hotlist</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root {
+  --forest: #2e4a3b; --deep: #22382c; --sage: #9aab8c; --soft: #c6d0bb; --cream: #ebe6d7;
+  --paper: #f5f2ea; --card: #fffdf8; --ink: #1d2b23; --muted: #66705f; --line: #e2ddd0;
+  --ok: #3f6b4f; --warn: #a8701c; --warn-bg: #f7ead2; --bad: #a3402e; --bad-bg: #f5ddd7;
+  --display: "League Spartan", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  --ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 14px/1.45 var(--ui); }
+a { color: inherit; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+[hidden] { display: none !important; }
+
+/* Header */
+header { background: var(--deep); color: var(--cream); }
+header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; flex-wrap: wrap; }
+.mark { font-family: var(--display); font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
+.mark span { font-weight: 500; color: var(--sage); margin-left: 6px; }
+.mark small { display: block; font: 500 11px var(--ui); text-transform: uppercase; letter-spacing: 0.12em; color: var(--soft); margin-top: 2px; }
+.hlinks { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 999px; border: 1px solid rgba(235,230,215,.25);
+  font: 600 13px var(--ui); text-decoration: none; color: var(--cream); white-space: nowrap; }
+.pill:hover { border-color: var(--sage); }
+.pill.solid { background: var(--cream); color: var(--ink); border-color: var(--cream); }
+
+/* Stat tiles */
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 22px 0 18px; }
+.tile { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; min-height: 92px; }
+.tile .k { font: 600 11px var(--ui); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+.tile .v { font: 700 30px/1.1 var(--display); margin-top: 8px; font-variant-numeric: tabular-nums; }
+.tile .s { color: var(--muted); font-size: 12px; margin-top: 4px; }
+.tile.hero { background: var(--forest); border-color: var(--forest); color: var(--cream); }
+.tile.hero .k, .tile.hero .s { color: var(--soft); }
+.tile .v.small { font-size: 18px; line-height: 1.25; }
+.tile.warn { background: var(--warn-bg); border-color: #ecd7ae; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); margin-right: 7px; vertical-align: 2px; }
+.dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+
+/* Front page links */
+.quick { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 22px; }
+.quick .lbl { font: 600 11px var(--ui); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-right: 4px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px; background: var(--card); border: 1px solid var(--line);
+  text-decoration: none; font-weight: 500; font-size: 13px; }
+.chip:hover { border-color: var(--sage); background: #fff; }
+.ico { width: 14px; height: 14px; flex: none; opacity: .75; }
+
+/* Projects */
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+h2 { font: 700 20px var(--display); margin: 0; letter-spacing: -0.01em; }
+.tools { display: flex; gap: 8px; align-items: center; }
+input[type=search] { font: 14px var(--ui); padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); width: 220px; color: var(--ink); }
+input[type=search]:focus { outline: 2px solid var(--sage); outline-offset: 0; border-color: var(--sage); }
+select { font: 13px var(--ui); padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--ink); }
+.table { background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.row { display: grid; grid-template-columns: 34px 64px minmax(0, 1fr) 150px 70px auto; gap: 14px; align-items: center; padding: 10px 14px; border-top: 1px solid var(--line); }
+.row:first-child { border-top: 0; }
+.row.head { background: #faf8f2; font: 600 11px var(--ui); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding-block: 9px; }
+.n { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 12px; }
+.thumb { width: 64px; height: 43px; border-radius: 3px; object-fit: cover; background: var(--deep); display: block; }
+.ttl a { font-weight: 600; text-decoration: none; }
+.ttl a:hover { text-decoration: underline; }
+.ttl small { display: block; color: var(--muted); font-size: 12px; }
+.ttl .flag { color: var(--bad); font-size: 12px; font-weight: 500; }
+.meter { display: flex; align-items: center; gap: 8px; }
+.meter i { flex: 1; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; position: relative; }
+.meter i b { position: absolute; inset: 0 auto 0 0; background: var(--ok); border-radius: 3px; }
+.meter i b.warn { background: var(--warn); }
+.meter span { font-variant-numeric: tabular-nums; font-size: 12px; width: 34px; text-align: right; }
+.missing { font-size: 11px; color: var(--warn); margin-top: 3px; }
+.vis { font: 600 15px var(--display); font-variant-numeric: tabular-nums; text-align: right; }
+.vis.none { color: var(--muted); font-weight: 500; font-size: 13px; }
+.acts { display: flex; gap: 6px; justify-content: flex-end; }
+.act { display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--line); text-decoration: none; font-size: 12.5px; font-weight: 500; white-space: nowrap; background: #fff; }
+.act:hover { border-color: var(--forest); background: var(--forest); color: var(--cream); }
+.act:hover .ico { filter: invert(1); opacity: 1; }
+.act.primary { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+.act.primary .ico { filter: invert(1); opacity: 1; }
+.act.primary:hover { background: var(--deep); }
+.empty { padding: 24px; text-align: center; color: var(--muted); }
+
+/* Expandable sections */
+.sections { margin: 26px 0 10px; display: grid; gap: 10px; }
+details { background: var(--card); border: 1px solid var(--line); border-radius: 8px; }
+summary { list-style: none; cursor: pointer; padding: 14px 16px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(-45deg); margin-left: auto; transition: transform .2s; }
+details[open] summary::after { transform: rotate(45deg); }
+summary .sub { font-weight: 400; color: var(--muted); font-size: 13px; }
+.badge { font: 600 11px var(--ui); padding: 2px 8px; border-radius: 999px; background: var(--line); color: var(--muted); }
+.badge.warn { background: var(--warn-bg); color: var(--warn); }
+.badge.bad { background: var(--bad-bg); color: var(--bad); }
+.badge.ok { background: #e2ebdf; color: var(--ok); }
+.body { padding: 0 16px 16px; }
+.body p { margin: 0 0 10px; color: var(--muted); }
+.list { list-style: none; margin: 0; padding: 0; }
+.list li { padding: 9px 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 12px; }
+.list li:first-child { border-top: 0; }
+.list.rest li:first-child { border-top: 1px solid var(--line); }
+.list .when { color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.list .what b { font-weight: 600; }
+.list .what span { color: var(--muted); }
+.src { font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; margin-left: 6px; }
+.more { margin-top: 8px; font: 500 13px var(--ui); background: none; border: 0; padding: 4px 0; color: var(--forest); cursor: pointer; text-decoration: underline; }
+.problem { padding: 8px 10px; border-radius: 6px; background: var(--warn-bg); margin-bottom: 6px; font-size: 13px; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.two h3 { font: 600 11px var(--ui); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 4px 0 8px; }
+.bars li { display: grid; grid-template-columns: minmax(0, 1fr) 46px; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line); position: relative; }
+.bars li:first-child { border-top: 0; }
+.bars .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; position: relative; padding-left: 6px; }
+.bars .nm em { position: relative; font-style: normal; }
+.bars .fill { position: absolute; left: 0; top: 4px; bottom: 4px; background: #e6ece0; border-radius: 3px; }
+.bars .ct { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.mono { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; }
+code { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--paper); padding: 1px 5px; border-radius: 3px; }
+ol.steps { margin: 6px 0 0; padding-left: 20px; } ol.steps li { margin-bottom: 4px; }
+
+footer { color: var(--muted); font-size: 12px; padding: 18px 0 40px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+footer label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+
+@media (max-width: 860px) {
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .row { grid-template-columns: 52px minmax(0, 1fr) auto; grid-template-areas: "thumb title vis" "thumb meter meter" "acts acts acts"; row-gap: 8px; }
+  .row.head { display: none; }
+  .row .n { display: none; }
+  .row .thumb { grid-area: thumb; width: 52px; height: 35px; align-self: start; }
+  .row .ttl { grid-area: title; } .row .meter-cell { grid-area: meter; } .row .vis { grid-area: vis; } .row .acts { grid-area: acts; justify-content: flex-start; }
+  .two { grid-template-columns: 1fr; }
+  .list li { grid-template-columns: 1fr; gap: 2px; }
+  input[type=search] { width: 100%; }
+  .tools { width: 100%; }
+}
+@media (max-width: 420px) { .wrap { padding: 0 16px; } .tile .v { font-size: 24px; } .act { padding: 6px 8px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="mark">nonfiction hotlist.<span id="yr"></span><small>Team dashboard</small></div>
+    <nav class="hlinks">
+      <a class="pill" id="driveLink" target="_blank" rel="noopener">Drive folder</a>
+      <a class="pill solid" id="siteLink" target="_blank" rel="noopener">Open site</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="tiles" id="tiles"></section>
+  <nav class="quick" id="quick" aria-label="Front pages"></nav>
+
+  <div class="bar">
+    <h2>Projects</h2>
+    <div class="tools">
+      <input type="search" id="q" placeholder="Find a project" aria-label="Find a project">
+      <select id="sort" aria-label="Sort projects">
+        <option value="order">Site order</option>
+        <option value="visits">Most visited</option>
+        <option value="complete">Least complete</option>
+        <option value="title">A to Z</option>
+      </select>
+    </div>
+  </div>
+  <div class="table" id="projects" role="table" aria-label="Projects"></div>
+
+  <div class="sections" id="sections"></div>
+
+  <footer>
+    <span id="updated"></span>
+    <label><input type="checkbox" id="skip"> Don't count my visits to the site from this browser</label>
+  </footer>
+</main>
+
+<script>
+const D = {"generatedAt":"2026-10-24T17:47:30.658Z","year":"2025","siteUrl":"https://nfh2025.rdgnbl.com","repoUrl":"https://github.com/matthewsmaglik/nonfictionhotlist","gc":"https://nonfictionhotlist.goatcounter.com","publishUrl":"https://github.com/matthewsmaglik/nonfictionhotlist/actions/workflows/publish.yml","front":[{"label":"Cover","url":"https://docs.google.com/document/d/1pMr5RSCjghp4rAC0rheI4UbhlM2ekbqD-b_O33rGNA0/edit"},{"label":"Welcome","url":"https://docs.google.com/document/d/1LF5t45RVmML_PzRD7F9cf2nVe59PYERSa_N9oW59EK8/edit"},{"label":"About","url":"https://docs.google.com/document/d/1_ohfZt97pXJulou0ouXkWpDvO85xazJOBCO5Dx-LJpE/edit"},{"label":"Running order","url":"https://docs.google.com/spreadsheets/d/1EVgWUK5jFj5WTjZL-7-zRGgPox7cAInV0b6uQr1E_xo/edit"},{"label":"Front page media","url":"https://drive.google.com/drive/folders/1G1VnZ-EA6dqpi67DTReEjdoGnrS2Jn3u"},{"label":"Editors' guide","url":"https://docs.google.com/document/d/1RB6rTa355Y8LwVE6cNeNGYWjCGxwObkmVBT0OMl8Z4c/edit"}],"driveRoot":"https://drive.google.com/drive/folders/1Eu7dbIrIPNk2auC9DPzxwy3crbAWR__u","projects":[{"n":1,"slug":"animated-mind","title":"The Animated Mind of Oliver Sacks","format":"Feature documentary","key":"../img/animated-mind-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#animated-mind","sheet":"https://docs.google.com/spreadsheets/d/1CdOU3IRXZ22ea6jA0L6waEVDcABv9P9uIJ9nKl6N9mU/edit","media":"https://drive.google.com/drive/folders/1klHU8oX3vT9hPIs1NQsyLgXGRBBlVSBi","broken":0},{"n":2,"slug":"arrival-center","title":"The Arrival Center","format":"40 to 60 minutes","key":"../img/arrival-center-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#arrival-center","sheet":"https://docs.google.com/spreadsheets/d/13A36qmdctx935sKKMsZapElAzQfVce3I5zs7hPYYs0Q/edit","media":"https://drive.google.com/drive/folders/1tmAZrmPnatXOWRyPQXTpXdTdTVh2cnFf","broken":0},{"n":3,"slug":"aunties","title":"AUNTIES","format":"Feature documentary","key":"../img/aunties-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#aunties","sheet":"https://docs.google.com/spreadsheets/d/1aXcvTci09lFxF8_YzdktnfOTwW9N3VkSPf1qFtiljv0/edit","media":"https://drive.google.com/drive/folders/1tBgoTcxcClte1YTmOEMwfLXDHcS0E63q","broken":0},{"n":4,"slug":"city-in-the-forest","title":"A City in the Forest","format":"Feature documentary","key":"../img/city-in-the-forest-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#city-in-the-forest","sheet":"https://docs.google.com/spreadsheets/d/1PN4wBaFKCCT3shsu6GJ1K081lNQwEDj1CrHr5vPZwt8/edit","media":"https://drive.google.com/drive/folders/1R_kwCAkOxk2vuNC_pdhP1UTpCx0aiuvk","broken":0},{"n":5,"slug":"daddy","title":"Daddy","format":"Feature documentary","key":"../img/daddy-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#daddy","sheet":"https://docs.google.com/spreadsheets/d/1TMUpJ0YLDwiPkWzuOkgdx9pzaSWZKt40hLe1RMVS1Vs/edit","media":"https://drive.google.com/drive/folders/1QQiyCObli2Fp3t-rsfprMMemwT_8MLnz","broken":0},{"n":6,"slug":"earth-to-michael","title":"Earth to Michael","format":"Feature documentary","key":"../img/earth-to-michael-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#earth-to-michael","sheet":"https://docs.google.com/spreadsheets/d/16RBgYT1Yg1LLxz3gEenIv5tkfzgc72Rr69dxoA22zJA/edit","media":"https://drive.google.com/drive/folders/1seUZsToaVz8lQZkok96zyi60kYt8vGrb","broken":0},{"n":7,"slug":"erins-law","title":"Erin's Law","format":"Feature documentary","key":"../img/erins-law-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#erins-law","sheet":"https://docs.google.com/spreadsheets/d/1GE9ARvcPUVc3Vakm5kwESmS5tWGv7Q9uuJTgW3Vd-N4/edit","media":"https://drive.google.com/drive/folders/1TSdpu0Wx-n-QY2wvqoMYmNcOFHrsgfX0","broken":0},{"n":8,"slug":"father-figures","title":"Father Figures","format":"Feature documentary","key":"../img/father-figures-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#father-figures","sheet":"https://docs.google.com/spreadsheets/d/1AAOjgU3YdXPsB8afrD_EoeffFh0bzpbHf4NSYZQE8ck/edit","media":"https://drive.google.com/drive/folders/1BdlCp9qjNYzzjLP7toGiAAoxsn2z8W5T","broken":0},{"n":9,"slug":"god-of-sight","title":"God of Sight","format":"Feature documentary","key":"../img/god-of-sight-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#god-of-sight","sheet":"https://docs.google.com/spreadsheets/d/1eEOUQfoGdsMXfMZ55HHdXjCxTAGzEkabdXl1fY2ZSuc/edit","media":"https://drive.google.com/drive/folders/1F_EmnoyFRI7kbYQ2buYCFSV2QYOaGbce","broken":0},{"n":10,"slug":"good-kids","title":"Good Kids","format":"Feature documentary","key":"../img/good-kids-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#good-kids","sheet":"https://docs.google.com/spreadsheets/d/1i_tZ7W7aGs8FF9mEQ3JpBxde6gIcF6oty4QFKj3EyNI/edit","media":"https://drive.google.com/drive/folders/1UV00R3ZWYbfs6bJwj671TuwRZ_fIKwEm","broken":0},{"n":11,"slug":"the-grind","title":"The Grind","format":"Feature documentary","key":"../img/the-grind-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#the-grind","sheet":"https://docs.google.com/spreadsheets/d/1_nhEbdeIScjvWazrDZ0sm07feYWACOkhqetXVs-0LYs/edit","media":"https://drive.google.com/drive/folders/1Tbzg9hVmly-tztWuU5ta_6rJNe8QIwDD","broken":0},{"n":12,"slug":"lift-off","title":"Lift Off","format":"Feature documentary","key":"../img/lift-off-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#lift-off","sheet":"https://docs.google.com/spreadsheets/d/1ack9qVyY64RnL1ydNnmrxog0_TbMhlrvcxz_G97UyDI/edit","media":"https://drive.google.com/drive/folders/1_7qkAjqZXeece6_XCAMUNuCorqd9LcxY","broken":0},{"n":13,"slug":"making-the-line","title":"Making the Line","format":"Feature documentary","key":"../img/making-the-line-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#making-the-line","sheet":"https://docs.google.com/spreadsheets/d/1EwuUm351hkb31i1AlGcRzw2dYEvJ-hMcWMKMozYek9I/edit","media":"https://drive.google.com/drive/folders/15KvtCStIK2To9pnaZUQDRFva_-Epw2oC","broken":0},{"n":14,"slug":"manhood","title":"Manhood","format":"Feature documentary","key":"../img/manhood-key.jpg","complete":100,"missing":[],"visits":1,"live":"https://nfh2025.rdgnbl.com/#manhood","sheet":"https://docs.google.com/spreadsheets/d/1hpVMxvt1IajqUeI74sOM3fDWtfJWIFBXOAD0yPBwrFo/edit","media":"https://drive.google.com/drive/folders/1CXo1Zx_drhfUQg1lZAfo-N-Fv2gl6ou5","broken":0},{"n":15,"slug":"movement","title":"Movement","format":"Feature documentary","key":"../img/movement-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#movement","sheet":"https://docs.google.com/spreadsheets/d/1-yHTQCHeZpmZ-_SgH9zoAzrhZgjeZ2K4FHYLH5VG4Es/edit","media":"https://drive.google.com/drive/folders/1X-qeCghdqNNuzHrhZ7jZnfxJMIqeEK_G","broken":0},{"n":16,"slug":"screw-lucy","title":"Screw Lucy","format":"Short documentary","key":"../img/screw-lucy-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#screw-lucy","sheet":"https://docs.google.com/spreadsheets/d/1gSbnVe5BQax8Kd2ESQ8m66S6JmYE6gMnvrqpk_8zPGs/edit","media":"https://drive.google.com/drive/folders/1DOUtk9OdUMP1afhOkemVdWcCjt42hTiB","broken":0},{"n":17,"slug":"state-of-gambling","title":"State of Gambling","format":"Feature documentary","key":"../img/state-of-gambling-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#state-of-gambling","sheet":"https://docs.google.com/spreadsheets/d/1Q1_QYJPtphByLMI6TGrQKE_XK0HiRaT66JI_RTeDTNE/edit","media":"https://drive.google.com/drive/folders/1pdSO6JmNvYetlllWbBbsZ5H-UYplgiDn","broken":0},{"n":18,"slug":"talked-to-death","title":"Talked to Death","format":"Feature documentary","key":"../img/talked-to-death-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#talked-to-death","sheet":"https://docs.google.com/spreadsheets/d/1dmVnWaZLDNmq9-vvgOj2r1jp2xLWiYqSuQHEj7tuReQ/edit","media":"https://drive.google.com/drive/folders/1I-lDlA1OvN0H8rUNOCOxRBlObvFC0FyF","broken":0},{"n":19,"slug":"thank-you-for-listening","title":"Thank You for Listening","format":"Short documentary","key":"../img/thank-you-for-listening-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#thank-you-for-listening","sheet":"https://docs.google.com/spreadsheets/d/1FLRQ8kct-Vc1tAV93fvFK2zn6Ysj6JuV4s62lKktPH4/edit","media":"https://drive.google.com/drive/folders/1WLMZlbBN0UGx5oS4L_RoBbZK3CLkKtCk","broken":0},{"n":20,"slug":"vestibule","title":"Vestibule","format":"Feature documentary","key":"../img/vestibule-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#vestibule","sheet":"https://docs.google.com/spreadsheets/d/1XQKEwCifumSzx8hq6tuS4h6_e0UXCwr4NrRVhrKWrgo/edit","media":"https://drive.google.com/drive/folders/13PDA4TwdnPL9Ph7rx4SdJJyGHv1SYAe-","broken":0},{"n":21,"slug":"walk-with-me","title":"Walk With Me","format":"Feature documentary","key":"../img/walk-with-me-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#walk-with-me","sheet":"https://docs.google.com/spreadsheets/d/1TMIPwnk85QrLdem4tms2vRAVyqlyZtTM7NOH2qxwIhc/edit","media":"https://drive.google.com/drive/folders/1jyqAj8eNwlXnFmV7mm-Ki-340YbEBxPB","broken":0},{"n":22,"slug":"whale-like-me","title":"Whale Like Me","format":"Feature documentary","key":"../img/whale-like-me-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#whale-like-me","sheet":"https://docs.google.com/spreadsheets/d/1wgiLIBVglm_HciG3Zz-jsJ7Oth55ZHQjmQzeBCkNDBc/edit","media":"https://drive.google.com/drive/folders/1HJbhyLLkH85r8sl_Cj9CTYN99vTdFlNe","broken":0},{"n":23,"slug":"when-we-all-get-to-heaven","title":"When We All Get to Heaven","format":"Podcast, 11 parts","key":"../img/when-we-all-get-to-heaven-key.jpg","complete":100,"missing":[],"visits":0,"live":"https://nfh2025.rdgnbl.com/#when-we-all-get-to-heaven","sheet":"https://docs.google.com/spreadsheets/d/17u2DslrZfwsaJ8Y9xWSyepGxD_EnjAEBDJ9QotGk71w/edit","media":"https://drive.google.com/drive/folders/1g289IEzLGypzRGfLdaAU1aLbRk8z_0mE","broken":0}],"sync":{"problems":[],"lastDriveChange":"2026-10-24T00:22:52Z"},"changes":[{"date":"2026-10-24T00:22:52Z","fromDrive":true,"items":[{"what":"Cover page","detail":"Footer note"}]},{"date":"2026-10-24T00:13:22Z","fromDrive":true,"items":[{"what":"Cover page","detail":"Footer note"}]}],"links":{"checkedAt":"2026-10-24T13:46:51.473Z","total":80,"broken":[],"unchecked":["http://instagram.com/marypilon/","https://filmotomy.com/sheffield-docfest-a-city-in-the-forest-review-a-powerful-environmental-documentary/","https://glreview.org/?p=66976","https://history.sundance.org/films/14171/father_figures","https://history.sundance.org/project/22618","https://sffilm.org/press-releases/sffilm-announces-543k-in-grants-for-filmmakers/","https://www.broadwayworld.com/article/DOC-NYC-Reveals-2026-Main-Slate-Lineup-20261008","https://www.facebook.com/TheAnimatedMindofOliverSacks/","https://www.instagram.com/acityintheforest","https://www.instagram.com/earthtomichael.film/","https://www.instagram.com/erins_law_film/","https://www.instagram.com/eureka.street","https://www.instagram.com/fatherfiguresdoc/","https://www.instagram.com/makingthelinefilm/","https://www.instagram.com/manhood.film/","https://www.instagram.com/movement_documentary","https://www.instagram.com/oliversacksfilm/","https://www.instagram.com/thankyouforlisteningfilm/","https://www.instagram.com/vestibulefilm/","https://www.instagram.com/whalelikememovie/","https://www.texasmonthly.com/press-room/joshua-ray-walker-documentary-streaming-on-yahoo/","https://www.themovieblog.com/2026/10/lauded-documentary-manhood-gets-theatrical-release-new-trailer-debuts/"]},"stats":{"total":4,"pdf":1,"byPath":{"pdf-download":1,"/manhood":1,"/welcome":1,"/":1},"refs":[{"name":"(direct or unknown)","count":4}],"pages":[{"path":"/manhood","title":"Manhood","count":1},{"path":"/welcome","title":"Welcome","count":1},{"path":"/","title":"Cover","count":1}]}};
+
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const fmt = n => n == null ? "–" : Number(n).toLocaleString();
+const ICON = {
+  sheet: '<svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.5" y="1.5" width="11" height="13" rx="1.5"/><path d="M2.5 6h11M2.5 10h11M7 6v8.5"/></svg>',
+  folder: '<svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1.5 4.5a1 1 0 0 1 1-1h3.6l1.4 1.6h6a1 1 0 0 1 1 1v6.4a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1z"/></svg>',
+  doc: '<svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 1.5h6l3 3v10h-9z"/><path d="M9.5 1.5v3h3M5.5 8h5M5.5 10.5h5"/></svg>',
+  ext: '<svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 2.5h4.5V7M13.5 2.5 7 9M11.5 9.5v4h-9v-9h4"/></svg>'
+};
+
+function ago(iso) {
+  if (!iso) return "never";
+  const s = (Date.now() - new Date(iso)) / 1000;
+  if (s < 90) return "just now";
+  if (s < 3600) return Math.round(s / 60) + " min ago";
+  if (s < 86400) return Math.round(s / 3600) + " hr ago";
+  const d = Math.round(s / 86400);
+  return d === 1 ? "yesterday" : d < 30 ? d + " days ago" : new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
+const when = iso => new Date(iso).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+
+/* Header and tiles */
+document.getElementById("yr").textContent = D.year;
+document.getElementById("driveLink").href = D.driveRoot;
+document.getElementById("siteLink").href = D.siteUrl;
+
+const S = D.stats, statsOn = S && !S.error;
+const problems = D.sync.problems;
+const brokenCount = D.links ? (D.links.broken || []).length : 0;
+const avgComplete = Math.round(D.projects.reduce((a, p) => a + p.complete, 0) / D.projects.length);
+
+document.getElementById("tiles").innerHTML = [
+  `<div class="tile hero"><div class="k">PDF downloads</div><div class="v">${statsOn ? fmt(S.pdf) : "–"}</div><div class="s">${statsOn ? "since Oct 24" : "connect counting below"}</div></div>`,
+  `<div class="tile"><div class="k">Site visits</div><div class="v">${statsOn ? fmt(S.total) : "–"}</div><div class="s">${statsOn ? "page views since Oct 24" : "not connected yet"}</div></div>`,
+  `<div class="tile${problems.length ? " warn" : ""}"><div class="k">Sync</div><div class="v small"><span class="dot${problems.length ? " warn" : ""}"></span>${problems.length ? `${problems.length} edit${problems.length > 1 ? "s" : ""} skipped` : "All edits live"}</div><div class="s">Checked ${ago(D.generatedAt)}${D.sync.lastDriveChange ? ` · last change ${ago(D.sync.lastDriveChange)}` : ""}</div></div>`,
+  `<div class="tile"><div class="k">Complete</div><div class="v">${avgComplete}%</div><div class="s">${D.projects.filter(p => p.complete === 100).length} of ${D.projects.length} projects at 100%</div></div>`
+].join("");
+
+document.getElementById("quick").innerHTML = `<span class="lbl">Front pages</span>` + D.front.map(f =>
+  `<a class="chip" href="${esc(f.url)}" target="_blank" rel="noopener">${f.url.includes("/folders/") ? ICON.folder : f.url.includes("spreadsheets") ? ICON.sheet : ICON.doc}${esc(f.label)}</a>`).join("");
+
+/* Projects table */
+const q = document.getElementById("q"), sortSel = document.getElementById("sort");
+try { const s = localStorage.getItem("dash-sort"); if (s) sortSel.value = s; } catch (e) {}
+if (!statsOn) sortSel.querySelector('[value="visits"]').disabled = true;
+
+function renderProjects() {
+  const term = q.value.trim().toLowerCase();
+  let list = D.projects.filter(p => !term || p.title.toLowerCase().includes(term));
+  const by = sortSel.value;
+  if (by === "visits") list = [...list].sort((a, b) => (b.visits || 0) - (a.visits || 0));
+  if (by === "complete") list = [...list].sort((a, b) => a.complete - b.complete || a.n - b.n);
+  if (by === "title") list = [...list].sort((a, b) => a.title.localeCompare(b.title));
+  const head = `<div class="row head" role="row"><span>#</span><span></span><span>Project</span><span>Complete</span><span style="text-align:right">Visits</span><span style="text-align:right">Edit</span></div>`;
+  const rows = list.map(p => `<div class="row" role="row">
+    <span class="n">${String(p.n).padStart(2, "0")}</span>
+    ${p.key ? `<img class="thumb" src="${esc(p.key)}" alt="" loading="lazy">` : `<span class="thumb"></span>`}
+    <div class="ttl"><a href="${esc(p.live)}" target="_blank" rel="noopener">${esc(p.title)}</a><small>${esc(p.format)}${p.broken ? ` · <span class="flag">${p.broken} broken link${p.broken > 1 ? "s" : ""}</span>` : ""}</small></div>
+    <div class="meter-cell"><div class="meter" title="${p.missing.length ? "Missing: " + esc(p.missing.join(", ")) : "Everything filled in"}"><i><b class="${p.complete < 100 ? "warn" : ""}" style="width:${p.complete}%"></b></i><span>${p.complete}%</span></div>${p.missing.length ? `<div class="missing">Missing: ${esc(p.missing.join(", "))}</div>` : ""}</div>
+    <div class="vis${p.visits == null ? " none" : ""}">${p.visits == null ? "–" : fmt(p.visits)}</div>
+    <div class="acts">
+      ${p.sheet ? `<a class="act primary" href="${esc(p.sheet)}" target="_blank" rel="noopener">${ICON.sheet}Copysheet</a>` : ""}
+      ${p.media ? `<a class="act" href="${esc(p.media)}" target="_blank" rel="noopener">${ICON.folder}Media</a>` : ""}
+    </div>
+  </div>`).join("");
+  document.getElementById("projects").innerHTML = head + (rows || `<div class="empty">No project matches "${esc(q.value)}".</div>`);
+}
+q.addEventListener("input", renderProjects);
+sortSel.addEventListener("change", () => { try { localStorage.setItem("dash-sort", sortSel.value); } catch (e) {} renderProjects(); });
+renderProjects();
+
+/* Expandable sections */
+function section(id, title, sub, badge, body, open) {
+  return `<details id="${id}"${open ? " open" : ""}><summary>${title}${badge || ""}<span class="sub">${sub || ""}</span></summary><div class="body">${body}</div></details>`;
+}
+function capped(items, n, render) {
+  const first = items.slice(0, n).map(render).join(""), rest = items.slice(n).map(render).join("");
+  return `<ul class="list">${first}</ul>${rest ? `<ul class="list rest" hidden>${rest}</ul><button class="more" type="button" data-more>Show ${items.length - n} more</button>` : ""}`;
+}
+
+const out = [];
+
+// 1. Sync health
+out.push(section("sync", "Sync health",
+  problems.length ? "These edits didn't publish. The site kept the previous text." : "Every edit in Drive is on the site.",
+  problems.length ? ` <span class="badge warn">${problems.length}</span>` : ` <span class="badge ok">OK</span>`,
+  (problems.length ? problems.map(p => `<div class="problem">${esc(p)}</div>`).join("") + `<p style="margin-top:10px">Fix these in Drive. They publish on the next check.</p>` : "") +
+  `<p>Last check of Drive: ${when(D.generatedAt)}.${D.sync.lastDriveChange ? ` Last change from Drive: ${when(D.sync.lastDriveChange)}.` : ""}</p>
+   <p><a href="${esc(D.publishUrl)}" target="_blank" rel="noopener">Publish now</a> (site owner: Run workflow on GitHub).</p>`,
+  problems.length > 0));
+
+// 2. Recent changes
+const changeRows = [];
+for (const c of D.changes) for (const it of c.items) changeRows.push({ date: c.date, fromDrive: c.fromDrive, ...it });
+out.push(section("changes", "Recent changes", changeRows.length ? `Latest: ${esc(changeRows[0].what)}, ${ago(changeRows[0].date)}` : "",
+  ` <span class="badge">${changeRows.length}</span>`,
+  changeRows.length ? capped(changeRows, 6, r => `<li><span class="when">${when(r.date)}</span><span class="what"><b>${esc(r.what)}</b> <span>${esc(r.detail)}</span>${r.fromDrive ? "" : `<span class="src">site</span>`}</span></li>`)
+    : `<p>No changes yet.</p>`));
+
+// 3. Link check
+const L = D.links;
+out.push(section("links", "Broken links",
+  L ? `Checked ${ago(L.checkedAt)} · ${fmt(L.total)} links` : "Runs once a day",
+  L ? (brokenCount ? ` <span class="badge bad">${brokenCount}</span>` : ` <span class="badge ok">None</span>`) : "",
+  !L ? `<p>The first daily check hasn't run yet.</p>` :
+  (brokenCount ? capped(L.broken, 8, b => `<li><span class="when">${b.status ? "HTTP " + b.status : esc(b.error || "No response")}</span><span class="what"><b>${esc(b.where.map(w => w.title).join(", "))}</b> <span>${esc(b.where.map(w => w.field).join(", "))}</span><br><a class="mono" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.url)}</a></span></li>`)
+    : `<p>No missing pages found.</p>`) +
+  (L.unchecked && L.unchecked.length ? `<p style="margin-top:10px">${L.unchecked.length} link${L.unchecked.length > 1 ? "s" : ""} couldn't be checked automatically because the site turns away automated visits (social media, some news sites). Those usually work fine in a browser.</p>` : "")));
+
+// 4. Where visitors come from
+let trafficBody;
+if (!S) {
+  trafficBody = `<p>Visit counting is on, but the dashboard needs a read key to show the numbers:</p>
+    <ol class="steps"><li>In GoatCounter, open Settings, then API, and create a key with permission to read statistics.</li>
+    <li>In GitHub, open the repo's Settings, then Secrets and variables, then Actions, and add a secret named <code>GOATCOUNTER_TOKEN</code> with that key.</li></ol>
+    <p style="margin-top:8px">Numbers appear here after the next refresh.</p>`;
+} else if (S.error) {
+  trafficBody = `<p>GoatCounter didn't answer the last check (${esc(S.error)}). Numbers will return on the next one.</p>`;
+} else {
+  const bars = (rows, label) => {
+    const max = Math.max(1, ...rows.map(r => r.count));
+    return rows.length ? `<ul class="list bars">${rows.map(r => `<li><span class="nm"><span class="fill" style="width:${(r.count / max) * 100}%"></span><em>${esc(label(r))}</em></span><span class="ct">${fmt(r.count)}</span></li>`).join("")}</ul>` : `<p>Nothing yet.</p>`;
+  };
+  trafficBody = `<div class="two"><div><h3>Sources</h3>${bars(S.refs, r => r.name)}</div><div><h3>Most viewed</h3>${bars(S.pages, r => r.title || r.path)}</div></div>
+    <p style="margin-top:12px"><a href="${esc(D.gc)}" target="_blank" rel="noopener">Full stats in GoatCounter</a></p>`;
+}
+out.push(section("traffic", "Where visitors come from", statsOn && S.refs.length ? `Top source: ${esc(S.refs[0].name)}` : "", "", trafficBody));
+
+document.getElementById("sections").innerHTML = out.join("");
+document.getElementById("sections").addEventListener("click", e => {
+  const b = e.target.closest("[data-more]"); if (!b) return;
+  const rest = b.previousElementSibling;
+  rest.hidden = !rest.hidden;
+  b.textContent = rest.hidden ? `Show ${rest.children.length} more` : "Show fewer";
+});
+// Remember which sections are open.
+document.querySelectorAll("details").forEach(d => {
+  try { const v = localStorage.getItem("dash-open-" + d.id); if (v !== null) d.open = v === "1"; } catch (e) {}
+  d.addEventListener("toggle", () => { try { localStorage.setItem("dash-open-" + d.id, d.open ? "1" : "0"); } catch (e) {} });
+});
+if (problems.length) document.getElementById("sync").open = true;
+
+/* Footer */
+document.getElementById("updated").textContent = `Updated ${when(D.generatedAt)}.`;
+const skip = document.getElementById("skip");
+try { skip.checked = localStorage.getItem("skipgc") === "t"; } catch (e) { skip.disabled = true; }
+skip.addEventListener("change", () => { try { skip.checked ? localStorage.setItem("skipgc", "t") : localStorage.removeItem("skipgc"); } catch (e) {} });
+</script>
+</body>
+</html>
