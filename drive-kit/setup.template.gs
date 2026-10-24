@@ -124,7 +124,7 @@ function moveTo_(id, folder) { DriveApp.getFileById(id).moveTo(folder); return i
 /* ============================== project sheets ============================== */
 
 function makeProjectSheet_(folder, p) {
-  const ss = SpreadsheetApp.create(p.title);
+  const ss = SpreadsheetApp.create(`${p.title}_Copysheet`);
   moveTo_(ss.getId(), folder);
   const tabs = {};
 
@@ -338,7 +338,7 @@ function makeGuide_(root, data) {
   H("What's where");
   L("01 Cover, Welcome, About: the opening pages, as Google Docs. Bold text becomes the sage highlight.");
   L("02 Index Pages: the running order. Each slot is a dropdown of project names.");
-  L("03 Projects: one folder per project, each with a locked Google Sheet and a Media folder.");
+  L("03 Projects: one folder per project, each with a locked Google Sheet (<Title>_Copysheet) and a Media folder.");
   L("Site manifest: the map the website reads. Don't edit, move or rename it.");
   H("Project sheets");
   L("Edit only the white cells. The layout is locked so nothing can be moved or deleted by accident.");

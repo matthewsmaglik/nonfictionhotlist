@@ -42,7 +42,7 @@ The text is edited in Google Drive, in the `NFH 2025` folder:
 00 How this works            Guide for editors
 01 Cover, Welcome, About/    Google Docs, one heading per field. Bold becomes the highlight.
 02 Index Pages/              Running order: a dropdown of project names per card slot.
-03 Projects/<Title>/         A locked Google Sheet (tabs: Page, Team, How to help, Links,
+03 Projects/<Title>/         A locked Google Sheet, <Title>_Copysheet (tabs: Page, Team, How to help, Links,
                              Laurels and awards, News) and a Media folder of images.
 Site manifest (do not edit)  Maps every sheet and doc to the site. The workflow reads it.
 ```
