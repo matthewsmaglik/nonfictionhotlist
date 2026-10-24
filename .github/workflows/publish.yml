@@ -12,6 +12,12 @@ on:
     - cron: "*/15 * * * *"
     - cron: "23 10 * * *"     # daily link check, about 6:23 am New York time
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "full: rebuild and publish everything. sync: publish only if Drive changed, otherwise refresh the dashboard."
+        type: choice
+        options: [full, sync]
+        default: full
 
 permissions:
   contents: write
@@ -43,14 +49,14 @@ jobs:
       # Daily at 10:23 UTC, on manual runs, and whenever there is no result yet.
       - name: Check every outside link (daily)
         id: links
-        if: github.event.schedule == '23 10 * * *' || github.event_name == 'workflow_dispatch' || hashFiles('content/link-check.json') == ''
+        if: github.event.schedule == '23 10 * * *' || inputs.mode == 'full' || hashFiles('content/link-check.json') == ''
         continue-on-error: true
         run: npm run links
 
       - name: Decide whether to publish
         id: decide
         run: |
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ steps.pull.outputs.changed }}" != "true" ] && [ "${{ steps.pull.outputs.problems_changed }}" != "true" ]; then
+          if { [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.mode }}" = "sync" ]; } && [ "${{ steps.pull.outputs.changed }}" != "true" ] && [ "${{ steps.pull.outputs.problems_changed }}" != "true" ]; then
             echo "publish=false" >> "$GITHUB_OUTPUT"; echo "No changes in Drive. Refreshing the dashboard only."
           else
             echo "publish=true" >> "$GITHUB_OUTPUT"
