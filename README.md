@@ -53,6 +53,8 @@ Project sheets are locked except for the white cells, and each field has a chara
 
 The kit is read through link sharing (anyone with the link can view), so no Google credentials are stored anywhere. Editing rights are whatever you grant in Drive.
 
+**Publishing promptly.** GitHub runs scheduled workflows only every few hours on this account, so the 15-minute schedule is a backup. `drive-kit/publish-trigger.gs` is a small Apps Script in the owner's Google account: every 10 minutes it checks the kit's files (listed in the Site manifest) for edits and, if any, starts the Publish workflow in `sync` mode; it also asks for an hourly refresh so dashboard numbers stay current. It needs a fine-grained GitHub token (this repo only, Actions read and write) in the script property `GITHUB_TOKEN`; see the notes at the top of the file. Fine-grained tokens expire, so renew it before the date you set.
+
 **Building the kit.** `npm run kit` generates `drive-kit/setup.gs` from `scripts/content/spec.js`. Paste it into a new project at script.google.com and run `buildKit`. It fills the folder from `content/content.json` on GitHub, copies the images, sets link sharing and logs the Site manifest ID, which goes in `content/drive.json`. It pauses and resumes itself to stay under Google's time limit, and running it again only fills in what's missing.
 
 **Changing fields or limits.** Edit `scripts/content/spec.js`, then `npm run test:kit` (checks the reader against a simulated export and a mock run of the setup script). Existing sheets keep their old layout until rebuilt.
