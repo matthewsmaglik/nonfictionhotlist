@@ -405,6 +405,15 @@ footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wr
 }
 @media (prefers-reduced-motion: reduce) { .poster { transition: none; } }
 </style>
+<script>
+window.nfhTrack = function (path, title, event) {
+  try { if (localStorage.getItem("skipgc") === "t") return; } catch (e) {}
+  var go = function () { window.goatcounter.count({ path: path, title: title || path, event: !!event }); };
+  if (window.goatcounter && window.goatcounter.count) go(); else (window.nfhQueue = window.nfhQueue || []).push(go);
+};
+</script>
+<script data-goatcounter="https://nonfictionhotlist.goatcounter.com/count" data-goatcounter-settings='{"no_onload": true}' async src="https://gc.zgo.at/count.js"
+  onload="(window.nfhQueue || []).forEach(function (f) { f(); }); window.nfhQueue = [];"></script>
 </head>
 <body>
 <header class="bar gutter">
@@ -745,6 +754,15 @@ function setNav(prev, next, label) {
   counter.textContent = label;
 }
 
+/* Visit counting. The website defines window.nfhTrack (GoatCounter); in the Claude version it doesn't
+   exist and nothing is counted. A project counts once per visit, not per tab. */
+let lastCounted = null;
+function countView(path, title) {
+  if (path === lastCounted) return;
+  lastCounted = path;
+  if (window.nfhTrack) window.nfhTrack(path, title);
+}
+
 function route() {
   const raw = (location.hash || "#cover").slice(1);
   const [key, tab = ""] = raw.split(".");
@@ -755,6 +773,7 @@ function route() {
            projIdx < PROJECTS.length - 1 ? "#" + PROJECTS[projIdx + 1].slug : null,
            `${pad(projIdx + 1)} / ${PROJECTS.length}`);
     document.title = `${PROJECTS[projIdx].title} · The ${SITE.year} Nonfiction Hotlist`;
+    countView("/" + key, PROJECTS[projIdx].title);
   } else {
     let pos = SEQ.indexOf(key);
     if (pos < 0) pos = 0;
@@ -764,6 +783,7 @@ function route() {
     setNav(pos > 0 ? "#" + SEQ[pos - 1] : null, pos < SEQ.length - 1 ? "#" + SEQ[pos + 1] : null,
            k.startsWith("page-") ? `Page ${k.split("-")[1]} / ${PAGES}` : ({ cover: "Cover", welcome: "Welcome", why: "About" })[k]);
     document.title = `The ${SITE.year} Nonfiction Hotlist`;
+    countView(k === "cover" ? "/" : "/" + k, ({ cover: "Cover", welcome: "Welcome", why: "About" })[k] || `Index page ${k.split("-")[1]}`);
   }
   if (!tab) window.scrollTo(0, 0);
 }
@@ -860,7 +880,11 @@ async function downloadPdf() {
     } else toast("The PDF didn't download. Try again.");
   } finally { pdfBusy = false; }
 }
-document.addEventListener("click", e => { if (e.target.closest("#pdfBtn, [data-pdf]")) downloadPdf(); });
+document.addEventListener("click", e => {
+  if (!e.target.closest("#pdfBtn, [data-pdf]")) return;
+  if (window.nfhTrack) window.nfhTrack("pdf-download", "PDF download", true);
+  downloadPdf();
+});
 showPdfButtons();
 (async () => {
   if (STANDALONE) return;

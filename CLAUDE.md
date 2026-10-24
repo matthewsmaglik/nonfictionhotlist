@@ -10,3 +10,4 @@
 - Official contact email: info@nonfictionhotlist.com. Project contacts belong to the filmmakers.
 - Deploys: `.github/workflows/publish.yml` runs on push to `main`, every 15 minutes (Drive edits) and on demand; it publishes `site/` to `gh-pages` (custom domain nfh2025.rdgnbl.com).
 - Project news, laurels and status are edited in each project's sheet in Drive. When adding researched items there, every item needs a source; never add a laurel or award that a source doesn't confirm. `research/` is the October 2026 archive.
+- Team dashboard: `site/dashboard/` (unlisted, built by `npm run dashboard`, never committed). GoatCounter counts visits on the website only, through `window.nfhTrack` in `scripts/build-site.js`; the Claude version must not count. Stats need the `GOATCOUNTER_TOKEN` repo secret.

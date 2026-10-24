@@ -1,5 +1,136 @@
 {
-  "_about": "The Drive kit manifest (NFH 2025 / Site manifest (do not edit)). The Publish workflow reads it to find every sheet and doc.",
+  "_about": "IDs of everything in the Drive kit (NFH 2025). The Publish workflow reads the manifest; the dashboard links to the rest.",
   "manifestId": "1QozY-nLtYCZNNEatyzcAn9IN9Ht9CAJdtxY7qyRIazs",
-  "manifestGid": 0
+  "manifestGid": 0,
+  "root": "1Eu7dbIrIPNk2auC9DPzxwy3crbAWR__u",
+  "guide": "1RB6rTa355Y8LwVE6cNeNGYWjCGxwObkmVBT0OMl8Z4c",
+  "front": {
+    "folder": "1OnmZ6jTHu2U_ZZfXnGIpjJDsHbkfZLOY",
+    "media": "1G1VnZ-EA6dqpi67DTReEjdoGnrS2Jn3u",
+    "cover": "1pMr5RSCjghp4rAC0rheI4UbhlM2ekbqD-b_O33rGNA0",
+    "welcome": "1LF5t45RVmML_PzRD7F9cf2nVe59PYERSa_N9oW59EK8",
+    "about": "1_ohfZt97pXJulou0ouXkWpDvO85xazJOBCO5Dx-LJpE"
+  },
+  "order": {
+    "folder": "1jBNEd-QfNT-HsU1Nq8mNrtqUI6diAmAn",
+    "sheet": "1EVgWUK5jFj5WTjZL-7-zRGgPox7cAInV0b6uQr1E_xo"
+  },
+  "projectsFolder": "1uIRAC-WYD21zM0fmOn64tq6yuMUypfCa",
+  "projects": {
+    "animated-mind": {
+      "folder": "1OHMEv_b3GfZq9KRjV7rfls05aTOW6IFH",
+      "sheet": "1CdOU3IRXZ22ea6jA0L6waEVDcABv9P9uIJ9nKl6N9mU",
+      "media": "1klHU8oX3vT9hPIs1NQsyLgXGRBBlVSBi"
+    },
+    "arrival-center": {
+      "folder": "1Bn2NQAuYeiQT0NKMN1BMbDU-j4t83mTh",
+      "sheet": "13A36qmdctx935sKKMsZapElAzQfVce3I5zs7hPYYs0Q",
+      "media": "1tmAZrmPnatXOWRyPQXTpXdTdTVh2cnFf"
+    },
+    "aunties": {
+      "folder": "1sPmtRqawiRBY4l4zz57ohzWDpL2g6P5T",
+      "sheet": "1aXcvTci09lFxF8_YzdktnfOTwW9N3VkSPf1qFtiljv0",
+      "media": "1tBgoTcxcClte1YTmOEMwfLXDHcS0E63q"
+    },
+    "city-in-the-forest": {
+      "folder": "17UX6K_RCcETkQPYO9zL-55PEjtFxNxTL",
+      "sheet": "1PN4wBaFKCCT3shsu6GJ1K081lNQwEDj1CrHr5vPZwt8",
+      "media": "1R_kwCAkOxk2vuNC_pdhP1UTpCx0aiuvk"
+    },
+    "daddy": {
+      "folder": "1gPK3QRdkt2tniZTpUiprgfxi8l-7792j",
+      "sheet": "1TMUpJ0YLDwiPkWzuOkgdx9pzaSWZKt40hLe1RMVS1Vs",
+      "media": "1QQiyCObli2Fp3t-rsfprMMemwT_8MLnz"
+    },
+    "earth-to-michael": {
+      "folder": "1CcrEKUbF-qM1gl_gM8oi-0QmoNJBhgpP",
+      "sheet": "16RBgYT1Yg1LLxz3gEenIv5tkfzgc72Rr69dxoA22zJA",
+      "media": "1seUZsToaVz8lQZkok96zyi60kYt8vGrb"
+    },
+    "erins-law": {
+      "folder": "1ZqFKo-tQHfTkBkc3BEtF21paNH2ewwDQ",
+      "sheet": "1GE9ARvcPUVc3Vakm5kwESmS5tWGv7Q9uuJTgW3Vd-N4",
+      "media": "1TSdpu0Wx-n-QY2wvqoMYmNcOFHrsgfX0"
+    },
+    "father-figures": {
+      "folder": "12ByJverG8JtNdSSm_7YlfFRtkGc6x00g",
+      "sheet": "1AAOjgU3YdXPsB8afrD_EoeffFh0bzpbHf4NSYZQE8ck",
+      "media": "1BdlCp9qjNYzzjLP7toGiAAoxsn2z8W5T"
+    },
+    "god-of-sight": {
+      "folder": "1BMix_PYDAe8_84s69RCIYl1f6L8yYJc4",
+      "sheet": "1eEOUQfoGdsMXfMZ55HHdXjCxTAGzEkabdXl1fY2ZSuc",
+      "media": "1F_EmnoyFRI7kbYQ2buYCFSV2QYOaGbce"
+    },
+    "good-kids": {
+      "folder": "1Py2piMPn6z5U2igh5bHrH55a_VS_ZqxY",
+      "sheet": "1i_tZ7W7aGs8FF9mEQ3JpBxde6gIcF6oty4QFKj3EyNI",
+      "media": "1UV00R3ZWYbfs6bJwj671TuwRZ_fIKwEm"
+    },
+    "the-grind": {
+      "folder": "1bKUNbqcvn0u2LY8ILIhzraENdQX22b7c",
+      "sheet": "1_nhEbdeIScjvWazrDZ0sm07feYWACOkhqetXVs-0LYs",
+      "media": "1Tbzg9hVmly-tztWuU5ta_6rJNe8QIwDD"
+    },
+    "lift-off": {
+      "folder": "10SJpqXNBmSm8WUQy3IkPv4B5eTmP2MIF",
+      "sheet": "1ack9qVyY64RnL1ydNnmrxog0_TbMhlrvcxz_G97UyDI",
+      "media": "1_7qkAjqZXeece6_XCAMUNuCorqd9LcxY"
+    },
+    "making-the-line": {
+      "folder": "1pHsi9zNe9oUSnaxtbfnpUWUqUbZWYCLZ",
+      "sheet": "1EwuUm351hkb31i1AlGcRzw2dYEvJ-hMcWMKMozYek9I",
+      "media": "15KvtCStIK2To9pnaZUQDRFva_-Epw2oC"
+    },
+    "manhood": {
+      "folder": "1OVBkjKnUHa-ebERiGPhjgRfk4K1zCR_X",
+      "sheet": "1hpVMxvt1IajqUeI74sOM3fDWtfJWIFBXOAD0yPBwrFo",
+      "media": "1CXo1Zx_drhfUQg1lZAfo-N-Fv2gl6ou5"
+    },
+    "movement": {
+      "folder": "1SF_e9p_KGTJ3S9dmgZRoVbd-lT0X9ZXL",
+      "sheet": "1-yHTQCHeZpmZ-_SgH9zoAzrhZgjeZ2K4FHYLH5VG4Es",
+      "media": "1X-qeCghdqNNuzHrhZ7jZnfxJMIqeEK_G"
+    },
+    "screw-lucy": {
+      "folder": "1s_9EqsK9qoBGqhvWgpOhNOpB5RIpqnoL",
+      "sheet": "1gSbnVe5BQax8Kd2ESQ8m66S6JmYE6gMnvrqpk_8zPGs",
+      "media": "1DOUtk9OdUMP1afhOkemVdWcCjt42hTiB"
+    },
+    "state-of-gambling": {
+      "folder": "1enoCM22Kk15Y8i7zDQ4bT_v5kXuyersD",
+      "sheet": "1Q1_QYJPtphByLMI6TGrQKE_XK0HiRaT66JI_RTeDTNE",
+      "media": "1pdSO6JmNvYetlllWbBbsZ5H-UYplgiDn"
+    },
+    "talked-to-death": {
+      "folder": "195SIUB9oKP0tYHw-Z49KAxQVcV-IbLJ8",
+      "sheet": "1dmVnWaZLDNmq9-vvgOj2r1jp2xLWiYqSuQHEj7tuReQ",
+      "media": "1I-lDlA1OvN0H8rUNOCOxRBlObvFC0FyF"
+    },
+    "thank-you-for-listening": {
+      "folder": "1H8pru0hThFchuirrTWhMvsIro2he_mP7",
+      "sheet": "1FLRQ8kct-Vc1tAV93fvFK2zn6Ysj6JuV4s62lKktPH4",
+      "media": "1WLMZlbBN0UGx5oS4L_RoBbZK3CLkKtCk"
+    },
+    "vestibule": {
+      "folder": "1JZko80S9hQd9uFzCSy35dS7HSE2v1l4C",
+      "sheet": "1XQKEwCifumSzx8hq6tuS4h6_e0UXCwr4NrRVhrKWrgo",
+      "media": "13PDA4TwdnPL9Ph7rx4SdJJyGHv1SYAe-"
+    },
+    "walk-with-me": {
+      "folder": "1qLgC94sOQCzAAFQ2O_XpheHxm5FyTOug",
+      "sheet": "1TMIPwnk85QrLdem4tms2vRAVyqlyZtTM7NOH2qxwIhc",
+      "media": "1jyqAj8eNwlXnFmV7mm-Ki-340YbEBxPB"
+    },
+    "whale-like-me": {
+      "folder": "1LKqEJ2ooiYYLy45eHeiE9W5IEvZlGqBL",
+      "sheet": "1wgiLIBVglm_HciG3Zz-jsJ7Oth55ZHQjmQzeBCkNDBc",
+      "media": "1HJbhyLLkH85r8sl_Cj9CTYN99vTdFlNe"
+    },
+    "when-we-all-get-to-heaven": {
+      "folder": "1y__ii3ExRjQo_Y7BSAt_aHP1lgPo_eCl",
+      "sheet": "17u2DslrZfwsaJ8Y9xWSyepGxD_EnjAEBDJ9QotGk71w",
+      "media": "1g289IEzLGypzRGfLdaAU1aLbRk8z_0mE"
+    }
+  }
 }

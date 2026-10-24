@@ -68,6 +68,17 @@ git commit -am "..." && git push
 
 `npm run serve` previews the site at http://localhost:8080.
 
+## Team dashboard
+
+An unlisted page at https://nfh2025.rdgnbl.com/dashboard/ for the NFH team: one-click links to every Copysheet, Media folder and front-page doc, how complete each project is, visits per project and PDF downloads, sync health (edits that were skipped), recent changes, the daily broken-link check, and where visitors come from. Nothing links to it and search engines are told to skip it; anyone with the URL can open it.
+
+- Built by `scripts/dashboard/build-dashboard.js` from `scripts/dashboard/dashboard.html` (`npm run dashboard`). The Publish workflow rebuilds it on every run, so numbers are at most about 15 minutes old.
+- Visits are counted with GoatCounter (nonfictionhotlist.goatcounter.com) on the website only. The site counts each page and project once per visit, and PDF downloads as an event. The smoke test stubs GoatCounter, so test runs never count.
+- To show the numbers, the workflow needs a GoatCounter API key with read access in the repo secret `GOATCOUNTER_TOKEN`. Without it, the dashboard says how to connect it.
+- The link check (`npm run links`) runs daily and writes `content/link-check.json`. Social media sites block automated visits, so their links are listed as unchecked, not broken.
+- Drive IDs the dashboard links to live in `content/drive.json`. If the kit is rebuilt, update them.
+- `DASHBOARD_SAMPLE=1 npm run dashboard` fills in sample numbers for design previews. Never publish that.
+
 ## News, laurels and status
 
 These are edited in each project's sheet (Status on the Page tab, plus the Laurels and awards and News tabs). A news item needs a source link to appear. Laurels show under the logline on a project page, the first one appears on the project's card, and the newest news item shows as "Latest" above the tabs. `research/` keeps the October 2026 research trail that seeded them.

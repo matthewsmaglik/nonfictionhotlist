@@ -1,14 +1,16 @@
 name: Publish
 
 # Publishes the site. Runs on every push to main, every 15 minutes (to pick up edits made in
-# the Google Drive kit), and on demand from the Actions tab (Run workflow).
-# A scheduled run with no Drive changes stops after the pull step and publishes nothing.
+# the Google Drive kit), once a day for the link check, and on demand from the Actions tab (Run workflow).
+# A scheduled run with no Drive changes only refreshes the team dashboard (site/dashboard), which
+# carries live visit counts, and leaves the rest of the site as it is.
 
 on:
   push:
     branches: [main]
   schedule:
     - cron: "*/15 * * * *"
+    - cron: "23 10 * * *"     # daily link check, about 6:23 am New York time
   workflow_dispatch:
 
 permissions:
@@ -23,10 +25,13 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       publish: ${{ steps.decide.outputs.publish }}
+    env:
+      LINK_CHECK: ${{ github.event.schedule == '23 10 * * *' || github.event_name == 'workflow_dispatch' || hashFiles('content/link-check.json') == '' }}
     steps:
       - uses: actions/checkout@v5
         with:
           ref: main
+          fetch-depth: 0          # the dashboard's "Recent changes" reads the history
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -37,11 +42,17 @@ jobs:
         id: pull
         run: node scripts/content/pull-drive.js
 
+      - name: Check every outside link (daily)
+        id: links
+        if: env.LINK_CHECK == 'true'
+        continue-on-error: true
+        run: npm run links
+
       - name: Decide whether to publish
         id: decide
         run: |
           if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ steps.pull.outputs.changed }}" != "true" ] && [ "${{ steps.pull.outputs.problems_changed }}" != "true" ]; then
-            echo "publish=false" >> "$GITHUB_OUTPUT"; echo "No changes in Drive."
+            echo "publish=false" >> "$GITHUB_OUTPUT"; echo "No changes in Drive. Refreshing the dashboard only."
           else
             echo "publish=true" >> "$GITHUB_OUTPUT"
           fi
@@ -61,6 +72,23 @@ jobs:
           git commit -m "Update from Google Drive: ${SUMMARY}"
           git pull --rebase origin main
           git push origin HEAD:main
+
+      - name: Commit the link check
+        if: env.LINK_CHECK == 'true' && steps.links.outcome == 'success'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/link-check.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Daily link check"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Build the team dashboard
+        env:
+          GOATCOUNTER_TOKEN: ${{ secrets.GOATCOUNTER_TOKEN }}
+          DASHBOARD_OUT: ${{ steps.decide.outputs.publish == 'true' && 'site' || '.dash-out' }}
+        run: npm run dashboard
 
       - name: Install Chromium
         if: steps.decide.outputs.publish == 'true'
@@ -83,6 +111,18 @@ jobs:
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: Publish ${{ github.sha }}
+
+      - name: Refresh only the dashboard on gh-pages
+        if: steps.decide.outputs.publish != 'true'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./.dash-out
+          keep_files: true
+          cname: nfh2025.rdgnbl.com
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: Refresh dashboard
 
       # Fails the run (which emails the repo owner) only when a new problem shows up, so a
       # problem that sits in Drive doesn't send an alert every 15 minutes.

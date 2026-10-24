@@ -4,3 +4,5 @@ node_modules/
 __pycache__/
 site/hotlist-*.pdf
 .kit-test/
+site/dashboard/
+.dash-out/

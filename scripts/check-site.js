@@ -33,7 +33,10 @@ function serve() {
   const note = (where, msg) => problems.push(`${where}: ${msg}`);
 
   for (const [label, viewport] of [["desktop", { width: 1360, height: 900 }], ["phone", { width: 390, height: 844 }]]) {
-    const page = await browser.newPage({ viewport });
+    const page = await browser.newPage({ viewport, acceptDownloads: true });
+    // Visit counting is stubbed: nothing reaches GoatCounter, and the calls are recorded so they can be checked.
+    await page.route("**/gc.zgo.at/**", r => r.fulfill({ contentType: "text/javascript",
+      body: "window.goatcounter = { count: function (o) { (window.__gc = window.__gc || []).push(o); } };" }));
     // Failed loads are reported with their URL by the request handlers below, so skip the generic console line.
     page.on("console", m => { if (m.type() === "error" && !m.text().startsWith("Failed to load resource")) note(label, "console error: " + m.text()); });
     page.on("pageerror", e => note(label, "script error: " + e.message));
@@ -60,7 +63,33 @@ function serve() {
     }
     const pdfVisible = await page.evaluate(() => { location.hash = "cover"; return new Promise(r => setTimeout(() => r(!document.getElementById("pdfBtn").hidden), 150)); });
     if (!pdfVisible) note(label, "Download PDF button is hidden");
+    else { await page.click("#pdfBtn"); await page.waitForTimeout(200); }
+    const counted = await page.evaluate(() => (window.__gc || []).map(o => o.path + (o.event ? " (event)" : "")));
+    for (const want of ["/", "/welcome", "/" + slugs[0], "pdf-download (event)"])
+      if (!counted.includes(want)) note(label, `visit counting: "${want}" was not counted`);
+    if (counted.filter(c => c === "/" + slugs[0]).length > 1) note(label, "visit counting: a project counted more than once for one visit (tabs should not count)");
     console.log(`${label}: checked ${routes.length} views`);
+    await page.close();
+  }
+
+  // Team dashboard (unlisted). Built by npm run dashboard; skipped if it hasn't been built.
+  for (const [label, viewport] of [["dashboard desktop", { width: 1360, height: 900 }], ["dashboard phone", { width: 390, height: 844 }]]) {
+    const page = await browser.newPage({ viewport });
+    page.on("pageerror", e => note(label, "script error: " + e.message));
+    const res = await page.goto(base + "/dashboard/", { waitUntil: "domcontentloaded" });
+    if (!res || res.status() === 404) { await page.close(); if (label.endsWith("desktop")) console.log("dashboard: not built, skipped"); break; }
+    await page.waitForTimeout(300);
+    const d = await page.evaluate(() => ({
+      rows: document.querySelectorAll("#projects .row:not(.head)").length,
+      sheets: [...document.querySelectorAll("#projects a.act.primary")].filter(a => a.href.includes("docs.google.com/spreadsheets")).length,
+      noindex: !!document.querySelector('meta[name=robots][content*=noindex]'),
+      overflow: document.documentElement.scrollWidth > innerWidth + 1
+    }));
+    if (!d.rows) note(label, "no project rows");
+    if (d.sheets !== d.rows) note(label, `${d.rows - d.sheets} projects missing a Copysheet link`);
+    if (!d.noindex) note(label, "missing noindex");
+    if (d.overflow) note(label, "page scrolls sideways");
+    console.log(`${label}: ${d.rows} projects`);
     await page.close();
   }
 

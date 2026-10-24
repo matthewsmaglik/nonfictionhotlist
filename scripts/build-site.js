@@ -17,6 +17,21 @@ const bodyPart = src.slice(cut).trim();
 const title = (headPart.match(/<title>([^<]*)<\/title>/) || [, "Nonfiction Hotlist"])[1];
 const description = "The 2025 Nonfiction Hotlist: 23 exceptional unproduced nonfiction projects, what each needs, and how to help.";
 
+// Visit counting for the website only (the Claude version has no window.nfhTrack, so it counts nothing).
+// GoatCounter: no cookies, no personal data. Automatic counting is off because the site routes with the
+// URL hash; page.html calls nfhTrack(path, title[, event]) itself. Calls made before the script loads queue up.
+// A browser with localStorage "skipgc" set (the dashboard's "don't count me" switch, and the smoke tests) is skipped.
+const GOATCOUNTER = "https://nonfictionhotlist.goatcounter.com/count";
+const ANALYTICS = `<script>
+window.nfhTrack = function (path, title, event) {
+  try { if (localStorage.getItem("skipgc") === "t") return; } catch (e) {}
+  var go = function () { window.goatcounter.count({ path: path, title: title || path, event: !!event }); };
+  if (window.goatcounter && window.goatcounter.count) go(); else (window.nfhQueue = window.nfhQueue || []).push(go);
+};
+</script>
+<script data-goatcounter="${GOATCOUNTER}" data-goatcounter-settings='{"no_onload": true}' async src="https://gc.zgo.at/count.js"
+  onload="(window.nfhQueue || []).forEach(function (f) { f(); }); window.nfhQueue = [];"></script>`;
+
 const html = `<!doctype html>
 <html lang="en">
 <head>
@@ -42,6 +57,7 @@ img { max-width: 100%; }
 [hidden] { display: none !important; }
 </style>
 ${headPart}
+${ANALYTICS}
 </head>
 <body>
 ${bodyPart}
