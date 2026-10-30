@@ -1,13 +1,15 @@
-// Builds site/index.html from src/page.html.
-// src/page.html is the page body as published to the Claude artifact (no <html>/<head>);
+// Builds site/<year>/index.html from years/<year>/page.html.
+// The year's page is the page body as published to the Claude artifact (no <html>/<head>);
 // this wraps it in a full document with metadata for the public website.
-// Run: npm run build
+// Run: npm run build   (NFH_YEAR=2026 npm run build for another year)
 const fs = require("fs");
 const path = require("path");
+const Y = require("./year");
 
-const REPO = path.resolve(__dirname, "..");
-const SITE_URL = "https://nfh2025.rdgnbl.com";
-const src = fs.readFileSync(path.join(REPO, "src", "page.html"), "utf8");
+const SITE_URL = Y.SITE_URL;
+const src = fs.readFileSync(Y.PAGE, "utf8");
+const content = JSON.parse(fs.readFileSync(Y.file("content.json"), "utf8"));
+const count = Object.keys(content.projects).length;
 
 // Everything up to the end of the first <style> block (title, font links, styles) belongs in <head>.
 const cut = src.indexOf("</style>") + "</style>".length;
@@ -15,16 +17,21 @@ const headPart = src.slice(0, cut).replace(/<meta name="claude:[^>]*>\n?/g, "");
 const bodyPart = src.slice(cut).trim();
 
 const title = (headPart.match(/<title>([^<]*)<\/title>/) || [, "Nonfiction Hotlist"])[1];
-const description = "The 2025 Nonfiction Hotlist: 23 exceptional unproduced nonfiction projects, what each needs, and how to help.";
+const description = count
+  ? `The ${Y.Y} Nonfiction Hotlist: ${count} exceptional unproduced nonfiction projects, what each needs, and how to help.`
+  : `The ${Y.Y} Nonfiction Hotlist.`;
 
 // Visit counting for the website only (the Claude version has no window.nfhTrack, so it counts nothing).
 // GoatCounter: no cookies, no personal data. Automatic counting is off because the site routes with the
 // URL hash; page.html calls nfhTrack(path, title[, event]) itself. Calls made before the script loads queue up.
 // A browser with localStorage "skipgc" set (the dashboard's "don't count me" switch, and the smoke tests) is skipped.
-const GOATCOUNTER = "https://nonfictionhotlist.goatcounter.com/count";
-const ANALYTICS = `<script>
+// Each year counts under its own prefix ("/2026/manhood", "pdf-download-2026"); 2025 keeps its original paths.
+// A draft year counts nothing.
+const GOATCOUNTER = `${Y.config.goatcounter}/count`;
+const ANALYTICS = Y.isDraft ? "" : `<script>
 window.nfhTrack = function (path, title, event) {
   try { if (localStorage.getItem("skipgc") === "t") return; } catch (e) {}
+  path = event ? (path === "pdf-download" ? ${JSON.stringify(Y.pdfEvent)} : path) : ${JSON.stringify(Y.info.trackPrefix)} + path;
   var go = function () { window.goatcounter.count({ path: path, title: title || path, event: !!event }); };
   if (window.goatcounter && window.goatcounter.count) go(); else (window.nfhQueue = window.nfhQueue || []).push(go);
 };
@@ -38,7 +45,7 @@ const html = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="${description}">
-<meta name="theme-color" content="#2e4a3b">
+<meta name="theme-color" content="#2e4a3b">${Y.isDraft ? '\n<meta name="robots" content="noindex, nofollow">' : ""}
 <link rel="canonical" href="${SITE_URL}/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
@@ -65,5 +72,8 @@ ${bodyPart}
 </html>
 `;
 
-fs.writeFileSync(path.join(REPO, "site", "index.html"), html);
-console.log("wrote site/index.html", (html.length / 1024).toFixed(0) + " KB");
+fs.mkdirSync(Y.OUT, { recursive: true });
+fs.writeFileSync(path.join(Y.OUT, "index.html"), html);
+// The tab icon carries the year's last two digits.
+fs.writeFileSync(path.join(Y.OUT, "favicon.svg"), fs.readFileSync(path.join(Y.REPO, "src", "favicon.svg"), "utf8").replace("__YY__", Y.Y.slice(-2)));
+console.log(`wrote site/${Y.Y}/index.html`, (html.length / 1024).toFixed(0) + " KB");

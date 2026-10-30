@@ -1,4 +1,4 @@
-// Builds the team dashboard at site/dashboard/index.html (unlisted: nothing links to it, search engines told to skip).
+// Builds the team dashboard at site/<year>/dashboard/index.html (unlisted: nothing links to it, search engines told to skip).
 // Everything is baked into the page at build time:
 //   - links to every Copysheet, Media folder and front-page doc (content/drive.json)
 //   - how complete each project is (content/content.json + content/layout.json)
@@ -11,15 +11,17 @@ const path = require("path");
 const { execSync } = require("child_process");
 const { PROJECT, DOCS } = require("../content/spec");
 
-const REPO = path.resolve(__dirname, "..", "..");
-const read = f => JSON.parse(fs.readFileSync(path.join(REPO, f), "utf8"));
-const content = read("content/content.json");
-const layout = read("content/layout.json");
-const drive = read("content/drive.json");
-const SITE_URL = "https://nfh2025.rdgnbl.com";
-const REPO_URL = "https://github.com/matthewsmaglik/nonfictionhotlist";
-const GC = "https://nonfictionhotlist.goatcounter.com";
-const COUNTING_SINCE = "2026-10-24T00:00:00Z";
+const Y = require("../year");
+const REPO = Y.REPO;
+const read = f => JSON.parse(fs.readFileSync(Y.file(f), "utf8"));
+const content = read("content.json");
+const layout = read("layout.json");
+const drive = fs.existsSync(Y.file("drive.json")) ? read("drive.json") : { front: {}, order: {}, projects: {} };
+const SITE_URL = Y.SITE_URL;
+const REPO_URL = Y.REPO_URL;
+const GC = Y.config.goatcounter;
+const COUNTING_SINCE = Y.info.countingSince;
+const CONTENT_PATH = path.relative(REPO, Y.file("content.json"));
 
 const sheetUrl = id => `https://docs.google.com/spreadsheets/d/${id}/edit`;
 const docUrl = id => `https://docs.google.com/document/d/${id}/edit`;
@@ -41,10 +43,11 @@ const FIELD_LABEL = Object.fromEntries([
 function changes(limit = 30) {
   let lines = [];
   try {
-    lines = execSync(`git log -n ${limit + 1} --format=%H%x09%cI%x09%s -- content/content.json`, { cwd: REPO })
+    lines = execSync(`git log -n ${limit + 1} --format=%H%x09%cI%x09%s -- ${CONTENT_PATH} content/content.json`, { cwd: REPO })
       .toString().trim().split("\n").filter(Boolean);
   } catch { return []; }
-  const show = (rev) => { try { return JSON.parse(execSync(`git show ${rev}:content/content.json`, { cwd: REPO, stdio: ["ignore", "pipe", "ignore"] }).toString()); } catch { return null; } };
+  // Before the move to years/, 2025's text lived at content/content.json.
+  const show = (rev) => { for (const f of [CONTENT_PATH, "content/content.json"]) { try { return JSON.parse(execSync(`git show ${rev}:${f}`, { cwd: REPO, stdio: ["ignore", "pipe", "ignore"] }).toString()); } catch {} } return null; };
   const out = [];
   for (const line of lines) {
     const [hash, date, subject] = line.split("\t");
@@ -87,14 +90,21 @@ async function stats() {
   };
   try {
     const [total, hits, refs] = await Promise.all([get("/stats/total"), get("/stats/hits?limit=100"), get("/stats/toprefs?limit=12")]);
+    // GoatCounter counts the whole domain; keep only this year's paths, keyed without the year prefix.
+    const P = Y.info.trackPrefix;
+    const others = Object.values(Y.config.years).map(y => y.trackPrefix).filter(t => t && t !== P);
+    const mine = h => h.event ? h.path === Y.pdfEvent
+      : P ? h.path === P || h.path.startsWith(P + "/") : !others.some(t => h.path === t || h.path.startsWith(t + "/"));
+    const yearHits = (hits.hits || []).filter(mine).map(h => ({ ...h, path: !h.event && P ? h.path.slice(P.length) || "/" : h.path }));
     const byPath = {};
-    for (const h of hits.hits || []) byPath[h.path] = (byPath[h.path] || 0) + (h.count || 0);
+    for (const h of yearHits) byPath[h.path] = (byPath[h.path] || 0) + (h.count || 0);
+    const multiYear = Object.keys(Y.config.years).filter(y => Y.config.years[y].status === "live").length > 1;
     return {
-      total: total.total || 0,
-      pdf: byPath["pdf-download"] || 0,
+      total: multiYear ? yearHits.filter(h => !h.event).reduce((n, h) => n + (h.count || 0), 0) : (total.total || 0),
+      pdf: byPath[Y.pdfEvent] || 0,
       byPath,
       refs: (refs.stats || []).map(r => ({ name: r.name || "(direct or unknown)", count: r.count || 0 })),
-      pages: (hits.hits || []).filter(h => !h.event).sort((a, b) => b.count - a.count).slice(0, 8).map(h => ({ path: h.path, title: h.title, count: h.count }))
+      pages: yearHits.filter(h => !h.event).sort((a, b) => b.count - a.count).slice(0, 8).map(h => ({ path: h.path, title: h.title, count: h.count }))
     };
   } catch (e) {
     console.warn("stats unavailable:", e.message);
@@ -112,9 +122,9 @@ function sampleStats() {
 
 /* ---------- assemble ---------- */
 (async () => {
-  const problemsFile = path.join(REPO, "content", "sync-problems.txt");
+  const problemsFile = Y.file("sync-problems.txt");
   const problems = fs.existsSync(problemsFile) ? fs.readFileSync(problemsFile, "utf8").split("\n").filter(Boolean) : [];
-  const linkFile = path.join(REPO, "content", "link-check.json");
+  const linkFile = Y.file("link-check.json");
   const links = fs.existsSync(linkFile) ? JSON.parse(fs.readFileSync(linkFile, "utf8")) : null;
   const st = await stats();
   const log = changes();
@@ -135,14 +145,14 @@ function sampleStats() {
     generatedAt: new Date().toISOString(), year: content.year, siteUrl: SITE_URL, repoUrl: REPO_URL, gc: GC,
     publishUrl: `${REPO_URL}/actions/workflows/publish.yml`,
     front: [
-      { label: "Cover", url: docUrl(drive.front.cover) },
-      { label: "Welcome", url: docUrl(drive.front.welcome) },
-      { label: "About", url: docUrl(drive.front.about) },
-      { label: "Running order", url: sheetUrl(drive.order.sheet) },
-      { label: "Front page media", url: folderUrl(drive.front.media) },
-      { label: "Editors' guide", url: docUrl(drive.guide) }
-    ],
-    driveRoot: folderUrl(drive.root),
+      { label: "Cover", url: drive.front.cover && docUrl(drive.front.cover) },
+      { label: "Welcome", url: drive.front.welcome && docUrl(drive.front.welcome) },
+      { label: "About", url: drive.front.about && docUrl(drive.front.about) },
+      { label: "Running order", url: drive.order.sheet && sheetUrl(drive.order.sheet) },
+      { label: "Front page media", url: drive.front.media && folderUrl(drive.front.media) },
+      { label: "Editors' guide", url: drive.guide && docUrl(drive.guide) }
+    ].filter(f => f.url),
+    driveRoot: drive.root ? folderUrl(drive.root) : "",
     projects,
     sync: { problems, lastDriveChange: (log.find(c => c.fromDrive) || {}).date || null },
     changes: log,
@@ -152,7 +162,7 @@ function sampleStats() {
 
   const tpl = fs.readFileSync(path.join(__dirname, "dashboard.html"), "utf8");
   const html = tpl.replace("/*__DATA__*/null", JSON.stringify(data).replace(/</g, "\\u003c"));
-  const outDir = path.join(REPO, process.env.DASHBOARD_OUT || "site", "dashboard");
+  const outDir = process.env.DASHBOARD_OUT ? path.join(REPO, process.env.DASHBOARD_OUT, Y.Y, "dashboard") : path.join(Y.OUT, "dashboard");
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, "index.html"), html);
   console.log(`dashboard written: ${projects.length} projects, ${log.length} change entries, ${problems.length} sync problems, stats ${st ? (st.error ? "error" : "on") : "not connected"}`);

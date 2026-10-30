@@ -16,12 +16,13 @@
  */
 
 const KIT = {
+  "year": "2025",
   "rootFolderId": "1Eu7dbIrIPNk2auC9DPzxwy3crbAWR__u",
-  "contentUrl": "https://raw.githubusercontent.com/matthewsmaglik/nonfictionhotlist/main/content/content.json",
-  "layoutUrl": "https://raw.githubusercontent.com/matthewsmaglik/nonfictionhotlist/main/content/layout.json",
-  "siteBase": "https://raw.githubusercontent.com/matthewsmaglik/nonfictionhotlist/main/site/",
-  "siteUrl": "https://nfh2025.rdgnbl.com",
-  "repoUrl": "https://github.com/matthewsmaglik/nonfictionhotlist",
+  "contentUrl": "https://raw.githubusercontent.com/Nonfiction-Hotlist/list/main/years/2025/content/content.json",
+  "layoutUrl": "https://raw.githubusercontent.com/Nonfiction-Hotlist/list/main/years/2025/content/layout.json",
+  "siteBase": "https://raw.githubusercontent.com/Nonfiction-Hotlist/list/main/site/2025/",
+  "siteUrl": "https://list.nonfictionhotlist.com/2025",
+  "repoUrl": "https://github.com/Nonfiction-Hotlist/list",
   "spec": {
     "PROJECT": {
       "page": [

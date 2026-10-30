@@ -1,9 +1,9 @@
 name: Publish
 
-# Publishes the site. Runs on every push to main, every 15 minutes (to pick up edits made in
-# the Google Drive kit), once a day for the link check, and on demand from the Actions tab (Run workflow).
-# A scheduled run with no Drive changes only refreshes the team dashboard (site/dashboard), which
-# carries live visit counts, and leaves the rest of the site as it is.
+# Publishes the site, every year in years.json. Runs on every push to main, every 15 minutes (to pick up
+# edits made in the Google Drive kits), once a day for the link check, and on demand from the Actions tab.
+# A scheduled run with no Drive changes only refreshes the team dashboards (site/<year>/dashboard), which
+# carry live visit counts, and leaves the rest of the site as it is.
 
 on:
   push:
@@ -42,16 +42,27 @@ jobs:
           cache: npm
       - run: npm ci
 
-      - name: Pull text from the Google Drive kit
+      - name: Pull text from each year's Google Drive kit
         id: pull
-        run: node scripts/content/pull-drive.js
+        run: |
+          # Each year reports what changed; combine them into one set of outputs.
+          changed=false; problems_changed=false; problems=0; summary=""
+          for Y in $(node -p 'Object.keys(require("./years.json").years).join(" ")'); do
+            [ -f years/$Y/content/drive.json ] || { echo "$Y: no Drive kit connected yet"; continue; }
+            out=$(mktemp); NFH_YEAR=$Y GITHUB_OUTPUT=$out node scripts/content/pull-drive.js
+            v() { grep "^$1=" "$out" | cut -d= -f2-; }
+            [ "$(v changed)" = true ] && { changed=true; summary="$summary${summary:+; }$Y: $(v summary)"; }
+            [ "$(v problems_changed)" = true ] && problems_changed=true
+            problems=$((problems + $(v problems)))
+          done
+          { echo "changed=$changed"; echo "problems_changed=$problems_changed"; echo "problems=$problems"; echo "summary=${summary:-skipped edits list}" | cut -c1-320; } >> "$GITHUB_OUTPUT"
 
       # Daily at 10:23 UTC, on manual runs, and whenever there is no result yet.
       - name: Check every outside link (daily)
         id: links
-        if: github.event.schedule == '23 10 * * *' || inputs.mode == 'full' || hashFiles('content/link-check.json') == ''
+        if: github.event.schedule == '23 10 * * *' || inputs.mode == 'full' || hashFiles('years/*/content/link-check.json') == ''
         continue-on-error: true
-        run: npm run links
+        run: node scripts/each-year.js links
 
       - name: Decide whether to publish
         id: decide
@@ -62,9 +73,9 @@ jobs:
             echo "publish=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Build the site from content
+      - name: Build every year from content
         if: steps.decide.outputs.publish == 'true'
-        run: npm run content && npm run build
+        run: npm run root && node scripts/each-year.js build
 
       - name: Commit text changes from Drive
         if: steps.pull.outputs.changed == 'true' || steps.pull.outputs.problems_changed == 'true'
@@ -73,7 +84,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add content/content.json content/sync-problems.txt src/page.html site/index.html
+          git add years/*/content/content.json years/*/content/sync-problems.txt years/*/page.html site/*/index.html
           git commit -m "Update from Google Drive: ${SUMMARY}"
           git pull --rebase origin main
           git push origin HEAD:main
@@ -83,27 +94,27 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add content/link-check.json
+          git add years/*/content/link-check.json
           git diff --cached --quiet && exit 0
           git commit -m "Daily link check"
           git pull --rebase origin main
           git push origin HEAD:main
 
-      - name: Build the team dashboard
+      - name: Build the team dashboards
         env:
           GOATCOUNTER_TOKEN: ${{ secrets.GOATCOUNTER_TOKEN }}
           DASHBOARD_OUT: ${{ steps.decide.outputs.publish == 'true' && 'site' || '.dash-out' }}
-        run: npm run dashboard
+        run: node scripts/each-year.js dashboard
 
       - name: Install Chromium
         if: steps.decide.outputs.publish == 'true'
         run: npx playwright install --with-deps chromium
-      - name: Build the PDF
+      - name: Build the PDFs
         if: steps.decide.outputs.publish == 'true'
-        run: npm run pdf
+        run: node scripts/each-year.js pdf
       - name: Smoke test
         if: steps.decide.outputs.publish == 'true'
-        run: npm run check
+        run: node scripts/each-year.js check
 
       - name: Publish site/ to the gh-pages branch
         if: steps.decide.outputs.publish == 'true'
@@ -111,7 +122,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
-          cname: nfh2025.rdgnbl.com
+          cname: list.nonfictionhotlist.com
           force_orphan: true
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
@@ -124,7 +135,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./.dash-out
           keep_files: true
-          cname: nfh2025.rdgnbl.com
+          cname: list.nonfictionhotlist.com
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: Refresh dashboard
@@ -134,8 +145,9 @@ jobs:
       - name: Flag Drive edits that were skipped
         if: always() && steps.pull.outputs.problems != '0' && steps.pull.outputs.problems != ''
         run: |
-          { echo "### Drive edits that were skipped"; echo; echo "The site kept the previous text for these. Fix them in Drive and they publish on the next run."; echo; sed 's/^/- /' content/sync-problems.txt; } >> "$GITHUB_STEP_SUMMARY"
-          while IFS= read -r line; do echo "::warning title=Skipped Drive edit::$line"; done < content/sync-problems.txt
+          for f in years/*/content/sync-problems.txt; do [ -s "$f" ] && sed "s|^|$(basename $(dirname $(dirname $f))) · |" "$f"; done > problems.txt || true
+          { echo "### Drive edits that were skipped"; echo; echo "The site kept the previous text for these. Fix them in Drive and they publish on the next run."; echo; sed 's/^/- /' problems.txt; } >> "$GITHUB_STEP_SUMMARY"
+          while IFS= read -r line; do echo "::warning title=Skipped Drive edit::$line"; done < problems.txt
           if [ "${{ steps.pull.outputs.problems_changed }}" = "true" ]; then exit 1; fi
 
   https:
@@ -157,7 +169,7 @@ jobs:
           echo "::notice title=Pages::$(info '{source: .source.branch, cname, https_enforced, cert: .https_certificate.state}')"
           state=$(info '.https_certificate.state // "none"')
           if [ "$state" = "none" ]; then
-            echo "::warning title=HTTPS::No certificate requested. In Settings > Pages, remove the custom domain, save, add nfh2025.rdgnbl.com back, save."
+            echo "::warning title=HTTPS::No certificate requested. In Settings > Pages, remove the custom domain, save, add list.nonfictionhotlist.com back, save."
           elif [ "$state" = "approved" ] && [ "$(info .https_enforced)" != "true" ]; then
             echo "::warning title=HTTPS::Certificate is ready. Tick Enforce HTTPS in Settings > Pages."
           else
@@ -175,16 +187,16 @@ jobs:
       - uses: actions/checkout@v5
       - name: DNS and HTTPS
         run: |
-          D=nfh2025.rdgnbl.com
+          D=list.nonfictionhotlist.com
           note() { v="${2:-(none)}"; echo "::notice title=$1::$v"; echo "$1: $v"; }
           note "DNS CNAME" "$(dig +short $D CNAME | tr '\n' ' ')"
           note "DNS A" "$(dig +short $D A | tr '\n' ' ')"
-          note "rdgnbl.com nameservers" "$(dig +short rdgnbl.com NS | tr '\n' ' ')"
+          note "nonfictionhotlist.com nameservers" "$(dig +short nonfictionhotlist.com NS | tr '\n' ' ')"
           note "HTTP" "$(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}' http://$D/)"
           note "HTTPS" "$(curl -s -o /dev/null -w '%{http_code} %{ssl_verify_result}' https://$D/ 2>&1 || echo failed)"
           note "HTTPS certificate" "$(echo | openssl s_client -servername $D -connect $D:443 2>/dev/null | openssl x509 -noout -subject -issuer 2>/dev/null | tr '\n' ' ')"
           note "Served page" "$(curl -sL https://$D/ | grep -o '<title>[^<]*' | head -1)"
-          note "github.io copy" "$(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}' https://matthewsmaglik.github.io/nonfictionhotlist/)"
+          note "github.io copy" "$(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}' https://nonfiction-hotlist.github.io/list/)"
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -193,7 +205,7 @@ jobs:
       - name: Smoke test the live site
         run: |
           sleep 60
-          URL=https://nfh2025.rdgnbl.com
-          curl -sf -o /dev/null $URL/ || { URL=http://nfh2025.rdgnbl.com; echo "::warning title=Live check::HTTPS not ready yet, testing $URL"; }
-          npm run check -- $URL 2>&1 | tee live.txt || true
+          URL=https://list.nonfictionhotlist.com
+          curl -sf -o /dev/null $URL/ || { URL=http://list.nonfictionhotlist.com; echo "::warning title=Live check::HTTPS not ready yet, testing $URL"; }
+          for Y in $(node -p 'Object.keys(require("./years.json").years).join(" ")'); do NFH_YEAR=$Y npm run check -- $URL 2>&1 | tee -a live.txt || true; done
           while IFS= read -r line; do echo "::warning title=Live check::$line"; done < <(grep -E '^ - |all clear' live.txt)

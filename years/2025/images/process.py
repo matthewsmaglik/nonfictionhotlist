@@ -3,8 +3,8 @@ Run before process_late.py, then apply_media.py."""
 from PIL import Image, ImageOps
 import os, json, sys
 from pathlib import Path
-REPO = Path(__file__).resolve().parents[2]
-SITE = REPO / "site"
+REPO = Path(__file__).resolve().parents[3]
+SITE = REPO / "site" / "2025"
 # Folder of original assets (one subfolder per filmmaker). Override with ASSETS_DIR.
 R = os.environ.get("ASSETS_DIR", os.path.expanduser("~/Documents/Nonfiction Hotlist/NFH 2025 SELECTED PROJECT ASSETS")).rstrip("/") + "/"
 MEDIA = Path(__file__).with_name("media.json")

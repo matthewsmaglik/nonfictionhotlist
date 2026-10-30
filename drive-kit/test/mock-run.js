@@ -2,16 +2,17 @@
 // each sheet and doc would export (CSV / markdown) so pull-drive.js can read it back.
 // It catches logic errors and layout drift between the kit and the reader; it does not
 // prove every Google API call is valid (that is checked on the real run).
-//   node drive-kit/test/mock-run.js OUT_DIR
+//   node drive-kit/test/mock-run.js OUT_DIR     (NFH_YEAR picks the year, as everywhere else)
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 
-const REPO = path.resolve(__dirname, "..", "..");
+const Y = require("../../scripts/year");
+const REPO = Y.REPO;
 const OUT = process.argv[2];
 fs.mkdirSync(OUT, { recursive: true });
-const content = fs.readFileSync(path.join(REPO, "content", "content.json"), "utf8");
-const layout = fs.readFileSync(path.join(REPO, "content", "layout.json"), "utf8");
+const content = fs.readFileSync(Y.file("content.json"), "utf8");
+const layout = fs.readFileSync(Y.file("layout.json"), "utf8");
 
 let nextId = 1;
 const files = {};      // id -> { kind, name, sheets | doc }
@@ -87,7 +88,7 @@ const folder = name => {
   });
   return api;
 };
-const root = folder("NFH 2025");
+const root = folder(`NFH ${Y.Y}`);
 
 const sandbox = {
   Logger: { log: m => console.log("  log:", m) },
@@ -106,7 +107,7 @@ const sandbox = {
 // --slow-clock: each clock read moves time forward 20 seconds, forcing pauses, to test resuming.
 if (process.argv.includes("--slow-clock")) { let t = 0; sandbox.Date = { now: () => (t += 20000) }; }
 vm.createContext(sandbox);
-vm.runInContext(fs.readFileSync(path.join(REPO, "drive-kit", "setup.gs"), "utf8"), sandbox);
+vm.runInContext(fs.readFileSync(path.join(REPO, "drive-kit", `setup-${Y.Y}.gs`), "utf8"), sandbox);
 let runs = 0;
 do { const before = calls.triggers; runs++; vm.runInContext(runs === 1 ? "buildKit()" : "continueKit()", sandbox); if (calls.triggers === before) break; } while (runs < 100);
 console.log(`runs: ${runs}`);

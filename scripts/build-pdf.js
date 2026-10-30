@@ -1,12 +1,13 @@
-// Builds hotlist-2025.pdf from the same SITE/PROJECTS data the microsite uses.
-// Run: npm run pdf   (writes site/hotlist-<year>.pdf)
+// Builds hotlist-<year>.pdf from the same SITE/PROJECTS data the microsite uses.
+// Run: npm run pdf   (writes site/<year>/hotlist-<year>.pdf)
 const fs = require("fs");
 const path = require("path");
 const { chromium } = require("playwright");
+const YR = require("./year");
 
-const REPO = path.resolve(__dirname, "..");
-const ROOT = path.join(REPO, "site");
-const site = fs.readFileSync(path.join(REPO, "src", "page.html"), "utf8");
+const REPO = YR.REPO;
+const ROOT = YR.OUT;
+const site = fs.readFileSync(YR.PAGE, "utf8");
 const script = site.match(/<script>([\s\S]*?)<\/script>/)[1];
 const dataSrc = script.slice(script.indexOf("const SITE ="), script.indexOf("/* ============================================================\n   Rendering."));
 const { SITE, PROJECTS } = new Function(dataSrc + "; return { SITE, PROJECTS };")();

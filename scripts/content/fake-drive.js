@@ -8,7 +8,7 @@ const { PROJECT, DOCS, ORDER } = require("./spec");
 const out = process.argv[2];
 if (!out) throw new Error("usage: fake-drive.js OUT_DIR");
 fs.mkdirSync(out, { recursive: true });
-const c = JSON.parse(fs.readFileSync(path.resolve(__dirname, "..", "..", "content", "content.json"), "utf8"));
+const c = JSON.parse(fs.readFileSync(require("../year").file("content.json"), "utf8"));
 
 const csv = rows => rows.map(r => r.map(v => {
   v = v == null ? "" : String(v);

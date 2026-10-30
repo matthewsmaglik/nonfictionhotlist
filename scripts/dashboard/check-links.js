@@ -4,9 +4,9 @@
 const fs = require("fs");
 const path = require("path");
 
-const REPO = path.resolve(__dirname, "..", "..");
-const OUT = path.join(REPO, "content", "link-check.json");
-const content = JSON.parse(fs.readFileSync(path.join(REPO, "content", "content.json"), "utf8"));
+const Y = require("../year");
+const OUT = Y.file("link-check.json");
+const content = JSON.parse(fs.readFileSync(Y.file("content.json"), "utf8"));
 
 const SOCIAL = /(^|\.)(instagram|facebook|fb|linkedin|x|twitter|tiktok|threads|youtube|vimeo)\.com$/i;
 const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36";

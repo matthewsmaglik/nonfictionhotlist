@@ -1,12 +1,13 @@
 // Smoke test for the site. Visits every page and project, and reports
 // console errors, failed requests, images that don't load, sideways scrolling on phones,
 // and whether the PDF is reachable.
-// Run against a local copy:  npm run check
-// Run against the live site: npm run check -- https://nfh2025.rdgnbl.com
+// Run against a local copy:  npm run check            (NFH_YEAR=2026 npm run check for another year)
+// Run against the live site: npm run check -- https://list.nonfictionhotlist.com
 const { chromium } = require("playwright");
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const Y = require("./year");
 
 const SITE_DIR = path.resolve(__dirname, "..", "site");
 const TYPES = { ".html": "text/html", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".pdf": "application/pdf", ".js": "text/javascript", ".css": "text/css" };
@@ -27,13 +28,18 @@ function serve() {
 (async () => {
   let base = process.argv[2], srv;
   if (!base) { srv = await serve(); base = `http://localhost:${srv.address().port}`; }
-  base = base.replace(/\/$/, "");
-  const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
+  base = base.replace(/\/$/, "") + "/" + Y.Y;
+  const browser = await chromium.launch({ ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
+    ...(process.env.CHECK_OFFLINE ? { args: ["--no-proxy-server"] } : {}) });
   const problems = [];
   const note = (where, msg) => problems.push(`${where}: ${msg}`);
+  let slugs = [];
 
   for (const [label, viewport] of [["desktop", { width: 1360, height: 900 }], ["phone", { width: 390, height: 844 }]]) {
     const page = await browser.newPage({ viewport, acceptDownloads: true });
+    // CHECK_OFFLINE=1 blocks every outside request (fonts and the like), for machines without internet.
+    // Registered first so the GoatCounter stub below still applies.
+    if (process.env.CHECK_OFFLINE && !process.argv[2]) await page.route(/^https?:\/\/(?!localhost)/, r => r.abort());
     // Visit counting is stubbed: nothing reaches GoatCounter, and the calls are recorded so they can be checked.
     await page.route("**/gc.zgo.at/**", r => r.fulfill({ contentType: "text/javascript",
       body: "window.goatcounter = { count: function (o) { (window.__gc = window.__gc || []).push(o); } };" }));
@@ -44,14 +50,16 @@ function serve() {
     page.on("response", r => { if (r.status() >= 400) note(label, `HTTP ${r.status()}: ${r.url()}`); });
 
     await page.goto(base + "/", { waitUntil: "networkidle" });
-    const slugs = await page.evaluate(() => PROJECTS.map(p => p.slug));
+    slugs = await page.evaluate(() => PROJECTS.map(p => p.slug));
     const pages = await page.evaluate(() => SEQ);
     const routes = [...pages, ...slugs.flatMap(s => [s, s + ".help", s + ".links"])];
 
     for (const r of routes) {
       await page.evaluate(h => { location.hash = h; }, r);
       await page.waitForTimeout(120);
-      await page.evaluate(() => Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(res => { i.onload = i.onerror = res; }))));
+      // Wait for images to settle, but never more than 4 seconds (a lazy image off screen may never start).
+      await page.evaluate(() => Promise.race([new Promise(r => setTimeout(r, 4000)),
+        Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(res => { i.addEventListener("load", res); i.addEventListener("error", res); })))]));
       const res = await page.evaluate(() => ({
         broken: [...document.images].filter(i => i.getAttribute("src") && i.complete && i.naturalWidth === 0).map(i => i.getAttribute("src")),
         overflow: document.documentElement.scrollWidth > window.innerWidth + 1,
@@ -65,9 +73,14 @@ function serve() {
     if (!pdfVisible) note(label, "Download PDF button is hidden");
     else { await page.click("#pdfBtn"); await page.waitForTimeout(200); }
     const counted = await page.evaluate(() => (window.__gc || []).map(o => o.path + (o.event ? " (event)" : "")));
-    for (const want of ["/", "/welcome", "/" + slugs[0], "pdf-download (event)"])
-      if (!counted.includes(want)) note(label, `visit counting: "${want}" was not counted`);
-    if (counted.filter(c => c === "/" + slugs[0]).length > 1) note(label, "visit counting: a project counted more than once for one visit (tabs should not count)");
+    if (Y.isDraft) {
+      if (counted.length) note(label, "visit counting: a draft year should count nothing");
+    } else {
+      const wants = [Y.trackPath("/"), Y.trackPath("/welcome"), `${Y.pdfEvent} (event)`];
+      if (slugs.length) wants.push(Y.trackPath("/" + slugs[0]));
+      for (const want of wants) if (!counted.includes(want)) note(label, `visit counting: "${want}" was not counted`);
+      if (slugs.length && counted.filter(c => c === Y.trackPath("/" + slugs[0])).length > 1) note(label, "visit counting: a project counted more than once for one visit (tabs should not count)");
+    }
     console.log(`${label}: checked ${routes.length} views`);
     await page.close();
   }
@@ -85,7 +98,7 @@ function serve() {
       noindex: !!document.querySelector('meta[name=robots][content*=noindex]'),
       overflow: document.documentElement.scrollWidth > innerWidth + 1
     }));
-    if (!d.rows) note(label, "no project rows");
+    if (!d.rows && slugs.length) note(label, "no project rows");
     if (d.sheets !== d.rows) note(label, `${d.rows - d.sheets} projects missing a Copysheet link`);
     if (!d.noindex) note(label, "missing noindex");
     if (d.overflow) note(label, "page scrolls sideways");
@@ -93,13 +106,14 @@ function serve() {
     await page.close();
   }
 
-  const pdf = await (await browser.newContext()).request.get(base + "/hotlist-2025.pdf");
+  const pdfName = `hotlist-${Y.Y}.pdf`;
+  const pdf = await (await browser.newContext()).request.get(base + "/" + pdfName);
   const type = pdf.headers()["content-type"] || "";
-  if (!pdf.ok() || !type.includes("pdf")) note("pdf", `GET hotlist-2025.pdf returned ${pdf.status()} ${type}`);
+  if (!pdf.ok() || !type.includes("pdf")) note("pdf", `GET ${pdfName} returned ${pdf.status()} ${type}`);
   else console.log(`pdf: ${(Number(pdf.headers()["content-length"] || (await pdf.body()).length) / 1e6).toFixed(1)} MB`);
 
   await browser.close();
   if (srv) srv.close();
   if (problems.length) { console.log(`\n${problems.length} problem(s):`); [...new Set(problems)].forEach(p => console.log(" - " + p)); process.exit(1); }
-  console.log("\nall clear");
+  console.log(`\n${Y.Y}: all clear`);
 })();

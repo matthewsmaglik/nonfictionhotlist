@@ -1,8 +1,8 @@
 """Write image paths and focus points from media.json into the project data in src/page.html."""
 import json, re
 from pathlib import Path
-REPO = Path(__file__).resolve().parents[2]
-page = REPO / "src" / "page.html"
+REPO = Path(__file__).resolve().parents[3]
+page = REPO / "years" / "2025" / "page.html"
 m = json.load(open(Path(__file__).with_name("media.json")))
 s = page.read_text()
 for slug, d in m.items():

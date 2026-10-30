@@ -10,10 +10,10 @@ const fs = require("fs");
 const path = require("path");
 const { PROJECT, DOCS, ORDER } = require("./spec");
 
-const REPO = path.resolve(__dirname, "..", "..");
-const CONTENT = path.join(REPO, "content", "content.json");
-const DRIVE = path.join(REPO, "content", "drive.json");
-const PROBLEMS = path.join(REPO, "content", "sync-problems.txt");
+const Y = require("../year");
+const CONTENT = Y.file("content.json");
+const DRIVE = Y.file("drive.json");
+const PROBLEMS = Y.file("sync-problems.txt");
 
 const args = process.argv.slice(2);
 const fromDir = args.includes("--from-dir") ? args[args.indexOf("--from-dir") + 1] : null;
@@ -202,7 +202,7 @@ function readDoc(key, md, prev) {
 /* ---------- main ---------- */
 (async () => {
   const content = JSON.parse(fs.readFileSync(CONTENT, "utf8"));
-  if (!fs.existsSync(DRIVE) && !fromDir) { console.log("Drive kit not connected yet (content/drive.json missing). Nothing to pull."); return; }
+  if (!fs.existsSync(DRIVE) && !fromDir) { console.log(`${Y.Y}: Drive kit not connected yet (no drive.json). Nothing to pull.`); return; }
   const drive = fromDir ? { manifestId: "manifest" } : JSON.parse(fs.readFileSync(DRIVE, "utf8"));
 
   const manifest = parseCsv(await (fromDir ? get(null, "manifest.csv") : sheetCsv(drive.manifestId, drive.manifestGid || 0)))

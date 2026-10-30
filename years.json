@@ -1,0 +1,11 @@
+{
+  "_about": "Every Hotlist year the site publishes. A 'draft' year is built at /<year> but hidden from search and not linked from the front door until it goes 'live'. 'latest' is where the front door sends visitors. trackPrefix keeps 2025's visit counts on their original paths.",
+  "domain": "list.nonfictionhotlist.com",
+  "repo": "Nonfiction-Hotlist/list",
+  "goatcounter": "https://nonfictionhotlist.goatcounter.com",
+  "latest": "2025",
+  "years": {
+    "2025": { "status": "live", "trackPrefix": "", "countingSince": "2026-10-24T00:00:00Z" },
+    "2026": { "status": "draft", "trackPrefix": "/2026", "countingSince": "2026-10-30T00:00:00Z" }
+  }
+}
