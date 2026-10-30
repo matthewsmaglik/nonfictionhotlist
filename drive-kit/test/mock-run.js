@@ -38,6 +38,7 @@ function Sheet(ss, name) {
           vals.forEach((row, i) => row.forEach((v, j) => sh.cells[`${r + i},${c + j}`] = v)); return range;
         },
         setValue: v => { sh.cells[`${r},${c}`] = v; return range; },
+        getValues: () => Array.from({ length: nr }, (_, i) => Array.from({ length: nc }, (_, j) => sh.cells[`${r + i},${c + j}`] ?? "")),
         merge: () => { if (nr * nc < 2) throw new Error("merge of a single cell"); return range; }
       });
       return range;
@@ -53,8 +54,13 @@ function Spreadsheet(name) {
   const ss = { kind: "sheet", name, sheets: [] };
   ss.sheets.push(Sheet(ss, "Sheet1"));
   files[id] = ss;
+  return ssApi(id);
+}
+function ssApi(id) {
+  const ss = files[id];
   return chain({
     getId: () => id, getSheets: () => ss.sheets.map(s => s.api),
+    getSheetByName: n => (ss.sheets.find(s => s.name === n) || {}).api || null,
     insertSheet: n => { const s = Sheet(ss, n); ss.sheets.push(s); return s.api; },
   });
 }
@@ -79,8 +85,9 @@ function Doc(name) {
   return chain({ getId: () => id, getBody: () => body });
 }
 const folder = name => {
-  const kids = {}; const fileNames = new Set();
+  const kids = {}; const fileNames = new Set(); const id = `folder${nextId++}`;
   const api = chain({
+    getId: () => id,
     getFoldersByName: n => { const has = !!kids[n]; return { hasNext: () => has, next: () => kids[n] }; },
     createFolder: n => (kids[n] = folder(n)),
     getFilesByName: n => ({ hasNext: () => fileNames.has(n) }),
@@ -97,7 +104,7 @@ const sandbox = {
   DriveApp: { getFolderById: () => root, getFileById: () => chain({}), Access: {}, Permission: {} },
   SpreadsheetApp: chain({
     create: Spreadsheet, flush: () => {},
-    openById: id => chain({ getSheets: () => files[id].sheets.map(s => s.api) }),
+    openById: id => ssApi(id),
     newDataValidation: () => chain({}), newConditionalFormatRule: () => chain({}), ProtectionType: { SHEET: "SHEET" }
   }),
   DocumentApp: { create: Doc, ParagraphHeading: { HEADING1: "H1", HEADING2: "H2", HEADING3: "H3", NORMAL: "NORMAL" }, GlyphType: { BULLET: "BULLET" } },
@@ -111,6 +118,18 @@ vm.runInContext(fs.readFileSync(path.join(REPO, "drive-kit", `setup-${Y.Y}.gs`),
 let runs = 0;
 do { const before = calls.triggers; runs++; vm.runInContext(runs === 1 ? "buildKit()" : "continueKit()", sandbox); if (calls.triggers === before) break; } while (runs < 100);
 console.log(`runs: ${runs}`);
+
+// --titles "A,B": type project titles into the Running order sheet's Projects tab, then run addProjects.
+const ti = process.argv.indexOf("--titles");
+if (ti > -1) {
+  const titles = process.argv[ti + 1].split(",").map(t => t.trim()).filter(Boolean);
+  const order = Object.values(files).find(f => f.kind === "sheet" && f.sheets.some(s => s.name === "Projects"));
+  if (!order) throw new Error("no Projects tab was made");
+  const tab = order.sheets.find(s => s.name === "Projects");
+  titles.forEach((t, i) => { tab.cells[`${5 + i},1`] = t; });
+  vm.runInContext("addProjects()", sandbox);
+  vm.runInContext("addProjects()", sandbox);   // a second run must change nothing
+}
 
 // Export: sheets as CSV per tab (computed formulas left blank), docs as Google-style markdown.
 const csvCell = v => { v = v == null ? "" : String(v); if (v.startsWith("=")) v = ""; return /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v; };

@@ -56,7 +56,8 @@ let a = s.indexOf(START);
 if (a < 0) a = s.indexOf(LEGACY_START);
 const b = s.indexOf(END);
 if (a < 0 || b < 0 || b < a) throw new Error("data block markers not found in src/page.html");
-const next = s.slice(0, a) + block + s.slice(b);
+// src/page.html is shared by every year: __YEAR__ marks the places outside the data block that name it.
+const next = (s.slice(0, a) + block + s.slice(b)).replace(/__YEAR__/g, Y.Y);
 const before = fs.existsSync(PAGE) ? fs.readFileSync(PAGE, "utf8") : "";
 if (next !== before) { fs.writeFileSync(PAGE, next); console.log(`${Y.Y} page written: ${order.length} projects`); }
 else console.log(`${Y.Y} page unchanged`);

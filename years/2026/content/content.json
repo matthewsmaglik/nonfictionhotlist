@@ -1,0 +1,55 @@
+{
+  "_about": "The 2026 Nonfiction Hotlist text. Mirrored from the 2026 Google Drive kit once it is connected; until then, a starting draft carried over from 2025.",
+  "year": "2026",
+  "cover": {
+    "intro": "20 ambitious nonfiction projects with extraordinary creative potential, each looking for the support to move forward.",
+    "footerEmail": "info@nonfictionhotlist.com",
+    "footerNote": "Projects listed in alphabetical order"
+  },
+  "welcome": {
+    "heading": "welcome to the nonfiction hotlist",
+    "lede": [
+      "We believe creators and storytellers are the lifeblood of our industry and deserve more pathways to bring their visions to life.",
+      "This curated collection represents **20 ambitious projects** that have demonstrated extraordinary creative potential but need support to move forward."
+    ],
+    "invitation": [
+      "While funding and distribution remain universal needs for all these projects, we believe there are many ways to help reduce costs and build momentum.",
+      "Look through these projects with an eye for how you might contribute. Each page identifies specific needs, from production support to technical expertise to strategic connections."
+    ]
+  },
+  "about": {
+    "heading": "why this matters",
+    "why": [
+      "The marketplace needs ambitious, unusual, and visionary nonfiction projects. When we collaborate as a community, we create new possibilities and counter the risk-aversion of traditional gatekeepers. Every contribution, whether financial investment or in-kind support, generates meaningful momentum, giving creators more leverage.",
+      "Supporting these projects strengthens not only their individual journeys but the broader health and vibrancy of our entire nonfiction ecosystem. The hundreds of other remarkable submissions we received confirm the wealth of untapped storytelling potential waiting for champions."
+    ],
+    "criteria": [
+      "Originality",
+      "Feasibility",
+      "Compelling subjects",
+      "Evocative storytelling"
+    ],
+    "selection": "Some creators are first-time filmmakers; others are established voices who still face challenges securing support for ambitious work. What unites them is the exceptional quality of their vision.",
+    "how": [
+      [
+        "Reach out",
+        "Contact projects directly whose vision inspires you."
+      ],
+      [
+        "Give",
+        "Support their 501(c)(3) fiscal sponsorships where available."
+      ],
+      [
+        "Follow",
+        "Follow their creative journeys across social platforms."
+      ],
+      [
+        "Contribute",
+        "Review each project's How to help section and offer the specific resources they need."
+      ]
+    ],
+    "close": "This document is **meant to be used**. These projects are **meant to be made**. The future of exceptional nonfiction storytelling depends on our collective action."
+  },
+  "order": [],
+  "projects": {}
+}

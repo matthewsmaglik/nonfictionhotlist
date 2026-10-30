@@ -207,7 +207,21 @@ function readDoc(key, md, prev) {
 
   const manifest = parseCsv(await (fromDir ? get(null, "manifest.csv") : sheetCsv(drive.manifestId, drive.manifestGid || 0)))
     .slice(1).filter(r => clean(r[0]))
-    .map(r => ({ kind: clean(r[0]), key: clean(r[1]), label: clean(r[2]), fileId: clean(r[3]), tabs: JSON.parse(clean(r[4]) || "{}") }));
+    .map(r => ({ kind: clean(r[0]), key: clean(r[1]), label: clean(r[2]), fileId: clean(r[3]), tabs: JSON.parse(clean(r[4]) || "{}"),
+      folder: clean(r[5] || ""), media: clean(r[6] || "") }));
+
+  // Keep drive.json (the dashboard's links into Drive) in step with the manifest, so a project
+  // added in Drive gets its Copysheet and Media links without anyone editing IDs by hand.
+  const nextDrive = JSON.parse(JSON.stringify(drive));
+  nextDrive.projects = nextDrive.projects || {}; nextDrive.front = nextDrive.front || {}; nextDrive.order = nextDrive.order || {};
+  for (const m of manifest) {
+    if (m.kind === "project") nextDrive.projects[m.key] = { ...(nextDrive.projects[m.key] || {}), sheet: m.fileId, ...(m.folder && { folder: m.folder }), ...(m.media && { media: m.media }) };
+    if (m.kind === "order") Object.assign(nextDrive.order, { sheet: m.fileId }, m.folder && { folder: m.folder });
+    if (m.kind === "doc") Object.assign(nextDrive.front, { [m.key]: m.fileId }, m.folder && { folder: m.folder }, m.media && { media: m.media });
+    if (m.kind === "guide") nextDrive.guide = m.fileId;
+    if (m.kind === "folder" && m.key === "root" && m.folder) nextDrive.root = m.folder;
+    if (m.kind === "folder" && m.key === "projects" && m.folder) nextDrive.projectsFolder = m.folder;
+  }
 
   const next = JSON.parse(JSON.stringify(content));
 
@@ -256,6 +270,7 @@ function readDoc(key, md, prev) {
 
   if (dryRun) return;
   if (changed.length) fs.writeFileSync(CONTENT, JSON.stringify(next, null, 2) + "\n");
+  if (!fromDir && JSON.stringify(nextDrive) !== JSON.stringify(drive)) { fs.writeFileSync(DRIVE, JSON.stringify(nextDrive, null, 2) + "\n"); console.log("drive.json updated from the manifest"); }
   // The current list of skipped edits is kept in the repo, so an alert goes out once when the
   // list changes rather than on every run.
   const listed = problems.length ? problems.join("\n") + "\n" : "";

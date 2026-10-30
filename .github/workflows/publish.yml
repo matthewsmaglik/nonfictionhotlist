@@ -84,7 +84,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add years/*/content/content.json years/*/content/sync-problems.txt years/*/page.html site/*/index.html
+          git add years/*/content/content.json years/*/content/drive.json years/*/content/sync-problems.txt years/*/page.html site/*/index.html
           git commit -m "Update from Google Drive: ${SUMMARY}"
           git pull --rebase origin main
           git push origin HEAD:main
