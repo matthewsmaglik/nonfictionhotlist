@@ -9,7 +9,7 @@
 - Design: forest green / sage / cream, League Spartan for display, Literata for body. Restraint is preferred: no novelty motifs (filmstrips, tickets, stamps). Marker-style highlights and dark rounded panels are in use and liked.
 - Copy: understated and direct. No em dashes.
 - Official contact email: info@nonfictionhotlist.com. Project contacts belong to the filmmakers.
-- Deploys: `.github/workflows/publish.yml` runs on push to `main`, every 15 minutes (Drive edits) and on demand; it publishes `site/` to `gh-pages` (custom domain list.nonfictionhotlist.com). The old nfh2025.rdgnbl.com forwards here from `matthewsmaglik/nfh2025` (source in `redirects/nfh2025/`).
+- Deploys: `.github/workflows/publish.yml` runs on push to `main`, every 15 minutes (Drive edits) and on demand; it publishes `site/` to `gh-pages` (custom domain list.nonfictionhotlist.com). The old nfh2025.rdgnbl.com forwards here from `matthewsmaglik/nfh2025-redirect` (source in `redirects/nfh2025/`).
 - Project news, laurels and status are edited in each project's sheet in Drive. When adding researched items there, every item needs a source; never add a laurel or award that a source doesn't confirm. `research/` is the October 2026 archive for 2025.
 - Team dashboards: `site/<year>/dashboard/` (unlisted, built by `npm run dashboard`, never committed). GoatCounter counts visits on the website only, through `window.nfhTrack` in `scripts/build-site.js`; the Claude version and draft years must not count. 2025 counts on unprefixed paths, later years under `/<year>`. Stats need the `GOATCOUNTER_TOKEN` repo secret.
 - The NFH Google Workspace (nonfictionhotlist.com) should own the kits, in a Shared Drive. Claude's Google connector is Matthew's personal Gmail, which has access as a member.

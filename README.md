@@ -143,7 +143,7 @@ One-time setup:
 1. **GitHub Pages:** repo Settings → Pages → Source: *Deploy from a branch*, branch `gh-pages`, folder `/ (root)`. Custom domain: `list.nonfictionhotlist.com`. Tick *Enforce HTTPS* once the certificate is issued (usually within an hour).
 2. **Verify the domain** (recommended, prevents anyone else's Pages site claiming it): org Settings → Pages → Add a domain → `nonfictionhotlist.com`, then add the TXT record it shows.
 3. **DNS** for nonfictionhotlist.com (held at Squarespace): add a `CNAME` record, host `list`, value `nonfiction-hotlist.github.io`. Leave every other record alone, especially the email (MX) records.
-4. **Old address:** the files in `redirects/nfh2025/` are published from `matthewsmaglik/nfh2025` with Pages, custom domain `nfh2025.rdgnbl.com`. Its existing DNS record already points at `matthewsmaglik.github.io`, so nothing changes there.
+4. **Old address:** the files in `redirects/nfh2025/` are published from `matthewsmaglik/nfh2025-redirect` with Pages, custom domain `nfh2025.rdgnbl.com`. Its existing DNS record already points at `matthewsmaglik.github.io`, so nothing changes there.
 
 ## Troubleshooting
 
