@@ -3,6 +3,8 @@
   "domain": "list.nonfictionhotlist.com",
   "repo": "Nonfiction-Hotlist/list",
   "goatcounter": "https://nonfictionhotlist.goatcounter.com",
+  "driveParent": "1BH_oJuusE9zGYzuzgA5ilhYbjJzXJRGx",
+  "_driveParent": "Nonfiction Hotlist CD, owned by matthew@nonfictionhotlist.com. Each year's kit is built in an 'NFH <year>' folder inside it.",
   "latest": "2025",
   "years": {
     "2025": { "status": "live", "trackPrefix": "", "countingSince": "2026-10-24T00:00:00Z" },

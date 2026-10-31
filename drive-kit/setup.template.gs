@@ -33,7 +33,7 @@ function buildKit() {
   const started = Date.now();
   const state = loadState_();
   const data = loadContent_();
-  const root = DriveApp.getFolderById(KIT.rootFolderId);
+  const root = root_(state);
   const out = (msg) => Logger.log(msg);
 
   const front = folder_(root, "01 Cover, Welcome, About");
@@ -95,7 +95,7 @@ function addProjects() {
   const state = loadState_();
   if (!state.order || !state.manifest) throw new Error("Run buildKit first.");
   const data = loadContent_();
-  const root = DriveApp.getFolderById(KIT.rootFolderId);
+  const root = root_(state);
   const projects = folder_(root, "03 Projects");
   const titles = projectTitles_(state);
   const taken = Object.fromEntries(Object.entries(state.projects).map(([slug, r]) => [r.title, slug]));
@@ -144,6 +144,15 @@ function clearTriggers_() {
 function loadContent_() {
   const get = url => JSON.parse(UrlFetchApp.fetch(url).getContentText());
   return { content: get(KIT.contentUrl), layout: get(KIT.layoutUrl) };
+}
+// The year's kit folder: KIT.rootFolderId if set, otherwise a folder named KIT.folderName
+// inside KIT.parentFolderId, made on the first run and remembered after that.
+function root_(state) {
+  if (KIT.rootFolderId) return DriveApp.getFolderById(KIT.rootFolderId);
+  if (state.root) return DriveApp.getFolderById(state.root);
+  const f = folder_(DriveApp.getFolderById(KIT.parentFolderId), KIT.folderName);
+  state.root = f.getId(); saveState_(state);
+  return f;
 }
 function slugify_(t) {
   return String(t).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/&/g, " and ")

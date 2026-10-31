@@ -9,17 +9,21 @@ const Y = require("../year");
 
 const KIT_DIR = path.join(Y.REPO, "drive-kit");
 const rel = f => path.relative(Y.REPO, f).split(path.sep).join("/");
-const drivePath = Y.file("drive.json");
-const drive = fs.existsSync(drivePath) ? JSON.parse(fs.readFileSync(drivePath, "utf8")) : {};
-const rootFolderId = Y.info.driveRoot || drive.root;
-if (!rootFolderId) console.warn(`${Y.Y}: no Drive folder yet. Set years.json > years.${Y.Y}.driveRoot to the folder the kit should be built in.`);
+// Where the kit goes: the year's existing kit folder, or a new "NFH <year>" folder in years.json driveParent.
+const rootFolderId = Y.info.driveRoot || "";
+const parentFolderId = Y.config.driveParent || "";
+if (!rootFolderId && !parentFolderId) console.warn(`${Y.Y}: no Drive folder. Set driveParent in years.json.`);
+// Raw files the kit reads while it builds. NFH_RAW points it elsewhere (e.g. a branch) before main has them.
+const RAW = process.env.NFH_RAW || Y.RAW;
 
 const KIT = {
   year: Y.Y,
-  rootFolderId: rootFolderId || "PASTE_FOLDER_ID",
-  contentUrl: `${Y.RAW}/${rel(Y.file("content.json"))}`,
-  layoutUrl: `${Y.RAW}/${rel(Y.file("layout.json"))}`,
-  siteBase: `${Y.RAW}/site/${Y.Y}/`,
+  rootFolderId,
+  parentFolderId,
+  folderName: `NFH ${Y.Y}`,
+  contentUrl: `${RAW}/${rel(Y.file("content.json"))}`,
+  layoutUrl: `${RAW}/${rel(Y.file("layout.json"))}`,
+  siteBase: `${RAW}/site/${Y.Y}/`,
   siteUrl: Y.SITE_URL,
   repoUrl: Y.REPO_URL,
   spec

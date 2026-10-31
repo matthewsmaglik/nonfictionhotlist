@@ -22,10 +22,12 @@
 
 const KIT = {
   "year": "2025",
-  "rootFolderId": "1Eu7dbIrIPNk2auC9DPzxwy3crbAWR__u",
-  "contentUrl": "https://raw.githubusercontent.com/Nonfiction-Hotlist/list/main/years/2025/content/content.json",
-  "layoutUrl": "https://raw.githubusercontent.com/Nonfiction-Hotlist/list/main/years/2025/content/layout.json",
-  "siteBase": "https://raw.githubusercontent.com/Nonfiction-Hotlist/list/main/site/2025/",
+  "rootFolderId": "",
+  "parentFolderId": "1BH_oJuusE9zGYzuzgA5ilhYbjJzXJRGx",
+  "folderName": "NFH 2025",
+  "contentUrl": "https://raw.githubusercontent.com/matthewsmaglik/nonfictionhotlist/multi-year/years/2025/content/content.json",
+  "layoutUrl": "https://raw.githubusercontent.com/matthewsmaglik/nonfictionhotlist/multi-year/years/2025/content/layout.json",
+  "siteBase": "https://raw.githubusercontent.com/matthewsmaglik/nonfictionhotlist/multi-year/site/2025/",
   "siteUrl": "https://list.nonfictionhotlist.com/2025",
   "repoUrl": "https://github.com/Nonfiction-Hotlist/list",
   "spec": {
@@ -291,7 +293,7 @@ function buildKit() {
   const started = Date.now();
   const state = loadState_();
   const data = loadContent_();
-  const root = DriveApp.getFolderById(KIT.rootFolderId);
+  const root = root_(state);
   const out = (msg) => Logger.log(msg);
 
   const front = folder_(root, "01 Cover, Welcome, About");
@@ -353,7 +355,7 @@ function addProjects() {
   const state = loadState_();
   if (!state.order || !state.manifest) throw new Error("Run buildKit first.");
   const data = loadContent_();
-  const root = DriveApp.getFolderById(KIT.rootFolderId);
+  const root = root_(state);
   const projects = folder_(root, "03 Projects");
   const titles = projectTitles_(state);
   const taken = Object.fromEntries(Object.entries(state.projects).map(([slug, r]) => [r.title, slug]));
@@ -402,6 +404,15 @@ function clearTriggers_() {
 function loadContent_() {
   const get = url => JSON.parse(UrlFetchApp.fetch(url).getContentText());
   return { content: get(KIT.contentUrl), layout: get(KIT.layoutUrl) };
+}
+// The year's kit folder: KIT.rootFolderId if set, otherwise a folder named KIT.folderName
+// inside KIT.parentFolderId, made on the first run and remembered after that.
+function root_(state) {
+  if (KIT.rootFolderId) return DriveApp.getFolderById(KIT.rootFolderId);
+  if (state.root) return DriveApp.getFolderById(state.root);
+  const f = folder_(DriveApp.getFolderById(KIT.parentFolderId), KIT.folderName);
+  state.root = f.getId(); saveState_(state);
+  return f;
 }
 function slugify_(t) {
   return String(t).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/&/g, " and ")
